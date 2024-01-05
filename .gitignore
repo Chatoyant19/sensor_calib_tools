@@ -1,0 +1,13 @@
+*.pcd
+devel/
+build/
+install/
+.vscode/
+.project.settings/
+.ycm_extra_conf.py
+*.swp
+*.swo
+.idea/
+.vim/
+/src/livox_camera_calib/result
+*.log
