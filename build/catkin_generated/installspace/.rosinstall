@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/wd/projects/calib_tools/dr_lidar_calib_ws/install/setup.sh

@@ -1,0 +1,2 @@
+dr_lidar_calib
+-DCATKIN_DEVEL_PREFIX=/home/wd/projects/calib_tools/dr_lidar_calib_ws/devel -DCMAKE_INSTALL_PREFIX=/home/wd/projects/calib_tools/dr_lidar_calib_ws/install -G Unix Makefiles
