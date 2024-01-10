@@ -6,10 +6,10 @@ LiDARFilesPath: /media/lam_data/标定数据/上海小车/27号/20231218/直线�
 CamsIntrinsicPath: /media/lam_data/标定数据/上海小车/27号/20231218/直线往返/camera_baselink/camera
 CamsExtrinsicPath: /media/lam_data/标定数据/上海小车/27号/20231218/直线往返/camera_baselink/camera
 
-SceneNum: 1
+SceneNum: 3
 
 init_extrinsic_file: /media/lam_data/标定数据/上海小车/27号/20231218/直线往返/lidar_baselink/pre_data/base_init_transform.pb.txt
-result_path:  /home/wd/datasets/27/RESULT_3_scene_update_cam
+result_path:  /home/wd/datasets/27/RESULT_with_floor_constraint
 
 CameraName:
   - avm_front
@@ -19,13 +19,13 @@ CameraName:
 
 
 Canny.gray_threshold: 10
-Canny.len_threshold: 100
+Canny.len_threshold: 50
 
 # Params for Voxel Cutting & Plane Fitting & Edge Extraction
-Voxel.size: 0.5
+Voxel.size: 0.6
 Voxel.eigen_ratio: 0.05
 Voxel.down_sample_size: 0.02
-Plane.min_points_size: 100
+Plane.min_points_size: 30
 Plane.normal_theta_min: 20
 Plane.normal_theta_max: 170
 Plane.max_size: 8
@@ -41,7 +41,7 @@ Color.intensity_threshold: 5
 match_type: 1
 
 update_camera_extrinsic: 1
-use_ground_lines: 1
+use_ground_lines: 0
 save_lidar_extrinsic_name: roof_transform.pb.txt
 
 img_file_extension: bmp

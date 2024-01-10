@@ -415,6 +415,10 @@ Calibration::Calibration(const std::string& CalibCfgFile, const std::string& Res
     extractFloorPlane(use_pcd, lidar.Tx_dr_L_, floor_plane, ground_lines);
     lidar.floor_plane_vec_.emplace_back(floor_plane);
     ground_lines_vec.emplace_back(ground_lines);
+
+    // Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
+    // if(addFloorConstriant(floor_plane, lidar.Tx_dr_L_, T_dr_L_new))
+    //   lidar.update_T(T_dr_L_new);
   }
 
   // for(int i=0;i<ground_lines.size();i++)
@@ -681,7 +685,7 @@ bool Calibration::loadCalibConfig(const std::string& config_file) {
   theta_max_ = cos(DEG2RAD(theta_max_));
   match_type_ = fSettings["match_type"];
   fSettings["update_camera_extrinsic"] >> update_camera_extrinsic_;
-    fSettings["use_ground_lines"] >> use_ground_lines_;
+  fSettings["use_ground_lines"] >> use_ground_lines_;
   fSettings["save_lidar_extrinsic_name"] >> save_lidar_extrinsic_name_;
   fSettings["img_file_extension"] >> img_file_extension_;
 
@@ -1599,8 +1603,8 @@ void Calibration::LiDAREdgeExtraction(
   for (auto iter = voxel_map.begin(); iter != voxel_map.end(); iter++) {
     // std::cout << "cnt: " << cnt << std::endl;
     if (iter->second->cloud->size() > 50) {
-        std::string output_pcd_dir = result_path_ +"/pcds/"+std::to_string(cnt);
-        boost::filesystem::create_directories(output_pcd_dir);
+        // std::string output_pcd_dir = result_path_ +"/pcds/"+std::to_string(cnt);
+        // boost::filesystem::create_directories(output_pcd_dir);
 
 
         pcl::PointCloud<pcl::PointXYZI> voxel_lines;
@@ -1896,7 +1900,7 @@ void Calibration::calcLine(
                 }
               }
 
-              if (line_cloud.size() > 10 && line_cloud.size() > 0.0 * (end_inc-start_inc) / step_size) {
+              if (line_cloud.size() > 10 && line_cloud.size() > 0.5 * (end_inc-start_inc) / step_size) {
                 line_cloud_list.emplace_back(line_cloud);
               }
             }
@@ -2300,7 +2304,7 @@ void Calibration::buildVPnp(const Camera& cam, const int& dis_threshold,
         }
   
         // low_dis_threshold
-        if((dis_threshold == 7 && cnt == 1)) {
+        if((dis_threshold == 7)) {
           cv::imwrite(save_residual_path + "/" + cam.cam_name_ + "_sceneID_" + std::to_string(scene_index) + "_result_residual.jpg", residual_img);
         }
       // }
@@ -2858,83 +2862,182 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
   // too few points for RANSAC
   double floor_normal_thresh = 10;
 
-  // 使用RANSAC算法拟合地平面参数
-  pcl::SampleConsensusModelPlane<pcl::PointXYZI>::Ptr model_p(
-      new pcl::SampleConsensusModelPlane<pcl::PointXYZI>(pcd_floor_tmp.makeShared()));
-  pcl::RandomSampleConsensus<pcl::PointXYZI> ransac(model_p);
-  ransac.setDistanceThreshold(0.05);
-  ransac.computeModel();
+  std::vector<Plane> plane_list;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr cloud_filter(
+         new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::copyPointCloud(pcd_floor_tmp, *cloud_filter);         
 
+  //创建一个模型参数对象，用于记录结果
+  pcl::ModelCoefficients::Ptr coefficients(new pcl::ModelCoefficients);
+  // inliers表示误差能容忍的点，记录点云序号
   pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
-  ransac.getInliers(inliers->indices);
-  // too few inliers
-  double floor_pts_thresh = 100;
-  if (inliers->indices.size() < floor_pts_thresh) {
-    std::cerr << "too few inliers" << std::endl;
-    return false;
+  //创建一个分割器
+  pcl::SACSegmentation<pcl::PointXYZI> seg;
+  // Optional,设置结果平面展示的点是分割掉的点还是分割剩下的点
+  seg.setOptimizeCoefficients(true);
+  // Mandatory-设置目标几何形状
+  seg.setModelType(pcl::SACMODEL_PLANE);
+  //分割方法：随机采样法
+  seg.setMethodType(pcl::SAC_RANSAC);
+  //设置误差容忍范围，也就是阈值
+
+  seg.setDistanceThreshold(0.02);
+
+  int plane_index = 0;
+  while (cloud_filter->points.size() > 50) {
+    pcl::PointCloud<pcl::PointXYZI> planner_cloud;
+    pcl::ExtractIndices<pcl::PointXYZI> extract;
+    //输入点云
+    seg.setInputCloud(cloud_filter);
+    seg.setMaxIterations(500);
+    //分割点云
+    seg.segment(*inliers, *coefficients);
+    if (inliers->indices.size() == 0) {
+      ROS_INFO_STREAM(
+          "Could not estimate a planner model for the given dataset");
+      break;
+    }
+    extract.setIndices(inliers);
+    extract.setInputCloud(cloud_filter);
+    extract.filter(planner_cloud);
+
+    double floor_pts_thresh = 100;
+    if (planner_cloud.size() > floor_pts_thresh) {
+      pcl::PointXYZ p_center(0, 0, 0);
+      for (size_t i = 0; i < planner_cloud.points.size(); i++) {
+        pcl::PointXYZRGB p;
+        p.x = planner_cloud.points[i].x;
+        p.y = planner_cloud.points[i].y;
+        p.z = planner_cloud.points[i].z;
+        p_center.x += p.x;
+        p_center.y += p.y;
+        p_center.z += p.z;
+      }
+
+    p_center.x = p_center.x / planner_cloud.size();
+    p_center.y = p_center.y / planner_cloud.size();
+    p_center.z = p_center.z / planner_cloud.size();
+    Plane single_plane;
+    single_plane.cloud = planner_cloud;
+    single_plane.p_center = p_center;
+    single_plane.normal << coefficients->values[0],
+        coefficients->values[1], coefficients->values[2];
+    single_plane.index = plane_index;
+    plane_list.emplace_back(single_plane);
+    plane_index++;
+
+  }
+    extract.setNegative(true);
+    pcl::PointCloud<pcl::PointXYZI> cloud_f;
+    extract.filter(cloud_f);
+    *cloud_filter = cloud_f;
   }
 
+  std::cout << "plane_list size: " << plane_list.size() << std::endl;
+
+  // for(size_t i = 0; i < plane_list.size(); ++i) {
+  //   std::string path = "/home/wd/datasets/calib_test/" + std::to_string(i) + ".pcd";
+  //   pcl::io::savePCDFile(path, plane_list[i].cloud);
+  // }
+
+  // todo: merge or this
   pcl::PointCloud<pcl::PointXYZI> floor_plane;
-  assert(inliers->indices.size() <= pcd_floor_tmp.size());
-  for(size_t i = 0; i < inliers->indices.size(); ++i) {
-    floor_plane.push_back(pcd_floor_tmp[i]);
+  Eigen::Vector3d plane_normal;
+  // floor_plane = plane_list[0].cloud;
+  // plane_normal = plane_list[0].normal;
+  // for(size_t i = 0; i < plane_list.size(); ++i) {
+  //   if(plane_list[i].cloud.size() > floor_plane.size()) 
+  //     floor_plane = plane_list[i].cloud;
+  //     plane_normal = plane_list[i].normal;
+  // }
+  merge_planes(plane_list);
+  std::cout << "plane_list size: " << plane_list.size() << std::endl;
+  if(plane_list.size() == 1) {
+    floor_plane = plane_list[0].cloud;
+    plane_normal = plane_list[0].normal;
+    plane_normal.normalize();
+    // make the normal upward
+    if (plane_normal.dot(Eigen::Vector3d::UnitZ()) < 0.0f) {
+      plane_normal *= -1.0f;
+    }
   }
+  
+  // std::string path = "/home/wd/datasets/calib_test/plane.pcd";
+  // pcl::io::savePCDFile(path, floor_plane);
 
-  // 验证算出的法线是否是真正的地面法线：是否和z轴夹角小于10°
-  Eigen::Vector4f reference = Eigen::Vector4f::UnitZ();
-  Eigen::VectorXf coeffs;
-  ransac.getModelCoefficients(coeffs);
-  double dot = coeffs.head<3>().dot(reference.head<3>());
-  if (std::abs(dot) < std::cos(floor_normal_thresh*M_PI/180.0)) {
+
+  Eigen::Vector3d v = plane_normal.head<3>().cross(Eigen::Vector3d::UnitZ());
+  double c = plane_normal.head<3>().dot(Eigen::Vector3d::UnitZ());
+   if (std::abs(c) < std::cos(floor_normal_thresh*M_PI/180.0)) {
     // the normal is not vertical
     std::cerr << "the normal is not vertical!" << std::endl;
     return false;
   }
-  // make the normal upward
-  if (coeffs.head<3>().dot(Eigen::Vector3f::UnitZ()) < 0.0f) {
-    coeffs *= -1.0f;
-  }
 
-  double pitch = 0, roll = 0, yaw = 0;
-  pitch = atan2((double)coeffs.head<3>()(1), (double)coeffs.head<3>()(2));
-  roll = -atan2((double)coeffs.head<3>()(0), (double)coeffs.head<3>()(2));
-  std::cout << "pitch: " << pitch * 180 / M_PI  << ", " << "roll: " << roll * 180 / M_PI  << std::endl;
-  if(pitch > (5.0 * M_PI / 180) || pitch > (5.0 * M_PI / 180)) {
+  Eigen::Matrix3d v_mat;
+  v_mat << 0, -v(2), v(1), v(2), 0, -v(0), -v(1), v(0), 0;
+  double tmp_rod = 1.0 / (1.0 + c);
+  Eigen::Matrix3d rotation = Eigen::Matrix3d::Identity() + v_mat + v_mat * v_mat * tmp_rod;
+  Eigen::Vector3d ypr_1 = convertRotationMatrixToEulerYPR(rotation);
+  std::cout << "yaw: " << ypr_1[0] * 180 / M_PI  << "pitch: " << ypr_1[1] * 180 / M_PI  << ", " << "roll: " << ypr_1[2] * 180 / M_PI  << std::endl;
+  if(ypr_1[1] > (5.0 * M_PI / 180) || ypr_1[2] > (5.0 * M_PI / 180)) {
     std::cout << "calibration result may be a larger error! " << std::endl;
   }
+  ypr_1[0] = 0.0;
+  rotation = convertEulerYPRToRotationMatrix(ypr_1);
 
-  // Eigen::Matrix3d R_yp = convertEulerYPRToRotationMatrix(Eigen::Vector3d(yaw, pitch, roll));
+  // /*
+  // // 验证算出的法线是否是真正的地面法线：是否和z轴夹角小于10°
+  // Eigen::Vector3d reference = Eigen::Vector3d::UnitZ();
+  // double dot = plane_normal.dot(reference);
+  // if (std::abs(dot) < std::cos(floor_normal_thresh*M_PI/180.0)) {
+  //   // the normal is not vertical
+  //   std::cerr << "the normal is not vertical!" << std::endl;
+  //   return false;
+  // }
+
+  // double pitch = 0, roll = 0, yaw = 0;
+  // pitch = atan2(plane_normal[1], plane_normal[2]);
+  // roll = -atan2(plane_normal[0], plane_normal[2]);
+  // std::cout << "pitch: " << pitch * 180 / M_PI  << ", " << "roll: " << roll * 180 / M_PI  << std::endl;
+  // if(pitch > (5.0 * M_PI / 180) || pitch > (5.0 * M_PI / 180)) {
+  //   std::cout << "calibration result may be a larger error! " << std::endl;
+  // }
+
+  // // Eigen::Matrix3d R_yp = convertEulerYPRToRotationMatrix(Eigen::Vector3d(yaw, pitch, roll));
   
-  Eigen::Matrix3d rotation = Eigen::Matrix3d::Identity();
-  // rotation = Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ()) *
-  //            Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitY()) *
-  //            Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitX());
-  Eigen::Matrix3d rotation_pitch;
-  Eigen::Matrix3d rotation_roll;
-  Eigen::Matrix3d rotation_yaw;
-  rotation_pitch << 1, 0, 0, 
-                    0, cos(pitch), -sin(pitch), 
-                    0, sin (pitch), cos (pitch);
-  rotation_roll << cos (roll), 0, sin(roll),
-                     0, 1, 0,
-                     -sin (roll), 0, cos (roll);
-  rotation_yaw << cos (yaw), -sin(yaw), 0, 
-                     sin (yaw), cos (yaw), 0, 
-                     0, 0, 1;
-  rotation = rotation_yaw * rotation_roll * rotation_pitch;
+  // Eigen::Matrix3d rotation = Eigen::Matrix3d::Identity();
+  // // rotation = Eigen::AngleAxisd(yaw, Eigen::Vector3d::UnitZ()) *
+  // //            Eigen::AngleAxisd(roll, Eigen::Vector3d::UnitY()) *
+  // //            Eigen::AngleAxisd(pitch, Eigen::Vector3d::UnitX());
+  // Eigen::Matrix3d rotation_pitch;
+  // Eigen::Matrix3d rotation_roll;
+  // Eigen::Matrix3d rotation_yaw;
+  // rotation_pitch << 1, 0, 0, 
+  //                   0, cos(pitch), -sin(pitch), 
+  //                   0, sin (pitch), cos (pitch);
+  // rotation_roll << cos (roll), 0, sin(roll),
+  //                    0, 1, 0,
+  //                    -sin (roll), 0, cos (roll);
+  // rotation_yaw << cos (yaw), -sin(yaw), 0, 
+  //                    sin (yaw), cos (yaw), 0, 
+  //                    0, 0, 1;
+  // rotation = rotation_yaw * rotation_roll * rotation_pitch;
+  // */
+
   Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
   T_dr_pr.block<3, 3>(0, 0) = rotation;
   T_dr_pr.block<3, 1>(0, 3) = Eigen::Vector3d::Zero();
 
-  Eigen::Vector4d coeffs_double;
-  coeffs_double[0] = (double)coeffs[0];
-  coeffs_double[1] = (double)coeffs[1];
-  coeffs_double[2] = (double)coeffs[2];
-  coeffs_double[3] = (double)coeffs[3];
-  Eigen::Vector4d new_norm = T_dr_pr * coeffs_double;
-  if((new_norm.head<3>().normalized() - Eigen::Vector3d::UnitZ()).norm() < 10e-3) {
+  // test
+  Eigen::Vector3d coeffs_double;
+  coeffs_double[0] = plane_normal[0];
+  coeffs_double[1] = plane_normal[1];
+  coeffs_double[2] = plane_normal[2];
+  Eigen::Vector3d new_norm = rotation * coeffs_double;
+  if((new_norm.normalized() - Eigen::Vector3d::UnitZ()).norm() < 10e-3) {
     std::cout << "successful to constraint pitch and roll" << std::endl;
-    std::cout << "new_norm: " << new_norm.head<3>() << std::endl;
+    std::cout << "new_norm: " << new_norm << std::endl;
 
     T_dr_L_new = T_dr_pr * T_dr_L;
 
@@ -2947,7 +3050,7 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
     for(auto p: new_floor_plane_transformed) {
       z_mean += p.z;
     }
-    z_mean /= double(floor_plane.size());
+    z_mean /= double(new_floor_plane_transformed.size());
     std::cout << "z_mean: " << z_mean << std::endl;
    
     T_dr_L_new(2, 3) -= z_mean;

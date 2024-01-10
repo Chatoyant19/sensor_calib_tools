@@ -431,7 +431,7 @@ int main(int argc, char **argv) {
     for (int dis_threshold = 20; dis_threshold > low_dis_threshold; dis_threshold -= 1) {
         // if(test_flag) break;
         // For each distance, do twice optimization
-        for (int cnt = 0; cnt < 2; cnt++) {
+        for (int cnt = 0; cnt < 6; cnt++) {
             ceres::Problem problem;
             R_dr_L = calib.lidar.R_dr_L_;
             t_dr_L = calib.lidar.t_dr_L_;
@@ -633,26 +633,32 @@ int main(int argc, char **argv) {
             if (debugMode) {
                 std::cout << "current Tx_dr_L: " << T1 << std::endl;
             }
-            // Eigen::Matrix4d T2;
-            // T2 = calib.lidar.Tx_dr_L_;
-            // std::cout << "last Tx_dr_L: " << T2 << std::endl;
+            Eigen::Matrix4d T2;
+            T2 = calib.lidar.Tx_dr_L_;
+            std::cout << "last Tx_dr_L: " << T2 << std::endl;
 
-            // Vector6d err = bundleMinus(T1, T2);
+            Vector6d err = bundleMinus(T1, T2);
             calib.lidar.update_Rt(rot, m_t);
 
             for (int camNum = 0; camNum < calib.cams.size(); ++camNum) {
                 Eigen::Matrix4d Tx_C_L = calib.cams[camNum].Tx_dr_C_.inverse() * calib.lidar.Tx_dr_L_;
                 calib.cams[camNum].update_TxCL(Tx_C_L);
             }
+
+            // if (err.head<3>().norm() < 0.0005 && err.tail<3>().norm() < 0.005) {
+            //     break;
+            // }
         }
     }
 
 
     Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
     Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
-    if (calib.addFloorConstriant(calib.lidar.floor_plane_vec_[0], calib.lidar.Tx_dr_L_, T_dr_L_new)) {
-        T_dr_pr = T_dr_L_new * (calib.lidar.Tx_dr_L_.inverse());
-        calib.lidar.update_T(T_dr_L_new);
+    for (int scene_index = 0; scene_index < calib.scene_num_; ++scene_index) {
+        if (calib.addFloorConstriant(calib.lidar.floor_plane_vec_[scene_index], calib.lidar.Tx_dr_L_, T_dr_L_new)) {
+            T_dr_pr = T_dr_L_new * (calib.lidar.Tx_dr_L_.inverse());
+            calib.lidar.update_T(T_dr_L_new);
+        }
     }
 
     /* output calibrated extrinsic results */
@@ -662,7 +668,6 @@ int main(int argc, char **argv) {
     for (int camNum = 0; camNum < calib.cams.size(); ++camNum) {
         std::cout << "******[" << calib.cams[camNum].cam_name_ << "]*****" << std::endl;
         if (calib.update_camera_extrinsic_) {
-            // Eigen::Matrix4d T_dr_C_new = calib.lidar.Tx_dr_L_ * calib.cams[camNum].Tx_C_L_.inverse();
             Eigen::Matrix4d T_dr_C_new = T_dr_pr * calib.cams[camNum].Tx_dr_C_;
             calib.cams[camNum].update_T(T_dr_C_new);
 
@@ -671,6 +676,7 @@ int main(int argc, char **argv) {
             std::string cam_extrinsic_save_path =
                     calib.result_path_ + "/" + calib.cams[camNum].cam_name_ + "_transform.pb.txt";
             calib.writeCamExToPbFile(T_dr_C_new, cam_extrinsic_save_path);
+        }
 
             for (int scene_index = 0; scene_index < calib.scene_num_; ++scene_index) {
                 // pcl::PointCloud<pcl::PointXYZI>::Ptr raw_pcd = calib.lidar.pcd_vec_[scene_index];
@@ -685,7 +691,7 @@ int main(int argc, char **argv) {
                 cv::imwrite(calib.result_path_ + "/" + calib.cams[camNum].cam_name_ + "_sceneID_" +
                             std::to_string(scene_index) + "_result.png", opt_img);
             }
-        }
+        
     }// camNum
 
 
