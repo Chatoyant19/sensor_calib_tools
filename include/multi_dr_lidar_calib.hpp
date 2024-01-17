@@ -425,7 +425,7 @@ Calibration::Calibration(const std::string& CalibCfgFile, const std::string& Res
       // pcl::io::savePCDFileBinary(result_path_+"/gournd_line_"+std::to_string(i)+".pcd",ground_lines[i]);
 
   // for(size_t i = 0 ; i < 10; ++i) {
-   Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
+  Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
   if(addFloorConstriant(lidar.floor_plane_vec_[0], lidar.Tx_dr_L_, T_dr_L_new))
     lidar.update_T(T_dr_L_new);
   // }
@@ -2334,7 +2334,7 @@ void Calibration::buildVPnp(const Camera& cam, const int& dis_threshold,
     std::vector<int> pointIdxNKNSearchLidar(K);
     std::vector<float> pointNKNSquaredDistanceLidar(K);
     int match_count = 0;
-    double mean_distance;
+    double mean_distance = 0;
     int line_count = 0;
     std::vector<cv::Point2d> lidar_2d_list;
     std::vector<cv::Point2d> img_2d_list;
@@ -2388,6 +2388,7 @@ void Calibration::buildVPnp(const Camera& cam, const int& dis_threshold,
         }
       }
     }
+
     for (size_t i = 0; i < lidar_2d_list.size(); i++) {
       int y = lidar_2d_list[i].y;
       int x = lidar_2d_list[i].x;
@@ -2883,6 +2884,7 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
 
   seg.setDistanceThreshold(0.02);
 
+  int floor_pts_thresh = 100;
   int plane_index = 0;
   while (cloud_filter->points.size() > 50) {
     pcl::PointCloud<pcl::PointXYZI> planner_cloud;
@@ -2901,7 +2903,6 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
     extract.setInputCloud(cloud_filter);
     extract.filter(planner_cloud);
 
-    double floor_pts_thresh = 100;
     if (planner_cloud.size() > floor_pts_thresh) {
       pcl::PointXYZ p_center(0, 0, 0);
       for (size_t i = 0; i < planner_cloud.points.size(); i++) {
@@ -2938,6 +2939,7 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
   // for(size_t i = 0; i < plane_list.size(); ++i) {
   //   std::string path = "/home/wd/datasets/calib_test/" + std::to_string(i) + ".pcd";
   //   pcl::io::savePCDFile(path, plane_list[i].cloud);
+  //   std::cout << "!!!!" << plane_list[i].cloud.size() << std::endl;
   // }
 
   // todo: merge or this
@@ -2956,10 +2958,37 @@ bool Calibration::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_
     floor_plane = plane_list[0].cloud;
     plane_normal = plane_list[0].normal;
     plane_normal.normalize();
-    // make the normal upward
-    if (plane_normal.dot(Eigen::Vector3d::UnitZ()) < 0.0f) {
-      plane_normal *= -1.0f;
+  }
+  else {
+    // test
+    for(auto plane: plane_list) {
+      for(auto p: plane.cloud)
+        floor_plane.push_back(p);
     }
+    pcl::SampleConsensusModelPlane<pcl::PointXYZI>::Ptr model_p(
+      new pcl::SampleConsensusModelPlane<pcl::PointXYZI>(floor_plane.makeShared()));
+    pcl::RandomSampleConsensus<pcl::PointXYZI> ransac(model_p);
+    ransac.setDistanceThreshold(0.03);
+    ransac.computeModel();
+    pcl::PointIndices::Ptr inliers_one(new pcl::PointIndices);
+    ransac.getInliers(inliers_one->indices);
+    if (inliers_one->indices.size() < floor_pts_thresh) {
+      std::cerr << "too few inliers" << std::endl;
+      return false;
+    }
+    pcl::PointCloud<pcl::PointXYZI> tmp;
+    for(size_t i = 0; i < inliers_one->indices.size(); ++i)
+      tmp.push_back(floor_plane[i]);
+    Eigen::VectorXf coeffs;
+    ransac.getModelCoefficients(coeffs);  
+    floor_plane = tmp;
+    plane_normal = Eigen::Vector3d((double)coeffs.head<3>()(0),
+                                   (double)coeffs.head<3>()(1),
+                                   (double)coeffs.head<3>()(2));    
+  }
+  // make the normal upward
+  if (plane_normal.dot(Eigen::Vector3d::UnitZ()) < 0.0f) {
+    plane_normal *= -1.0f;
   }
   
   // std::string path = "/home/wd/datasets/calib_test/plane.pcd";
