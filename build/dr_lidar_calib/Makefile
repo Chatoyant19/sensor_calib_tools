@@ -168,34 +168,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-dr_lidar_calib/CMakeFiles/segmentation.dir/rule:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/segmentation.dir/rule
-.PHONY : dr_lidar_calib/CMakeFiles/segmentation.dir/rule
+dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
 
 # Convenience name for target.
-segmentation: dr_lidar_calib/CMakeFiles/segmentation.dir/rule
+extract_lidar_features: dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
 
-.PHONY : segmentation
+.PHONY : extract_lidar_features
 
 # fast build rule for target.
-segmentation/fast:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/segmentation.dir/build.make dr_lidar_calib/CMakeFiles/segmentation.dir/build
-.PHONY : segmentation/fast
-
-# Convenience name for target.
-dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/rule:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/rule
-.PHONY : dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/rule
-
-# Convenience name for target.
-multi_dr_lidar_calib: dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/rule
-
-.PHONY : multi_dr_lidar_calib
-
-# fast build rule for target.
-multi_dr_lidar_calib/fast:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build
-.PHONY : multi_dr_lidar_calib/fast
+extract_lidar_features/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build
+.PHONY : extract_lidar_features/fast
 
 # Convenience name for target.
 dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule:
@@ -1382,59 +1367,32 @@ topic_tools_generate_messages_lisp/fast:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
 .PHONY : topic_tools_generate_messages_lisp/fast
 
-src/intensity_segmentation.o: src/intensity_segmentation.cpp.o
+app/extract_lidar_feature.o: app/extract_lidar_feature.cpp.o
 
-.PHONY : src/intensity_segmentation.o
-
-# target to build an object file
-src/intensity_segmentation.cpp.o:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/segmentation.dir/build.make dr_lidar_calib/CMakeFiles/segmentation.dir/src/intensity_segmentation.cpp.o
-.PHONY : src/intensity_segmentation.cpp.o
-
-src/intensity_segmentation.i: src/intensity_segmentation.cpp.i
-
-.PHONY : src/intensity_segmentation.i
-
-# target to preprocess a source file
-src/intensity_segmentation.cpp.i:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/segmentation.dir/build.make dr_lidar_calib/CMakeFiles/segmentation.dir/src/intensity_segmentation.cpp.i
-.PHONY : src/intensity_segmentation.cpp.i
-
-src/intensity_segmentation.s: src/intensity_segmentation.cpp.s
-
-.PHONY : src/intensity_segmentation.s
-
-# target to generate assembly for a file
-src/intensity_segmentation.cpp.s:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/segmentation.dir/build.make dr_lidar_calib/CMakeFiles/segmentation.dir/src/intensity_segmentation.cpp.s
-.PHONY : src/intensity_segmentation.cpp.s
-
-src/multi_dr_lidar_calib.o: src/multi_dr_lidar_calib.cpp.o
-
-.PHONY : src/multi_dr_lidar_calib.o
+.PHONY : app/extract_lidar_feature.o
 
 # target to build an object file
-src/multi_dr_lidar_calib.cpp.o:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.o
-.PHONY : src/multi_dr_lidar_calib.cpp.o
+app/extract_lidar_feature.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.o
+.PHONY : app/extract_lidar_feature.cpp.o
 
-src/multi_dr_lidar_calib.i: src/multi_dr_lidar_calib.cpp.i
+app/extract_lidar_feature.i: app/extract_lidar_feature.cpp.i
 
-.PHONY : src/multi_dr_lidar_calib.i
+.PHONY : app/extract_lidar_feature.i
 
 # target to preprocess a source file
-src/multi_dr_lidar_calib.cpp.i:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.i
-.PHONY : src/multi_dr_lidar_calib.cpp.i
+app/extract_lidar_feature.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.i
+.PHONY : app/extract_lidar_feature.cpp.i
 
-src/multi_dr_lidar_calib.s: src/multi_dr_lidar_calib.cpp.s
+app/extract_lidar_feature.s: app/extract_lidar_feature.cpp.s
 
-.PHONY : src/multi_dr_lidar_calib.s
+.PHONY : app/extract_lidar_feature.s
 
 # target to generate assembly for a file
-src/multi_dr_lidar_calib.cpp.s:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.s
-.PHONY : src/multi_dr_lidar_calib.cpp.s
+app/extract_lidar_feature.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.s
+.PHONY : app/extract_lidar_feature.cpp.s
 
 src/pose_local_parameterization.o: src/pose_local_parameterization.cpp.o
 
@@ -1463,33 +1421,6 @@ src/pose_local_parameterization.cpp.s:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.s
 .PHONY : src/pose_local_parameterization.cpp.s
 
-src/sensor_extrinsic.pb.o: src/sensor_extrinsic.pb.cc.o
-
-.PHONY : src/sensor_extrinsic.pb.o
-
-# target to build an object file
-src/sensor_extrinsic.pb.cc.o:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/sensor_extrinsic.pb.cc.o
-.PHONY : src/sensor_extrinsic.pb.cc.o
-
-src/sensor_extrinsic.pb.i: src/sensor_extrinsic.pb.cc.i
-
-.PHONY : src/sensor_extrinsic.pb.i
-
-# target to preprocess a source file
-src/sensor_extrinsic.pb.cc.i:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/sensor_extrinsic.pb.cc.i
-.PHONY : src/sensor_extrinsic.pb.cc.i
-
-src/sensor_extrinsic.pb.s: src/sensor_extrinsic.pb.cc.s
-
-.PHONY : src/sensor_extrinsic.pb.s
-
-# target to generate assembly for a file
-src/sensor_extrinsic.pb.cc.s:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/sensor_extrinsic.pb.cc.s
-.PHONY : src/sensor_extrinsic.pb.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1501,8 +1432,7 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... segmentation"
-	@echo "... multi_dr_lidar_calib"
+	@echo "... extract_lidar_features"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"
@@ -1584,18 +1514,12 @@ help:
 	@echo "... nodelet_generate_messages_py"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... topic_tools_generate_messages_lisp"
-	@echo "... src/intensity_segmentation.o"
-	@echo "... src/intensity_segmentation.i"
-	@echo "... src/intensity_segmentation.s"
-	@echo "... src/multi_dr_lidar_calib.o"
-	@echo "... src/multi_dr_lidar_calib.i"
-	@echo "... src/multi_dr_lidar_calib.s"
+	@echo "... app/extract_lidar_feature.o"
+	@echo "... app/extract_lidar_feature.i"
+	@echo "... app/extract_lidar_feature.s"
 	@echo "... src/pose_local_parameterization.o"
 	@echo "... src/pose_local_parameterization.i"
 	@echo "... src/pose_local_parameterization.s"
-	@echo "... src/sensor_extrinsic.pb.o"
-	@echo "... src/sensor_extrinsic.pb.i"
-	@echo "... src/sensor_extrinsic.pb.s"
 .PHONY : help
 
 

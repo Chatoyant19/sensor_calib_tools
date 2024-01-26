@@ -60,23 +60,3 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/dr_lidar_calib/dr_lidar_calib/config" TYPE DIRECTORY FILES "/home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/config/")
 endif()
 
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib")
-    file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib"
-         RPATH "")
-  endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib" TYPE EXECUTABLE FILES "/home/wd/projects/calib_tools/dr_lidar_calib_ws/devel/lib/dr_lidar_calib/multi_dr_lidar_calib")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib")
-    file(RPATH_CHANGE
-         FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib"
-         OLD_RPATH "/opt/ros/noetic/lib:/usr/local/lib:/home/wd/projects/calib_tools/dr_lidar_calib_ws/devel/lib:"
-         NEW_RPATH "")
-    if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/dr_lidar_calib/multi_dr_lidar_calib")
-    endif()
-  endif()
-endif()
-

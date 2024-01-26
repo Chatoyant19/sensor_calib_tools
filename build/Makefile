@@ -285,30 +285,17 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named segmentation
+# Target rules for targets named extract_lidar_features
 
 # Build rule for target.
-segmentation: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 segmentation
-.PHONY : segmentation
+extract_lidar_features: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extract_lidar_features
+.PHONY : extract_lidar_features
 
 # fast build rule for target.
-segmentation/fast:
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/segmentation.dir/build.make dr_lidar_calib/CMakeFiles/segmentation.dir/build
-.PHONY : segmentation/fast
-
-#=============================================================================
-# Target rules for targets named multi_dr_lidar_calib
-
-# Build rule for target.
-multi_dr_lidar_calib: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 multi_dr_lidar_calib
-.PHONY : multi_dr_lidar_calib
-
-# fast build rule for target.
-multi_dr_lidar_calib/fast:
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build.make dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/build
-.PHONY : multi_dr_lidar_calib/fast
+extract_lidar_features/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build
+.PHONY : extract_lidar_features/fast
 
 #=============================================================================
 # Target rules for targets named tf2_msgs_generate_messages_nodejs
@@ -1359,8 +1346,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... segmentation"
-	@echo "... multi_dr_lidar_calib"
+	@echo "... extract_lidar_features"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"
