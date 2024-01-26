@@ -1716,21 +1716,21 @@ void Calibration::LiDAREdgeExtraction(
 
 
 
-      // pcl::io::savePCDFileBinary(output_pcd_dir+"/cloud.pcd",*iter->second->cloud);
+      // pcl::io::savePCDFileBinary("/home/wd/datasets/2/pcd_balm/cloud_voxel.pcd",*iter->second->cloud);
 
 
       // if(!voxel_lines.empty())
-        // pcl::io::savePCDFileBinary(output_pcd_dir+"/lines.pcd",voxel_lines);
+      //   pcl::io::savePCDFileBinary("/home/wd/datasets/2/pcd_balm/lines_voxel.pcd",voxel_lines);
 
 
     }
       ++cnt;
   }
 
-  // if(!color_planner_cloud.empty())
-    // pcl::io::savePCDFileBinary(result_path_+"/plane.pcd",color_planner_cloud);
-  // if(!lidar_line_cloud_3d->empty())
-  //   pcl::io::savePCDFileBinary(result_path_+"/line.pcd",*lidar_line_cloud_3d);
+  if(!color_planner_cloud.empty())
+    pcl::io::savePCDFileBinary("/home/wd/datasets/2/pcd_balm/cloud_voxel.pcd",color_planner_cloud);
+  if(!lidar_line_cloud_3d->empty())
+    pcl::io::savePCDFileBinary("/home/wd/datasets/2/pcd_balm/lines_voxel.pcd",*lidar_line_cloud_3d);
 }
 
 

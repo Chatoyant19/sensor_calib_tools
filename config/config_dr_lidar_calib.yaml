@@ -1,14 +1,14 @@
 %YAML:1.0
 
-ImageFilesPath: /home/wd/datasets/018/img/media/lam_data/标定数据/上海小车/2号/20231120/1/lidar_baselink/pre_data/img
-LiDARFilesPath: /home/wd/datasets/018/pcd/media/lam_data/标定数据/上海小车/2号/20231120/1/lidar_baselink/pre_data/pcd
+ImageFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/img
+LiDARFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/pcd
 
 CamsIntrinsicPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/camera_baselink/camera
 CamsExtrinsicPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/camera_baselink/camera
 
 SceneNum: 1
 
-LiDARFilesPath: /home/wd/datasets/018/init_transform_dr_front.pb.txt/media/lam_data/标定数据/上海小车/2号/20231120/1/lidar_baselink/pre_data/base_init_transform.pb.txt
+LiDARFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/base_init_transform.pb.txt
 result_path:  /home/wd/datasets/65/RESULT
 
 CameraName:
