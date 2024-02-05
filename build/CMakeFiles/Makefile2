@@ -79,7 +79,8 @@ clean: dr_lidar_calib/clean
 # Directory level rules for directory dr_lidar_calib
 
 # Recursive "all" directory target.
-dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/all
+dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/all
+dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all
 dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/all
 
 .PHONY : dr_lidar_calib/all
@@ -90,7 +91,6 @@ dr_lidar_calib/preinstall:
 .PHONY : dr_lidar_calib/preinstall
 
 # Recursive "clean" directory target.
-dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_msgs_generate_messages_py.dir/clean
@@ -99,6 +99,7 @@ dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_generate_messages_py.d
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_generate_messages_nodejs.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_generate_messages_lisp.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/clean
+dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf_generate_messages_nodejs.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf_generate_messages_lisp.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/clean
@@ -118,6 +119,7 @@ dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/dynamic_reconfigure_generate_mes
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/roscpp_generate_messages_py.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_py.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/actionlib_generate_messages_eus.dir/clean
@@ -475,33 +477,6 @@ gtest/googletest/CMakeFiles/gtest.dir/clean:
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/clean
 
 #=============================================================================
-# Target rules for target dr_lidar_calib/CMakeFiles/extract_lidar_features.dir
-
-# All Build rule for target.
-dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/all:
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/depend
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=1,2 "Built target extract_lidar_features"
-.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/all
-
-# Build rule for subdir invocation for target.
-dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 0
-.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
-
-# Convenience name for target.
-extract_lidar_features: dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
-
-.PHONY : extract_lidar_features
-
-# clean rule for target.
-dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/clean:
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/clean
-.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/clean
-
-#=============================================================================
 # Target rules for target dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir
 
 # All Build rule for target.
@@ -716,6 +691,33 @@ actionlib_generate_messages_cpp: dr_lidar_calib/CMakeFiles/actionlib_generate_me
 dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/clean:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/clean
 .PHONY : dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/clean
+
+#=============================================================================
+# Target rules for target dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir
+
+# All Build rule for target.
+dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/all:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/depend
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=1,2 "Built target extract_lidar_feature"
+.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/all
+
+# Build rule for subdir invocation for target.
+dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 0
+.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule
+
+# Convenience name for target.
+extract_lidar_feature: dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule
+
+.PHONY : extract_lidar_feature
+
+# clean rule for target.
+dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/clean:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/clean
+.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/clean
 
 #=============================================================================
 # Target rules for target dr_lidar_calib/CMakeFiles/tf_generate_messages_nodejs.dir
@@ -1229,6 +1231,33 @@ roscpp_generate_messages_cpp: dr_lidar_calib/CMakeFiles/roscpp_generate_messages
 dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
 .PHONY : dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+
+#=============================================================================
+# Target rules for target dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir
+
+# All Build rule for target.
+dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all: dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/all
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/depend
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=13,14 "Built target test_extract_lidar_feature"
+.PHONY : dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all
+
+# Build rule for subdir invocation for target.
+dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 4
+	$(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 0
+.PHONY : dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule
+
+# Convenience name for target.
+test_extract_lidar_feature: dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule
+
+.PHONY : test_extract_lidar_feature
+
+# clean rule for target.
+dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/clean:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/clean
+.PHONY : dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/clean
 
 #=============================================================================
 # Target rules for target dr_lidar_calib/CMakeFiles/pcl_msgs_generate_messages_lisp.dir

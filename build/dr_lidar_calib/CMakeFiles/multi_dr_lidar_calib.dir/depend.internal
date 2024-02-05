@@ -5,12 +5,10 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/ThirdParty/rapidxml-1.13/rapidxml.hpp
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/ThirdParty/rapidxml-1.13/rapidxml_print.hpp
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/ThirdParty/rapidxml-1.13/rapidxml_utils.hpp
- /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/BA/ba.hpp
- /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/BA/mypcl.hpp
- /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/BA/tools.hpp
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/CustomMsg.h
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/CustomPoint.h
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/common.h
+ /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/extract_lidar_feature.hpp
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/multi_dr_lidar_calib.hpp
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/pose_local_parameterization.h
  /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/sensor_extrinsic.pb.h
@@ -23,10 +21,6 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /opt/ros/noetic/include/class_loader/register_macro.hpp
  /opt/ros/noetic/include/class_loader/visibility_control.hpp
  /opt/ros/noetic/include/cv_bridge/cv_bridge.h
- /opt/ros/noetic/include/geometry_msgs/Point.h
- /opt/ros/noetic/include/geometry_msgs/Pose.h
- /opt/ros/noetic/include/geometry_msgs/Quaternion.h
- /opt/ros/noetic/include/geometry_msgs/Vector3.h
  /opt/ros/noetic/include/pluginlib/class_desc.hpp
  /opt/ros/noetic/include/pluginlib/class_loader.hpp
  /opt/ros/noetic/include/pluginlib/class_loader_base.hpp
@@ -106,13 +100,8 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /opt/ros/noetic/include/roslz4/lz4s.h
  /opt/ros/noetic/include/sensor_msgs/CompressedImage.h
  /opt/ros/noetic/include/sensor_msgs/Image.h
- /opt/ros/noetic/include/sensor_msgs/PointCloud2.h
- /opt/ros/noetic/include/sensor_msgs/PointField.h
  /opt/ros/noetic/include/sensor_msgs/image_encodings.h
- /opt/ros/noetic/include/std_msgs/ColorRGBA.h
  /opt/ros/noetic/include/std_msgs/Header.h
- /opt/ros/noetic/include/visualization_msgs/Marker.h
- /opt/ros/noetic/include/visualization_msgs/MarkerArray.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
  /usr/include/eigen3/Eigen/Cholesky
@@ -121,17 +110,10 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /usr/include/eigen3/Eigen/Eigenvalues
  /usr/include/eigen3/Eigen/Geometry
  /usr/include/eigen3/Eigen/Householder
- /usr/include/eigen3/Eigen/IterativeLinearSolvers
  /usr/include/eigen3/Eigen/Jacobi
  /usr/include/eigen3/Eigen/LU
- /usr/include/eigen3/Eigen/OrderingMethods
  /usr/include/eigen3/Eigen/QR
  /usr/include/eigen3/Eigen/SVD
- /usr/include/eigen3/Eigen/Sparse
- /usr/include/eigen3/Eigen/SparseCholesky
- /usr/include/eigen3/Eigen/SparseCore
- /usr/include/eigen3/Eigen/SparseLU
- /usr/include/eigen3/Eigen/SparseQR
  /usr/include/eigen3/Eigen/StdVector
  /usr/include/eigen3/Eigen/src/Cholesky/LDLT.h
  /usr/include/eigen3/Eigen/src/Cholesky/LLT.h
@@ -264,7 +246,6 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /usr/include/eigen3/Eigen/src/Core/util/Macros.h
  /usr/include/eigen3/Eigen/src/Core/util/Memory.h
  /usr/include/eigen3/Eigen/src/Core/util/Meta.h
- /usr/include/eigen3/Eigen/src/Core/util/NonMPL2.h
  /usr/include/eigen3/Eigen/src/Core/util/ReenableStupidWarnings.h
  /usr/include/eigen3/Eigen/src/Core/util/StaticAssert.h
  /usr/include/eigen3/Eigen/src/Core/util/XprHelper.h
@@ -300,14 +281,6 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /usr/include/eigen3/Eigen/src/Householder/BlockHouseholder.h
  /usr/include/eigen3/Eigen/src/Householder/Householder.h
  /usr/include/eigen3/Eigen/src/Householder/HouseholderSequence.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BasicPreconditioners.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/BiCGSTAB.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteCholesky.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IncompleteLUT.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/IterativeSolverBase.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/LeastSquareConjugateGradient.h
- /usr/include/eigen3/Eigen/src/IterativeLinearSolvers/SolveWithGuess.h
  /usr/include/eigen3/Eigen/src/Jacobi/Jacobi.h
  /usr/include/eigen3/Eigen/src/LU/Determinant.h
  /usr/include/eigen3/Eigen/src/LU/FullPivLU.h
@@ -315,9 +288,6 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU.h
  /usr/include/eigen3/Eigen/src/LU/PartialPivLU_LAPACKE.h
  /usr/include/eigen3/Eigen/src/LU/arch/Inverse_SSE.h
- /usr/include/eigen3/Eigen/src/OrderingMethods/Amd.h
- /usr/include/eigen3/Eigen/src/OrderingMethods/Eigen_Colamd.h
- /usr/include/eigen3/Eigen/src/OrderingMethods/Ordering.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR.h
  /usr/include/eigen3/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
  /usr/include/eigen3/Eigen/src/QR/CompleteOrthogonalDecomposition.h
@@ -329,56 +299,6 @@ dr_lidar_calib/CMakeFiles/multi_dr_lidar_calib.dir/src/multi_dr_lidar_calib.cpp.
  /usr/include/eigen3/Eigen/src/SVD/JacobiSVD_LAPACKE.h
  /usr/include/eigen3/Eigen/src/SVD/SVDBase.h
  /usr/include/eigen3/Eigen/src/SVD/UpperBidiagonalization.h
- /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky.h
- /usr/include/eigen3/Eigen/src/SparseCholesky/SimplicialCholesky_impl.h
- /usr/include/eigen3/Eigen/src/SparseCore/AmbiVector.h
- /usr/include/eigen3/Eigen/src/SparseCore/CompressedStorage.h
- /usr/include/eigen3/Eigen/src/SparseCore/ConservativeSparseSparseProduct.h
- /usr/include/eigen3/Eigen/src/SparseCore/MappedSparseMatrix.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseAssign.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseBlock.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseColEtree.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseCompressedBase.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseBinaryOp.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseCwiseUnaryOp.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseDenseProduct.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseDiagonalProduct.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseDot.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseFuzzy.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseMap.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrix.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseMatrixBase.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparsePermutation.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseProduct.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseRedux.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseRef.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseSelfAdjointView.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseSolverBase.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseSparseProductWithPruning.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseTranspose.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseTriangularView.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseUtil.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseVector.h
- /usr/include/eigen3/Eigen/src/SparseCore/SparseView.h
- /usr/include/eigen3/Eigen/src/SparseCore/TriangularSolver.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLUImpl.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Memory.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Structs.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_SupernodalMatrix.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_Utils.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_bmod.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_column_dfs.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_copy_to_ucol.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_gemm_kernel.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_heap_relax_snode.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_kernel_bmod.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_bmod.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_panel_dfs.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pivotL.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_pruneL.h
- /usr/include/eigen3/Eigen/src/SparseLU/SparseLU_relax_snode.h
- /usr/include/eigen3/Eigen/src/SparseQR/SparseQR.h
  /usr/include/eigen3/Eigen/src/StlSupport/StdVector.h
  /usr/include/eigen3/Eigen/src/StlSupport/details.h
  /usr/include/eigen3/Eigen/src/misc/Image.h

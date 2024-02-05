@@ -168,21 +168,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
-.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
-
-# Convenience name for target.
-extract_lidar_features: dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/rule
-
-.PHONY : extract_lidar_features
-
-# fast build rule for target.
-extract_lidar_features/fast:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build
-.PHONY : extract_lidar_features/fast
-
-# Convenience name for target.
 dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
@@ -301,6 +286,21 @@ actionlib_generate_messages_cpp: dr_lidar_calib/CMakeFiles/actionlib_generate_me
 actionlib_generate_messages_cpp/fast:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/build.make dr_lidar_calib/CMakeFiles/actionlib_generate_messages_cpp.dir/build
 .PHONY : actionlib_generate_messages_cpp/fast
+
+# Convenience name for target.
+dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule
+
+# Convenience name for target.
+extract_lidar_feature: dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/rule
+
+.PHONY : extract_lidar_feature
+
+# fast build rule for target.
+extract_lidar_feature/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build
+.PHONY : extract_lidar_feature/fast
 
 # Convenience name for target.
 dr_lidar_calib/CMakeFiles/tf_generate_messages_nodejs.dir/rule:
@@ -586,6 +586,21 @@ roscpp_generate_messages_cpp: dr_lidar_calib/CMakeFiles/roscpp_generate_messages
 roscpp_generate_messages_cpp/fast:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/build
 .PHONY : roscpp_generate_messages_cpp/fast
+
+# Convenience name for target.
+dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule
+
+# Convenience name for target.
+test_extract_lidar_feature: dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/rule
+
+.PHONY : test_extract_lidar_feature
+
+# fast build rule for target.
+test_extract_lidar_feature/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build
+.PHONY : test_extract_lidar_feature/fast
 
 # Convenience name for target.
 dr_lidar_calib/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule:
@@ -1367,32 +1382,59 @@ topic_tools_generate_messages_lisp/fast:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
 .PHONY : topic_tools_generate_messages_lisp/fast
 
-app/extract_lidar_feature.o: app/extract_lidar_feature.cpp.o
+app/test_extract_lidar_feature.o: app/test_extract_lidar_feature.cpp.o
 
-.PHONY : app/extract_lidar_feature.o
+.PHONY : app/test_extract_lidar_feature.o
 
 # target to build an object file
-app/extract_lidar_feature.cpp.o:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.o
-.PHONY : app/extract_lidar_feature.cpp.o
+app/test_extract_lidar_feature.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/app/test_extract_lidar_feature.cpp.o
+.PHONY : app/test_extract_lidar_feature.cpp.o
 
-app/extract_lidar_feature.i: app/extract_lidar_feature.cpp.i
+app/test_extract_lidar_feature.i: app/test_extract_lidar_feature.cpp.i
 
-.PHONY : app/extract_lidar_feature.i
+.PHONY : app/test_extract_lidar_feature.i
 
 # target to preprocess a source file
-app/extract_lidar_feature.cpp.i:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.i
-.PHONY : app/extract_lidar_feature.cpp.i
+app/test_extract_lidar_feature.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/app/test_extract_lidar_feature.cpp.i
+.PHONY : app/test_extract_lidar_feature.cpp.i
 
-app/extract_lidar_feature.s: app/extract_lidar_feature.cpp.s
+app/test_extract_lidar_feature.s: app/test_extract_lidar_feature.cpp.s
 
-.PHONY : app/extract_lidar_feature.s
+.PHONY : app/test_extract_lidar_feature.s
 
 # target to generate assembly for a file
-app/extract_lidar_feature.cpp.s:
-	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_features.dir/app/extract_lidar_feature.cpp.s
-.PHONY : app/extract_lidar_feature.cpp.s
+app/test_extract_lidar_feature.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/app/test_extract_lidar_feature.cpp.s
+.PHONY : app/test_extract_lidar_feature.cpp.s
+
+src/extract_lidar_feature.o: src/extract_lidar_feature.cpp.o
+
+.PHONY : src/extract_lidar_feature.o
+
+# target to build an object file
+src/extract_lidar_feature.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/src/extract_lidar_feature.cpp.o
+.PHONY : src/extract_lidar_feature.cpp.o
+
+src/extract_lidar_feature.i: src/extract_lidar_feature.cpp.i
+
+.PHONY : src/extract_lidar_feature.i
+
+# target to preprocess a source file
+src/extract_lidar_feature.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/src/extract_lidar_feature.cpp.i
+.PHONY : src/extract_lidar_feature.cpp.i
+
+src/extract_lidar_feature.s: src/extract_lidar_feature.cpp.s
+
+.PHONY : src/extract_lidar_feature.s
+
+# target to generate assembly for a file
+src/extract_lidar_feature.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/src/extract_lidar_feature.cpp.s
+.PHONY : src/extract_lidar_feature.cpp.s
 
 src/pose_local_parameterization.o: src/pose_local_parameterization.cpp.o
 
@@ -1432,7 +1474,6 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... extract_lidar_features"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"
@@ -1441,6 +1482,7 @@ help:
 	@echo "... actionlib_generate_messages_nodejs"
 	@echo "... actionlib_generate_messages_lisp"
 	@echo "... actionlib_generate_messages_cpp"
+	@echo "... extract_lidar_feature"
 	@echo "... tf_generate_messages_nodejs"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_nodejs"
@@ -1461,6 +1503,7 @@ help:
 	@echo "... roscpp_generate_messages_py"
 	@echo "... topic_tools_generate_messages_py"
 	@echo "... roscpp_generate_messages_cpp"
+	@echo "... test_extract_lidar_feature"
 	@echo "... pcl_msgs_generate_messages_lisp"
 	@echo "... pcl_msgs_generate_messages_nodejs"
 	@echo "... actionlib_generate_messages_eus"
@@ -1514,9 +1557,12 @@ help:
 	@echo "... nodelet_generate_messages_py"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... topic_tools_generate_messages_lisp"
-	@echo "... app/extract_lidar_feature.o"
-	@echo "... app/extract_lidar_feature.i"
-	@echo "... app/extract_lidar_feature.s"
+	@echo "... app/test_extract_lidar_feature.o"
+	@echo "... app/test_extract_lidar_feature.i"
+	@echo "... app/test_extract_lidar_feature.s"
+	@echo "... src/extract_lidar_feature.o"
+	@echo "... src/extract_lidar_feature.i"
+	@echo "... src/extract_lidar_feature.s"
 	@echo "... src/pose_local_parameterization.o"
 	@echo "... src/pose_local_parameterization.i"
 	@echo "... src/pose_local_parameterization.s"

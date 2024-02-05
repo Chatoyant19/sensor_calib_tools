@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/include/pose_local_parameterization.h
-ceres/ceres.h
--
-
 /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/src/pose_local_parameterization.cpp
 pose_local_parameterization.h
 /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/src/pose_local_parameterization.h
