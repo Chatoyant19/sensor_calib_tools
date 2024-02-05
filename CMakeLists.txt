@@ -67,24 +67,16 @@ target_link_libraries(pose_local_parameterization
   ${CERES_LIBRARIES}
 )
 
-# add_executable(multi_dr_lidar_calib src/multi_dr_lidar_calib.cpp include/multi_dr_lidar_calib.hpp src/sensor_extrinsic.pb.cc )
-# target_link_libraries(multi_dr_lidar_calib
-#         ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} ${CERES_LIBRARIES} ${PROTOBUF_LIBRARY} pose_local_parameterization
-# )
+add_library(extract_lidar_feature
+  src/extract_lidar_feature.cpp)
+target_link_libraries(extract_lidar_feature  
+  ${PCL_LIBRARIES})
 
-# add_executable(segmentation src/intensity_segmentation.cpp)
-# target_link_libraries(segmentation
-# ${OpenCV_LIBS} ${PCL_LIBRARIES} ${CERES_LIBRARIES} ${PROTOBUF_LIBRARY} pose_local_parameterization
-#         )
-add_executable(extract_lidar_features app/extract_lidar_feature.cpp)
-target_link_libraries(extract_lidar_features
-  ${catkin_LIBRARIES} ${PCL_LIBRARIES} 
+add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
+target_link_libraries(test_extract_lidar_feature
+  extract_lidar_feature ${catkin_LIBRARIES}
 )
 
-# add_executable(calib_result_node src/calib_result_node.cpp)
-# target_link_libraries(calib_result_node 
-#   ${catkin_LIBRARIES} ${OpenCV_LIBS} ${PCL_LIBRARIES} ${PROTOBUF_LIBRARY}
-# )
 
 install(TARGETS
   # multi_dr_lidar_calib

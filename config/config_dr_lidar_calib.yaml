@@ -8,7 +8,7 @@ CamsExtrinsicPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/l
 
 SceneNum: 1
 
-LiDARFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/base_init_transform.pb.txt
+init_extrinsic_file: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/base_init_transform.pb.txt
 result_path:  /home/wd/datasets/65/RESULT
 
 CameraName:

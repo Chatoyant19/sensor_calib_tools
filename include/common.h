@@ -7,8 +7,6 @@
 #include <string>
 #include <unordered_map>
 
-enum OT_STATE {UNKNOWN, MID_NODE, PLANE};
-
 struct PnPData {
   double x, y, z, u, v;
 };
@@ -28,53 +26,6 @@ typedef struct PCURVATURE {
   float curvature;
 } PCURVATURE;
 
-typedef struct Plane {
-  pcl::PointCloud<pcl::PointXYZI> cloud;
-  pcl::PointXYZ p_center;
-  Eigen::Vector3d normal;
-  int index;
-} Plane;
-
-typedef struct Plane_New
-{
-  pcl::PointXYZINormal p_center;
-  Eigen::Vector3d center;
-  Eigen::Vector3d normal;
-  Eigen::Matrix3d covariance;
-  std::vector<Eigen::Vector3d> plane_points;
-  float radius = 0;
-  float min_eigen_value = 1;
-  float d = 0;
-  int points_size = 0;
-  bool is_plane = false;
-  bool is_init = false;
-  int id;
-  bool is_update = false;
-} Plane_New;
-
-class VOXEL_LOC {
-public:
-  int64_t x, y, z;
-
-  VOXEL_LOC(int64_t vx = 0, int64_t vy = 0, int64_t vz = 0)
-      : x(vx), y(vy), z(vz) {}
-
-  bool operator==(const VOXEL_LOC &other) const {
-    return (x == other.x && y == other.y && z == other.z);
-  }
-};
-
-// Hash value
-namespace std {
-template <> struct hash<VOXEL_LOC> {
-  size_t operator()(const VOXEL_LOC &s) const {
-    using std::size_t;
-    using std::hash;
-    return ((hash<int64_t>()(s.x) ^ (hash<int64_t>()(s.y) << 1)) >> 1) ^
-           (hash<int64_t>()(s.z) << 1);
-  }
-};
-}
 
 struct M_POINT {
   float xyz[3];
@@ -135,59 +86,6 @@ template <class T> void calc(T matrix[4][5], Eigen::Vector3d &solution) {
     solution[1] = 0;
     solution[2] = 0;
     //        return DBL_MIN;
-  }
-}
-
-// Similar with PCL voxelgrid filter
-void down_sampling_voxel(pcl::PointCloud<pcl::PointXYZI> &pl_feat,
-                         double voxel_size) {
-  int intensity = rand() % 255;
-  if (voxel_size < 0.01) {
-    return;
-  }
-  std::unordered_map<VOXEL_LOC, M_POINT> feat_map;
-  uint plsize = pl_feat.size();
-
-  for (uint i = 0; i < plsize; i++) {
-    pcl::PointXYZI &p_c = pl_feat[i];
-    float loc_xyz[3];
-    for (int j = 0; j < 3; j++) {
-      loc_xyz[j] = p_c.data[j] / voxel_size;
-      if (loc_xyz[j] < 0) {
-        loc_xyz[j] -= 1.0;
-      }
-    }
-
-    VOXEL_LOC position((int64_t)loc_xyz[0], (int64_t)loc_xyz[1],
-                       (int64_t)loc_xyz[2]);
-    auto iter = feat_map.find(position);
-    if (iter != feat_map.end()) {
-      iter->second.xyz[0] += p_c.x;
-      iter->second.xyz[1] += p_c.y;
-      iter->second.xyz[2] += p_c.z;
-      iter->second.intensity += p_c.intensity;
-      iter->second.count++;
-    } else {
-      M_POINT anp;
-      anp.xyz[0] = p_c.x;
-      anp.xyz[1] = p_c.y;
-      anp.xyz[2] = p_c.z;
-      anp.intensity = p_c.intensity;
-      anp.count = 1;
-      feat_map[position] = anp;
-    }
-  }
-  plsize = feat_map.size();
-  pl_feat.clear();
-  pl_feat.resize(plsize);
-
-  uint i = 0;
-  for (auto iter = feat_map.begin(); iter != feat_map.end(); ++iter) {
-    pl_feat[i].x = iter->second.xyz[0] / iter->second.count;
-    pl_feat[i].y = iter->second.xyz[1] / iter->second.count;
-    pl_feat[i].z = iter->second.xyz[2] / iter->second.count;
-    pl_feat[i].intensity = iter->second.intensity / iter->second.count;
-    i++;
   }
 }
 
