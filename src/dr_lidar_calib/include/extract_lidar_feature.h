@@ -8,18 +8,22 @@ class VOXEL_LOC;
 class OCTO_TREE_ROOT;
 typedef struct Plane;
 typedef struct Voxel;
+typedef struct SinglePlane;
 
 class ExtractLidarFeature{
  public:
   // EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
 
-  ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio, const double& p2line_dis_thre);
-  // ExtractLidarFeature(const double& voxel_size, const double& ransac_dis_threshold, const int& plane_size_threshold);
+  // ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio, const double& p2line_dis_thre,
+                      // double& theta_min, double& theta_max);
+  ExtractLidarFeature(const double& voxel_size, const double& ransac_dis_threshold, const int& plane_size_threshold,
+                      const double& p2line_dis_thre,
+                      double& theta_min, double& theta_max);
 
   void getEdgeFeaturesByAdaVoxel(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud,
     pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);
-  // void getEdgeFeatures(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud,
-    // pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);    
+  void getEdgeFeatures(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);    
  
  private:
   void cutVoxel(std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& feat_map,
@@ -38,12 +42,15 @@ class ExtractLidarFeature{
   Eigen::Vector3d computeLineDirection(const pcl::PointCloud<pcl::PointXYZI>& line);
   double cosineSimilarity(const Eigen::Vector3d& v1, const Eigen::Vector3d& v2);  
 
-  // void initVoxel(const pcl::PointCloud<pcl::PointXYZI>::Ptr &input_cloud,
-  //                std::unordered_map<VOXEL_LOC, Voxel*> &voxel_map); 
-  // void estimateEdge(const std::unordered_map<VOXEL_LOC, Voxel*> &voxel_map, 
-  //                   pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);   
-  // void estimatePlane_1(Voxel* voxel, std::vector<SinglePlane>& merge_plane_list);
-  // void mergePlane_1(std::vector<SinglePlane>& merge_list);                                   
+  void initVoxel(const pcl::PointCloud<pcl::PointXYZI>::Ptr &input_cloud,
+                 std::unordered_map<VOXEL_LOC, Voxel*> &voxel_map); 
+  void estimateEdge(const std::unordered_map<VOXEL_LOC, Voxel*> &voxel_map, 
+                    pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);   
+  void estimatePlane(Voxel* voxel, std::vector<SinglePlane>& merge_plane_list);
+  void mergePlane_1(std::vector<SinglePlane>& merge_list);     
+  void calcLine(const std::vector<SinglePlane> &plane_list, 
+                const Eigen::Vector3d origin,
+                std::vector<pcl::PointCloud<pcl::PointXYZI>> &line_cloud_list);                              
  
  private:
   double voxel_size_;
