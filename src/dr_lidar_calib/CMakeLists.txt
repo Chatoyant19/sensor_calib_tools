@@ -71,7 +71,14 @@ add_library(extract_feature
   src/extract_lidar_feature.cpp
   src/extract_image_feature.cpp)
 target_link_libraries(extract_feature  
-  ${PCL_LIBRARIES})
+  ${PCL_LIBRARIES}
+  ${OpenCV_LIBS})
+
+add_library(file_io
+  src/file_io.cpp)
+target_link_libraries(file_io
+  ${PCL_LIBRARIES}
+  ${PROTOBUF_LIBRARY})
 
 add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature

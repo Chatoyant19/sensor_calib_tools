@@ -285,6 +285,19 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
+# Target rules for targets named file_io
+
+# Build rule for target.
+file_io: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 file_io
+.PHONY : file_io
+
+# fast build rule for target.
+file_io/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/build
+.PHONY : file_io/fast
+
+#=============================================================================
 # Target rules for targets named tf2_msgs_generate_messages_nodejs
 
 # Build rule for target.
@@ -1372,6 +1385,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"

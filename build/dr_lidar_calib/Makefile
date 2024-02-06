@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+dr_lidar_calib/CMakeFiles/file_io.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/file_io.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/file_io.dir/rule
+
+# Convenience name for target.
+file_io: dr_lidar_calib/CMakeFiles/file_io.dir/rule
+
+.PHONY : file_io
+
+# fast build rule for target.
+file_io/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/build
+.PHONY : file_io/fast
+
+# Convenience name for target.
 dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/rule
@@ -1505,6 +1520,33 @@ src/extract_lidar_feature.cpp.s:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_feature.dir/src/extract_lidar_feature.cpp.s
 .PHONY : src/extract_lidar_feature.cpp.s
 
+src/file_io.o: src/file_io.cpp.o
+
+.PHONY : src/file_io.o
+
+# target to build an object file
+src/file_io.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/file_io.cpp.o
+.PHONY : src/file_io.cpp.o
+
+src/file_io.i: src/file_io.cpp.i
+
+.PHONY : src/file_io.i
+
+# target to preprocess a source file
+src/file_io.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/file_io.cpp.i
+.PHONY : src/file_io.cpp.i
+
+src/file_io.s: src/file_io.cpp.s
+
+.PHONY : src/file_io.s
+
+# target to generate assembly for a file
+src/file_io.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/file_io.cpp.s
+.PHONY : src/file_io.cpp.s
+
 src/pose_local_parameterization.o: src/pose_local_parameterization.cpp.o
 
 .PHONY : src/pose_local_parameterization.o
@@ -1543,6 +1585,7 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_py"
@@ -1639,6 +1682,9 @@ help:
 	@echo "... src/extract_lidar_feature.o"
 	@echo "... src/extract_lidar_feature.i"
 	@echo "... src/extract_lidar_feature.s"
+	@echo "... src/file_io.o"
+	@echo "... src/file_io.i"
+	@echo "... src/file_io.s"
 	@echo "... src/pose_local_parameterization.o"
 	@echo "... src/pose_local_parameterization.i"
 	@echo "... src/pose_local_parameterization.s"
