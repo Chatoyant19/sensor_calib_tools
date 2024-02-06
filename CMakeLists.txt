@@ -80,6 +80,12 @@ target_link_libraries(file_io
   ${PCL_LIBRARIES}
   ${PROTOBUF_LIBRARY})
 
+add_library(cost_function
+  include/cost_function.hpp
+  src/pose_local_parameterization.cpp)
+target_link_libraries(cost_function
+  ${CERES_LIBRARIES})  
+
 add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature
   extract_feature ${catkin_LIBRARIES}
