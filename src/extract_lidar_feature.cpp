@@ -9,21 +9,21 @@
 #include "extract_lidar_feature.h"
 #include "extract_lidar_feature.hpp"
 
-// ExtractLidarFeature::ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio,
-//                                          const double& p2line_dis_thre,
-//                                          double& theta_min, double& theta_max) {
-//   std::cout << "use adaptive voxel" << std::endl;
-//   voxel_size_ = voxel_size;
-//   eigen_ratio_ = eigen_ratio;
-//   theta_min_ = cos(DEG2RAD(theta_min));
-//   theta_max_ = cos(DEG2RAD(theta_max));
-//   p2line_dis_thre_ = p2line_dis_thre;
+ExtractLidarFeature::ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio,
+                                         const double& p2line_dis_thre,
+                                         double& theta_min, double& theta_max) {
+  std::cout << "use adaptive voxel" << std::endl;
+  voxel_size_ = voxel_size;
+  eigen_ratio_ = eigen_ratio;
+  theta_min_ = cos(DEG2RAD(theta_min));
+  theta_max_ = cos(DEG2RAD(theta_max));
+  p2line_dis_thre_ = p2line_dis_thre;
 
-//   layer_limit_ = 3;
-//   what_ = 0.98;
-//   similarityThreshold_ = 0.98;
-//   line_points_nums_ = 300;
-// }
+  layer_limit_ = 3;
+  what_ = 0.98;
+  similarityThreshold_ = 0.98;
+  line_points_nums_ = 300;
+}
 
 void ExtractLidarFeature::getEdgeFeaturesByAdaVoxel(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud,
     pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud) {
