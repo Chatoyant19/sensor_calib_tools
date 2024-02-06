@@ -67,14 +67,20 @@ target_link_libraries(pose_local_parameterization
   ${CERES_LIBRARIES}
 )
 
-add_library(extract_lidar_feature
-  src/extract_lidar_feature.cpp)
-target_link_libraries(extract_lidar_feature  
+add_library(extract_feature
+  src/extract_lidar_feature.cpp
+  src/extract_image_feature.cpp)
+target_link_libraries(extract_feature  
   ${PCL_LIBRARIES})
 
 add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature
-  extract_lidar_feature ${catkin_LIBRARIES}
+  extract_feature ${catkin_LIBRARIES}
+)
+
+add_executable(test_extract_image_features app/test_extract_image_features.cpp)
+target_link_libraries(test_extract_image_features
+  extract_feature ${catkin_LIBRARIES}
 )
 
 

@@ -389,19 +389,6 @@ actionlib_generate_messages_cpp/fast:
 .PHONY : actionlib_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named extract_lidar_feature
-
-# Build rule for target.
-extract_lidar_feature: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 extract_lidar_feature
-.PHONY : extract_lidar_feature
-
-# fast build rule for target.
-extract_lidar_feature/fast:
-	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_lidar_feature.dir/build
-.PHONY : extract_lidar_feature/fast
-
-#=============================================================================
 # Target rules for targets named tf_generate_messages_nodejs
 
 # Build rule for target.
@@ -504,6 +491,19 @@ topic_tools_generate_messages_nodejs: cmake_check_build_system
 topic_tools_generate_messages_nodejs/fast:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build.make dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_nodejs.dir/build
 .PHONY : topic_tools_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named extract_feature
+
+# Build rule for target.
+extract_feature: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extract_feature
+.PHONY : extract_feature
+
+# fast build rule for target.
+extract_feature/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_feature.dir/build
+.PHONY : extract_feature/fast
 
 #=============================================================================
 # Target rules for targets named pcl_msgs_generate_messages_py
@@ -1182,6 +1182,19 @@ dynamic_reconfigure_generate_messages_lisp/fast:
 .PHONY : dynamic_reconfigure_generate_messages_lisp/fast
 
 #=============================================================================
+# Target rules for targets named test_extract_image_features
+
+# Build rule for target.
+test_extract_image_features: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_extract_image_features
+.PHONY : test_extract_image_features
+
+# fast build rule for target.
+test_extract_image_features/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/build
+.PHONY : test_extract_image_features/fast
+
+#=============================================================================
 # Target rules for targets named std_srvs_generate_messages_lisp
 
 # Build rule for target.
@@ -1367,7 +1380,6 @@ help:
 	@echo "... actionlib_generate_messages_nodejs"
 	@echo "... actionlib_generate_messages_lisp"
 	@echo "... actionlib_generate_messages_cpp"
-	@echo "... extract_lidar_feature"
 	@echo "... tf_generate_messages_nodejs"
 	@echo "... tf_generate_messages_lisp"
 	@echo "... rosgraph_msgs_generate_messages_nodejs"
@@ -1376,6 +1388,7 @@ help:
 	@echo "... pcl_ros_gencfg"
 	@echo "... roscpp_generate_messages_eus"
 	@echo "... topic_tools_generate_messages_nodejs"
+	@echo "... extract_feature"
 	@echo "... pcl_msgs_generate_messages_py"
 	@echo "... geometry_msgs_generate_messages_eus"
 	@echo "... std_msgs_generate_messages_py"
@@ -1428,6 +1441,7 @@ help:
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... tf2_msgs_generate_messages_cpp"
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
+	@echo "... test_extract_image_features"
 	@echo "... std_srvs_generate_messages_lisp"
 	@echo "... nodelet_generate_messages_eus"
 	@echo "... std_msgs_generate_messages_nodejs"
