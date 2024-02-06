@@ -79,6 +79,7 @@ clean: dr_lidar_calib/clean
 # Directory level rules for directory dr_lidar_calib
 
 # Recursive "all" directory target.
+dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/cost_function.dir/all
 dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/file_io.dir/all
 dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/extract_feature.dir/all
 dr_lidar_calib/all: dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all
@@ -93,6 +94,7 @@ dr_lidar_calib/preinstall:
 .PHONY : dr_lidar_calib/preinstall
 
 # Recursive "clean" directory target.
+dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/cost_function.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/file_io.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/clean
 dr_lidar_calib/clean: dr_lidar_calib/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/clean
@@ -379,7 +381,7 @@ gtest/googlemock/CMakeFiles/gmock_main.dir/all: gtest/googlemock/CMakeFiles/gmoc
 gtest/googlemock/CMakeFiles/gmock_main.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=8,9 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=10,11 "Built target gmock_main"
 .PHONY : gtest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -406,7 +408,7 @@ gtest/googlemock/CMakeFiles/gmock_main.dir/clean:
 gtest/googlemock/CMakeFiles/gmock.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=6,7 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=8,9 "Built target gmock"
 .PHONY : gtest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -433,7 +435,7 @@ gtest/googlemock/CMakeFiles/gmock.dir/clean:
 gtest/googletest/CMakeFiles/gtest_main.dir/all: gtest/googletest/CMakeFiles/gtest.dir/all
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest_main.dir/build.make gtest/googletest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest_main.dir/build.make gtest/googletest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=12,13 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=14,15 "Built target gtest_main"
 .PHONY : gtest/googletest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -460,7 +462,7 @@ gtest/googletest/CMakeFiles/gtest_main.dir/clean:
 gtest/googletest/CMakeFiles/gtest.dir/all:
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest.dir/build.make gtest/googletest/CMakeFiles/gtest.dir/depend
 	$(MAKE) -f gtest/googletest/CMakeFiles/gtest.dir/build.make gtest/googletest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=10,11 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=12,13 "Built target gtest"
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -481,13 +483,40 @@ gtest/googletest/CMakeFiles/gtest.dir/clean:
 .PHONY : gtest/googletest/CMakeFiles/gtest.dir/clean
 
 #=============================================================================
+# Target rules for target dr_lidar_calib/CMakeFiles/cost_function.dir
+
+# All Build rule for target.
+dr_lidar_calib/CMakeFiles/cost_function.dir/all:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/depend
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=1,2 "Built target cost_function"
+.PHONY : dr_lidar_calib/CMakeFiles/cost_function.dir/all
+
+# Build rule for subdir invocation for target.
+dr_lidar_calib/CMakeFiles/cost_function.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/cost_function.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles 0
+.PHONY : dr_lidar_calib/CMakeFiles/cost_function.dir/rule
+
+# Convenience name for target.
+cost_function: dr_lidar_calib/CMakeFiles/cost_function.dir/rule
+
+.PHONY : cost_function
+
+# clean rule for target.
+dr_lidar_calib/CMakeFiles/cost_function.dir/clean:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/clean
+.PHONY : dr_lidar_calib/CMakeFiles/cost_function.dir/clean
+
+#=============================================================================
 # Target rules for target dr_lidar_calib/CMakeFiles/file_io.dir
 
 # All Build rule for target.
 dr_lidar_calib/CMakeFiles/file_io.dir/all:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/depend
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=4,5 "Built target file_io"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=6,7 "Built target file_io"
 .PHONY : dr_lidar_calib/CMakeFiles/file_io.dir/all
 
 # Build rule for subdir invocation for target.
@@ -946,7 +975,7 @@ dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_nodejs.dir/clean:
 dr_lidar_calib/CMakeFiles/extract_feature.dir/all:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_feature.dir/depend
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_feature.dir/build.make dr_lidar_calib/CMakeFiles/extract_feature.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=1,2,3 "Built target extract_feature"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=3,4,5 "Built target extract_feature"
 .PHONY : dr_lidar_calib/CMakeFiles/extract_feature.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1270,7 +1299,7 @@ dr_lidar_calib/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
 dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all: dr_lidar_calib/CMakeFiles/extract_feature.dir/all
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/depend
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=18,19 "Built target test_extract_lidar_feature"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=20,21 "Built target test_extract_lidar_feature"
 .PHONY : dr_lidar_calib/CMakeFiles/test_extract_lidar_feature.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2377,7 +2406,7 @@ dr_lidar_calib/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/clean:
 dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/all: dr_lidar_calib/CMakeFiles/extract_feature.dir/all
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/depend
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/build.make dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=16,17 "Built target test_extract_image_features"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=18,19 "Built target test_extract_image_features"
 .PHONY : dr_lidar_calib/CMakeFiles/test_extract_image_features.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2539,7 +2568,7 @@ dr_lidar_calib/CMakeFiles/nodelet_generate_messages_nodejs.dir/clean:
 dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/all:
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/depend
 	$(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=14,15 "Built target pose_local_parameterization"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/wd/projects/calib_tools/dr_lidar_calib_ws/build/CMakeFiles --progress-num=16,17 "Built target pose_local_parameterization"
 .PHONY : dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/all
 
 # Build rule for subdir invocation for target.

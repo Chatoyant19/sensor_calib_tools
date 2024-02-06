@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+dr_lidar_calib/CMakeFiles/cost_function.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/cost_function.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/cost_function.dir/rule
+
+# Convenience name for target.
+cost_function: dr_lidar_calib/CMakeFiles/cost_function.dir/rule
+
+.PHONY : cost_function
+
+# fast build rule for target.
+cost_function/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/build
+.PHONY : cost_function/fast
+
+# Convenience name for target.
 dr_lidar_calib/CMakeFiles/file_io.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/file_io.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/file_io.dir/rule
@@ -1553,6 +1568,7 @@ src/pose_local_parameterization.o: src/pose_local_parameterization.cpp.o
 
 # target to build an object file
 src/pose_local_parameterization.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/src/pose_local_parameterization.cpp.o
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.o
 .PHONY : src/pose_local_parameterization.cpp.o
 
@@ -1562,6 +1578,7 @@ src/pose_local_parameterization.i: src/pose_local_parameterization.cpp.i
 
 # target to preprocess a source file
 src/pose_local_parameterization.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/src/pose_local_parameterization.cpp.i
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.i
 .PHONY : src/pose_local_parameterization.cpp.i
 
@@ -1571,6 +1588,7 @@ src/pose_local_parameterization.s: src/pose_local_parameterization.cpp.s
 
 # target to generate assembly for a file
 src/pose_local_parameterization.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/src/pose_local_parameterization.cpp.s
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.s
 .PHONY : src/pose_local_parameterization.cpp.s
 
@@ -1585,6 +1603,7 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... cost_function"
 	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"

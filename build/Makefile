@@ -285,6 +285,19 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
+# Target rules for targets named cost_function
+
+# Build rule for target.
+cost_function: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cost_function
+.PHONY : cost_function
+
+# fast build rule for target.
+cost_function/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/cost_function.dir/build.make dr_lidar_calib/CMakeFiles/cost_function.dir/build
+.PHONY : cost_function/fast
+
+#=============================================================================
 # Target rules for targets named file_io
 
 # Build rule for target.
@@ -1385,6 +1398,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... cost_function"
 	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... tf2_msgs_generate_messages_lisp"
