@@ -75,7 +75,8 @@ target_link_libraries(extract_feature
   ${OpenCV_LIBS})
 
 add_library(file_io
-  src/file_io.cpp)
+  src/file_io.cpp
+  src/sensor_extrinsic.pb.cc)
 target_link_libraries(file_io
   ${PCL_LIBRARIES}
   ${PROTOBUF_LIBRARY})
@@ -84,7 +85,14 @@ add_library(cost_function
   include/cost_function.hpp
   src/pose_local_parameterization.cpp)
 target_link_libraries(cost_function
-  ${CERES_LIBRARIES})  
+  ${CERES_LIBRARIES}) 
+  
+add_library(match_features
+  src/match_features.cpp
+  src/show_tools.cpp)
+target_link_libraries(match_features
+  ${PCL_LIBRARIES}
+  ${OpenCV_LIBS})   
 
 add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature
