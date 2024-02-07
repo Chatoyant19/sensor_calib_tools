@@ -1,4 +1,5 @@
 #include "pose_local_parameterization.h"
+#include "eigen_types.hpp"
 
 bool PoseLocalParameterization::Plus(const double* x, const double* delta,
                                     double* x_plus_delta) const {

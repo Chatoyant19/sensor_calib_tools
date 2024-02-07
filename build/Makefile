@@ -285,6 +285,19 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
+# Target rules for targets named match_features
+
+# Build rule for target.
+match_features: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 match_features
+.PHONY : match_features
+
+# fast build rule for target.
+match_features/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/build
+.PHONY : match_features/fast
+
+#=============================================================================
 # Target rules for targets named cost_function
 
 # Build rule for target.
@@ -1398,6 +1411,7 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
+	@echo "... match_features"
 	@echo "... cost_function"
 	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"

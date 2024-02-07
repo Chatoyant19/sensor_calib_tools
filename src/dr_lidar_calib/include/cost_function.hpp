@@ -8,7 +8,7 @@
 class vpnp_calib_orin {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-  
+
   vpnp_calib_orin(VPnPData p, Eigen::Matrix3d _inner, Eigen::Vector4d _distor, bool _use_p2line) :
     pd(p), inner(_inner), distor(_distor), use_p2line(_use_p2line) {}
   template <typename T>
@@ -158,6 +158,7 @@ class vpnp_calib_pin_auto {
 };
 
 // analy diff, fisheye camera intrinsics model, p2p
+// just to study, not using it!
 class vpnp_calib_fisheye_ana : public ceres::SizedCostFunction<2, 6> {
  public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW

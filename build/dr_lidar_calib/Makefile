@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+dr_lidar_calib/CMakeFiles/match_features.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/match_features.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/match_features.dir/rule
+
+# Convenience name for target.
+match_features: dr_lidar_calib/CMakeFiles/match_features.dir/rule
+
+.PHONY : match_features
+
+# fast build rule for target.
+match_features/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/build
+.PHONY : match_features/fast
+
+# Convenience name for target.
 dr_lidar_calib/CMakeFiles/cost_function.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/cost_function.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/cost_function.dir/rule
@@ -1562,6 +1577,33 @@ src/file_io.cpp.s:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/file_io.cpp.s
 .PHONY : src/file_io.cpp.s
 
+src/match_features.o: src/match_features.cpp.o
+
+.PHONY : src/match_features.o
+
+# target to build an object file
+src/match_features.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/match_features.cpp.o
+.PHONY : src/match_features.cpp.o
+
+src/match_features.i: src/match_features.cpp.i
+
+.PHONY : src/match_features.i
+
+# target to preprocess a source file
+src/match_features.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/match_features.cpp.i
+.PHONY : src/match_features.cpp.i
+
+src/match_features.s: src/match_features.cpp.s
+
+.PHONY : src/match_features.s
+
+# target to generate assembly for a file
+src/match_features.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/match_features.cpp.s
+.PHONY : src/match_features.cpp.s
+
 src/pose_local_parameterization.o: src/pose_local_parameterization.cpp.o
 
 .PHONY : src/pose_local_parameterization.o
@@ -1592,6 +1634,60 @@ src/pose_local_parameterization.cpp.s:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/build.make dr_lidar_calib/CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.s
 .PHONY : src/pose_local_parameterization.cpp.s
 
+src/sensor_extrinsic.pb.o: src/sensor_extrinsic.pb.cc.o
+
+.PHONY : src/sensor_extrinsic.pb.o
+
+# target to build an object file
+src/sensor_extrinsic.pb.cc.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/sensor_extrinsic.pb.cc.o
+.PHONY : src/sensor_extrinsic.pb.cc.o
+
+src/sensor_extrinsic.pb.i: src/sensor_extrinsic.pb.cc.i
+
+.PHONY : src/sensor_extrinsic.pb.i
+
+# target to preprocess a source file
+src/sensor_extrinsic.pb.cc.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/sensor_extrinsic.pb.cc.i
+.PHONY : src/sensor_extrinsic.pb.cc.i
+
+src/sensor_extrinsic.pb.s: src/sensor_extrinsic.pb.cc.s
+
+.PHONY : src/sensor_extrinsic.pb.s
+
+# target to generate assembly for a file
+src/sensor_extrinsic.pb.cc.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/sensor_extrinsic.pb.cc.s
+.PHONY : src/sensor_extrinsic.pb.cc.s
+
+src/show_tools.o: src/show_tools.cpp.o
+
+.PHONY : src/show_tools.o
+
+# target to build an object file
+src/show_tools.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/show_tools.cpp.o
+.PHONY : src/show_tools.cpp.o
+
+src/show_tools.i: src/show_tools.cpp.i
+
+.PHONY : src/show_tools.i
+
+# target to preprocess a source file
+src/show_tools.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/show_tools.cpp.i
+.PHONY : src/show_tools.cpp.i
+
+src/show_tools.s: src/show_tools.cpp.s
+
+.PHONY : src/show_tools.s
+
+# target to generate assembly for a file
+src/show_tools.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/match_features.dir/build.make dr_lidar_calib/CMakeFiles/match_features.dir/src/show_tools.cpp.s
+.PHONY : src/show_tools.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1603,6 +1699,7 @@ help:
 	@echo "... install"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... match_features"
 	@echo "... cost_function"
 	@echo "... file_io"
 	@echo "... tf2_msgs_generate_messages_nodejs"
@@ -1704,9 +1801,18 @@ help:
 	@echo "... src/file_io.o"
 	@echo "... src/file_io.i"
 	@echo "... src/file_io.s"
+	@echo "... src/match_features.o"
+	@echo "... src/match_features.i"
+	@echo "... src/match_features.s"
 	@echo "... src/pose_local_parameterization.o"
 	@echo "... src/pose_local_parameterization.i"
 	@echo "... src/pose_local_parameterization.s"
+	@echo "... src/sensor_extrinsic.pb.o"
+	@echo "... src/sensor_extrinsic.pb.i"
+	@echo "... src/sensor_extrinsic.pb.s"
+	@echo "... src/show_tools.o"
+	@echo "... src/show_tools.i"
+	@echo "... src/show_tools.s"
 .PHONY : help
 
 
