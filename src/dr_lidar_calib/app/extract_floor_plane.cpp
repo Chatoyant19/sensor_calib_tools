@@ -8,14 +8,14 @@
          
 
 // plane param
-float voxel_size_ = 10;
-float eigen_ratio_ = 0.05;
-int layer_limit_ = 5; // origin: 3 
+float voxel_size_ = 40;
+float eigen_ratio_ = 0.025;
+int layer_limit_ = 3; // origin: 3 
 double what_ = 0.98; // origin: 0.98, what???
 
-double floor_thred_ = 0.01;
+double floor_thred_ = 0.025;
 double floor_normal_thresh_ = 10;
-std::string pcd_path_ = "/home/wd/datasets/2/pcd/0_visual.pcd";
+std::string pcd_path_ = "/media/lam_data/标定数据/2pb65/新方案数据/20240201/line/lidar_baselink/pre_data/pcd/0_visual.pcd";
 
 void cutVoxel(std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& feat_map,
               pcl::PointCloud<pcl::PointXYZI>& pl_feat,
@@ -25,10 +25,8 @@ void extractFloorPlane(const std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& sur
 void mergePlane(const std::vector<Plane*>& origin_list, std::vector<Plane*>& merge_list);                       
 
 void addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_floor);
-Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R);
-Eigen::Matrix3d convertEulerYPRToRotationMatrix(const Eigen::Vector3d& yaw_pitch_roll);
 
-// 对比两种方法
+// 对比两种方法: ransac is bad
 int main(int argc, char** argv) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr lidar_cloud =
     pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
@@ -36,8 +34,13 @@ int main(int argc, char** argv) {
 
   // cut floor according to init extrinsic
   Eigen::Matrix4d init_Tx_Dr_L = Eigen::Matrix4d::Identity();
-  Eigen::Quaterniond init_q = Eigen::Quaterniond(0.991356853784355, -0.023258834552737088, 0.12882578670853978, 0.0086331772227486083);
-  Eigen::Vector3d init_t = Eigen::Vector3d(1.3502510764935578, 0.044901229456849365, 1.2);
+  Eigen::Quaterniond init_q = Eigen::Quaterniond(0.71637160463028582,
+                                                 0.0059138554274193577,
+                                                 0.0089709431225763418,
+                                                 0.69763620359962986);
+  Eigen::Vector3d init_t = Eigen::Vector3d(1.595217885590408,
+                                           0.018723255689350848,
+                                           1.91);
   init_Tx_Dr_L.block<3, 3>(0, 0) = init_q.toRotationMatrix();
   init_Tx_Dr_L.block<3, 1>(0, 3) = init_t;
 
@@ -47,11 +50,9 @@ int main(int argc, char** argv) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr floor_pcd =
     pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   for(const auto& p : transformed_pcd) {
-    if(std::abs(p.x) < 10 && std::abs(p.y) < 10 && std::abs(p.z) < 0.25)
+    if(std::abs(p.x) < 20 && std::abs(p.y) < 20 && std::abs(p.z) < 0.25)
       floor_pcd->push_back(p);
   }
-  // addFloorConstriant(*floor_pcd);
-
   // if(floor_pcd->size() > 0) {
   //   std::cout << "floor_pcd size: " << floor_pcd->size() << std::endl;
   //   std::string path = "/home/wd/datasets/2/floor.pcd";
@@ -59,6 +60,8 @@ int main(int argc, char** argv) {
   //   floor_pcd->width = floor_pcd->size();
   //   pcl::io::savePCDFile(path, *floor_pcd);
   // }
+
+  // addFloorConstriant(*floor_pcd);
 
   std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*> surf_map;
   cutVoxel(surf_map, *floor_pcd, voxel_size_, eigen_ratio_, layer_limit_, what_);
@@ -69,6 +72,12 @@ int main(int argc, char** argv) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr floor_plane_cloud =
     pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   extractFloorPlane(surf_map, floor_plane_cloud);
+  if(floor_plane_cloud->size() > 1000) {
+    std::string path = "/home/wd/datasets/65/floor_plane.pcd";
+    floor_plane_cloud->height = 1;
+    floor_plane_cloud->width = floor_plane_cloud->size();
+    pcl::io::savePCDFile(path, *floor_plane_cloud);
+  }
 
   return 0;
 }
@@ -136,25 +145,36 @@ void extractFloorPlane(const std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& sur
       colors.push_back(static_cast<unsigned int>(rand() % 255));
       colors.push_back(static_cast<unsigned int>(rand() % 255));
       colors.push_back(static_cast<unsigned int>(rand() % 255));
-      for(auto pv: plane->plane_points)
-      {
-        pcl::PointXYZRGB pi;
-        pi.x = pv[0]; pi.y = pv[1]; pi.z = pv[2];
-        pi.r = colors[0]; pi.g = colors[1]; pi.b = colors[2];
-        planes->points.push_back(pi);
-      }
+
+      std::cout << "plane points size: " << plane->plane_points.size() << std::endl;
+      // for(auto pv: plane->plane_points)
+      // {
+      //   pcl::PointXYZRGB pi;
+      //   pi.x = pv[0]; pi.y = pv[1]; pi.z = pv[2];
+      //   pi.r = colors[0]; pi.g = colors[1]; pi.b = colors[2];
+      //   planes->points.push_back(pi);
+      // }
 
       std::cout << "plane normal: " << plane->normal.transpose() << std::endl;
+
+      if(plane->plane_points.size() < 1000) continue;
+      if(std::abs(plane->normal.dot(Eigen::Vector3d::UnitZ())) > 0.98) {
+        for(auto pv: plane->plane_points) {
+          pcl::PointXYZI pi;
+          pi.x = pv[0]; pi.y = pv[1]; pi.z = pv[2];
+          // pi.intensity = todo
+          floor_plane_cloud->points.push_back(pi);
+        }
+      }
     }
 
-    if(planes->size() > 0) {
-      std::cout << "planes size: " << planes->size() << std::endl;
-      std::string path = "/home/wd/datasets/2/floor_plane/" + std::to_string(surf_cnt) + ".pcd";
-      planes->height = 1;
-      planes->width = planes->size();
-      pcl::io::savePCDFile(path, *planes);
-      ++surf_cnt;
-    }
+    // if(planes->size() > 1000) {
+    //   std::string path = "/home/wd/datasets/2/floor_plane/" + std::to_string(surf_cnt) + ".pcd";
+    //   planes->height = 1;
+    //   planes->width = planes->size();
+    //   pcl::io::savePCDFile(path, *planes);
+    //   ++surf_cnt;
+    // }
   }                       
 }
 
@@ -266,19 +286,7 @@ void addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_floor) {
   if (inliers->indices.size() < floor_pts_thresh) {
     std::cerr << "too few inliers" << std::endl;
     return;
-  }
-
-  pcl::PointCloud<pcl::PointXYZI> floor_plane;
-  for(size_t i = 0; i < inliers->indices.size(); ++i)
-    floor_plane.push_back(pcd_floor[i]);
-
-  if(floor_plane.size() > 0) {
-      std::cout << "floor_plane size: " << floor_plane.size() << std::endl;
-      std::string path = "/home/wd/datasets/2/floor_plane/floor_plane.pcd";
-      floor_plane.height = 1;
-      floor_plane.width = floor_plane.size();
-      pcl::io::savePCDFile(path, floor_plane);
-  }  
+  } 
 
   Eigen::VectorXf coeffs;
   ransac.getModelCoefficients(coeffs);  
@@ -290,60 +298,19 @@ void addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>& pcd_floor) {
   if (plane_normal.dot(Eigen::Vector3d::UnitZ()) < 0.0f) {
     plane_normal *= -1.0f;
   }
-
-  Eigen::Vector3d v = plane_normal.cross(Eigen::Vector3d::UnitZ());
   double c = plane_normal.dot(Eigen::Vector3d::UnitZ());
-  if (std::abs(c) < std::cos(floor_normal_thresh_*M_PI/180.0)) {
-    // the normal is not vertical
-    std::cerr << "the normal is not vertical!" << std::endl;
-    return;
-  }
-  Eigen::Matrix3d v_mat;
-  v_mat << 0, -v(2), v(1), v(2), 0, -v(0), -v(1), v(0), 0;
-  double tmp_rod = 1.0 / (1.0 + c);
-  Eigen::Matrix3d rotation = Eigen::Matrix3d::Identity() + v_mat + v_mat * v_mat * tmp_rod;
-  Eigen::Vector3d ypr = convertRotationMatrixToEulerYPR(rotation);
-  std::cout << "yaw: " << ypr[0] * 180 / M_PI  << "pitch: " << ypr[1] * 180 / M_PI  << ", " << "roll: " << ypr[2] * 180 / M_PI  << std::endl;
-  ypr[0] = 0.0;
-  rotation = convertEulerYPRToRotationMatrix(ypr);
+  if(c < 0.98) return;
+  pcl::PointCloud<pcl::PointXYZI> floor_plane;
+  for(size_t i = 0; i < inliers->indices.size(); ++i)
+    floor_plane.push_back(pcd_floor[i]);
 
-  Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
-  T_dr_pr.block<3, 3>(0, 0) = rotation;
-  T_dr_pr.block<3, 1>(0, 3) = Eigen::Vector3d::Zero();
+  if(floor_plane.size() > 0) {
+      std::cout << "floor_plane size: " << floor_plane.size() << std::endl;
+      std::string path = "/home/wd/datasets/65/floor_plane_rac.pcd";
+      floor_plane.height = 1;
+      floor_plane.width = floor_plane.size();
+      pcl::io::savePCDFile(path, floor_plane);
+  }  
 
-  // // test
-  // Eigen::Vector3d new_norm = rotation * plane_normal;
-  // if((new_norm.normalized() - Eigen::Vector3d::UnitZ()).norm() < 10e-3) {
-  //   std::cout << "successful to constraint pitch and roll" << std::endl;
-  //   std::cout << "new_norm: " << new_norm << std::endl;
-
-  //   T_dr_L_new = T_dr_pr * T_dr_L;
-  // }
-}
-
-Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
-  Eigen::Vector3d ypr;
-  ypr(0) = atan2(R(1, 0), R(0, 0));
-  ypr(1) = asin(-R(2, 0));
-  ypr(2) = atan2(R(2, 1), R(2, 2));
-  return ypr;
-}   
-
-Eigen::Matrix3d convertEulerYPRToRotationMatrix(const Eigen::Vector3d& yaw_pitch_roll) {
-  const double r = yaw_pitch_roll(2);
-  const double p = yaw_pitch_roll(1);
-  const double y = yaw_pitch_roll(0);
-  const double sr = sin(r);
-  const double sp = sin(p);
-  const double sy = sin(y);
-  const double cr = cos(r);
-  const double cp = cos(p);
-  const double cy = cos(y);
-  Eigen::Matrix3d R;
-  // clang-format off
-  R << cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr,
-       sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr,
-           -sp,                cp * sr,                cp * cr;
-  // clang-format on
-  return R;
+  
 }

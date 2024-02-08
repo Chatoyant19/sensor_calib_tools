@@ -558,6 +558,19 @@ pcl_msgs_generate_messages_py/fast:
 .PHONY : pcl_msgs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named extract_floor_plane
+
+# Build rule for target.
+extract_floor_plane: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 extract_floor_plane
+.PHONY : extract_floor_plane
+
+# fast build rule for target.
+extract_floor_plane/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build.make dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build
+.PHONY : extract_floor_plane/fast
+
+#=============================================================================
 # Target rules for targets named geometry_msgs_generate_messages_eus
 
 # Build rule for target.
@@ -1432,6 +1445,7 @@ help:
 	@echo "... topic_tools_generate_messages_nodejs"
 	@echo "... extract_feature"
 	@echo "... pcl_msgs_generate_messages_py"
+	@echo "... extract_floor_plane"
 	@echo "... geometry_msgs_generate_messages_eus"
 	@echo "... std_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_cpp"

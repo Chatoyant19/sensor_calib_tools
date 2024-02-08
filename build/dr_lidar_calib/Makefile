@@ -483,6 +483,21 @@ pcl_msgs_generate_messages_py/fast:
 .PHONY : pcl_msgs_generate_messages_py/fast
 
 # Convenience name for target.
+dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/rule
+
+# Convenience name for target.
+extract_floor_plane: dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/rule
+
+.PHONY : extract_floor_plane
+
+# fast build rule for target.
+extract_floor_plane/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build.make dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build
+.PHONY : extract_floor_plane/fast
+
+# Convenience name for target.
 dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
@@ -1442,6 +1457,33 @@ topic_tools_generate_messages_lisp/fast:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build.make dr_lidar_calib/CMakeFiles/topic_tools_generate_messages_lisp.dir/build
 .PHONY : topic_tools_generate_messages_lisp/fast
 
+app/extract_floor_plane.o: app/extract_floor_plane.cpp.o
+
+.PHONY : app/extract_floor_plane.o
+
+# target to build an object file
+app/extract_floor_plane.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build.make dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/app/extract_floor_plane.cpp.o
+.PHONY : app/extract_floor_plane.cpp.o
+
+app/extract_floor_plane.i: app/extract_floor_plane.cpp.i
+
+.PHONY : app/extract_floor_plane.i
+
+# target to preprocess a source file
+app/extract_floor_plane.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build.make dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/app/extract_floor_plane.cpp.i
+.PHONY : app/extract_floor_plane.cpp.i
+
+app/extract_floor_plane.s: app/extract_floor_plane.cpp.s
+
+.PHONY : app/extract_floor_plane.s
+
+# target to generate assembly for a file
+app/extract_floor_plane.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/build.make dr_lidar_calib/CMakeFiles/extract_floor_plane.dir/app/extract_floor_plane.cpp.s
+.PHONY : app/extract_floor_plane.cpp.s
+
 app/test_extract_image_features.o: app/test_extract_image_features.cpp.o
 
 .PHONY : app/test_extract_image_features.o
@@ -1721,6 +1763,7 @@ help:
 	@echo "... test"
 	@echo "... extract_feature"
 	@echo "... pcl_msgs_generate_messages_py"
+	@echo "... extract_floor_plane"
 	@echo "... geometry_msgs_generate_messages_eus"
 	@echo "... std_msgs_generate_messages_py"
 	@echo "... sensor_msgs_generate_messages_cpp"
@@ -1786,6 +1829,9 @@ help:
 	@echo "... nodelet_generate_messages_py"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... topic_tools_generate_messages_lisp"
+	@echo "... app/extract_floor_plane.o"
+	@echo "... app/extract_floor_plane.i"
+	@echo "... app/extract_floor_plane.s"
 	@echo "... app/test_extract_image_features.o"
 	@echo "... app/test_extract_image_features.i"
 	@echo "... app/test_extract_image_features.s"
