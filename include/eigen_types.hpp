@@ -128,3 +128,70 @@ Vector6d log(const Eigen::Matrix4d T) {
   tf_vec.tail<3>() = t;
   return tf_vec;
 }
+
+Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
+  Eigen::Vector3d ypr;
+  ypr(0) = atan2(R(1, 0), R(0, 0));
+  ypr(1) = asin(-R(2, 0));
+  ypr(2) = atan2(R(2, 1), R(2, 2));
+  return ypr;
+}   
+
+ Eigen::Matrix3d convertEulerYPRToRotationMatrix(const Eigen::Vector3d& yaw_pitch_roll) {
+  const double r = yaw_pitch_roll(2);
+  const double p = yaw_pitch_roll(1);
+  const double y = yaw_pitch_roll(0);
+  const double sr = sin(r);
+  const double sp = sin(p);
+  const double sy = sin(y);
+  const double cr = cos(r);
+  const double cp = cos(p);
+  const double cy = cos(y);
+  Eigen::Matrix3d R;
+  // clang-format off
+  R << cy * cp, cy * sp * sr - sy * cr, cy * sp * cr + sy * sr,
+       sy * cp, sy * sp * sr + cy * cr, sy * sp * cr - cy * sr,
+           -sp,                cp * sr,                cp * cr;
+  // clang-format on
+  return R;
+}
+
+Eigen::AngleAxisd convertEulerYPRToAngleAxis(const Eigen::Vector3d& yaw_pitch_roll) {
+  // euler to Quanterion
+  const double r = yaw_pitch_roll(2) * 0.5;
+  const double p = yaw_pitch_roll(1) * 0.5;
+  const double y = yaw_pitch_roll(0) * 0.5;
+  const double sr = sin(r);
+  const double sp = sin(p);
+  const double sy = sin(y);
+  const double cr = cos(r);
+  const double cp = cos(p);
+  const double cy = cos(y);
+
+  Eigen::Quaterniond q = Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0);
+  q.w() = cr * cp * cy + sr * sp * sy;
+  q.x() = sr * cp * cy - cr * sp * sy;
+  q.y() = cr * sp * cy + sr * cp * sy;
+  q.z() = cr * cp * sy - sr * sp * cy;
+
+  // Quanterion to angleaxisd
+  Eigen::AngleAxisd angle_axis;
+  const double sin_half_theta = q.vec().norm();
+  if (sin_half_theta <= std::numeric_limits<double>::epsilon()) {
+    angle_axis.angle() = 0;
+    angle_axis.axis() << 1, 0, 0;
+    return angle_axis;
+  }
+
+  double theta;
+  const double cos_half_theta = q.w();
+  if (cos_half_theta > 0.0) {
+    theta = 2 * atan2(sin_half_theta, cos_half_theta);
+  } else {
+    theta = -2 * atan2(sin_half_theta, -cos_half_theta);
+  }
+
+  angle_axis.angle() = theta;
+  angle_axis.axis() = q.vec() / sin_half_theta;
+  return angle_axis;
+}

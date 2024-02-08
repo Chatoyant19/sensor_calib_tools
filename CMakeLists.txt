@@ -104,6 +104,11 @@ target_link_libraries(test_extract_image_features
   extract_feature ${catkin_LIBRARIES}
 )
 
+add_executable(extract_floor_plane app/extract_floor_plane.cpp)
+target_link_libraries(extract_floor_plane
+  ${PCL_LIBRARIES} ${catkin_LIBRARIES}
+)
+
 
 install(TARGETS
   # multi_dr_lidar_calib
