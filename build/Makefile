@@ -857,6 +857,19 @@ std_msgs_generate_messages_eus/fast:
 .PHONY : std_msgs_generate_messages_eus/fast
 
 #=============================================================================
+# Target rules for targets named test_lib
+
+# Build rule for target.
+test_lib: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_lib
+.PHONY : test_lib
+
+# fast build rule for target.
+test_lib/fast:
+	$(MAKE) -f dr_lidar_calib/CMakeFiles/test_lib.dir/build.make dr_lidar_calib/CMakeFiles/test_lib.dir/build
+.PHONY : test_lib/fast
+
+#=============================================================================
 # Target rules for targets named geometry_msgs_generate_messages_lisp
 
 # Build rule for target.
@@ -1468,6 +1481,7 @@ help:
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
 	@echo "... std_msgs_generate_messages_eus"
+	@echo "... test_lib"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... tf_generate_messages_cpp"
 	@echo "... pcl_msgs_generate_messages_eus"

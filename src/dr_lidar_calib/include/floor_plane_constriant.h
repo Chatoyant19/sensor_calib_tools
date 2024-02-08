@@ -5,6 +5,7 @@
 
 class VOXEL_LOC;
 class OCTO_TREE_ROOT;
+typedef struct Plane;
 
 class FloorPlaneConstriant{
  public:

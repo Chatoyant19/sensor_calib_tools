@@ -828,6 +828,21 @@ std_msgs_generate_messages_eus/fast:
 .PHONY : std_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
+dr_lidar_calib/CMakeFiles/test_lib.dir/rule:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/test_lib.dir/rule
+.PHONY : dr_lidar_calib/CMakeFiles/test_lib.dir/rule
+
+# Convenience name for target.
+test_lib: dr_lidar_calib/CMakeFiles/test_lib.dir/rule
+
+.PHONY : test_lib
+
+# fast build rule for target.
+test_lib/fast:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_lib.dir/build.make dr_lidar_calib/CMakeFiles/test_lib.dir/build
+.PHONY : test_lib/fast
+
+# Convenience name for target.
 dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f CMakeFiles/Makefile2 dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
 .PHONY : dr_lidar_calib/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/rule
@@ -1619,6 +1634,33 @@ src/file_io.cpp.s:
 	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/file_io.dir/build.make dr_lidar_calib/CMakeFiles/file_io.dir/src/file_io.cpp.s
 .PHONY : src/file_io.cpp.s
 
+src/floor_plane_constriant.o: src/floor_plane_constriant.cpp.o
+
+.PHONY : src/floor_plane_constriant.o
+
+# target to build an object file
+src/floor_plane_constriant.cpp.o:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_lib.dir/build.make dr_lidar_calib/CMakeFiles/test_lib.dir/src/floor_plane_constriant.cpp.o
+.PHONY : src/floor_plane_constriant.cpp.o
+
+src/floor_plane_constriant.i: src/floor_plane_constriant.cpp.i
+
+.PHONY : src/floor_plane_constriant.i
+
+# target to preprocess a source file
+src/floor_plane_constriant.cpp.i:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_lib.dir/build.make dr_lidar_calib/CMakeFiles/test_lib.dir/src/floor_plane_constriant.cpp.i
+.PHONY : src/floor_plane_constriant.cpp.i
+
+src/floor_plane_constriant.s: src/floor_plane_constriant.cpp.s
+
+.PHONY : src/floor_plane_constriant.s
+
+# target to generate assembly for a file
+src/floor_plane_constriant.cpp.s:
+	cd /home/wd/projects/calib_tools/dr_lidar_calib_ws/build && $(MAKE) -f dr_lidar_calib/CMakeFiles/test_lib.dir/build.make dr_lidar_calib/CMakeFiles/test_lib.dir/src/floor_plane_constriant.cpp.s
+.PHONY : src/floor_plane_constriant.cpp.s
+
 src/match_features.o: src/match_features.cpp.o
 
 .PHONY : src/match_features.o
@@ -1786,6 +1828,7 @@ help:
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... tf_generate_messages_py"
 	@echo "... std_msgs_generate_messages_eus"
+	@echo "... test_lib"
 	@echo "... geometry_msgs_generate_messages_lisp"
 	@echo "... tf_generate_messages_cpp"
 	@echo "... pcl_msgs_generate_messages_eus"
@@ -1847,6 +1890,9 @@ help:
 	@echo "... src/file_io.o"
 	@echo "... src/file_io.i"
 	@echo "... src/file_io.s"
+	@echo "... src/floor_plane_constriant.o"
+	@echo "... src/floor_plane_constriant.i"
+	@echo "... src/floor_plane_constriant.s"
 	@echo "... src/match_features.o"
 	@echo "... src/match_features.i"
 	@echo "... src/match_features.s"

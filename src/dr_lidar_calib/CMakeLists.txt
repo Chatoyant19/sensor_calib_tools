@@ -94,6 +94,12 @@ target_link_libraries(match_features
   ${PCL_LIBRARIES}
   ${OpenCV_LIBS})   
 
+add_library(test_lib
+  src/floor_plane_constriant.cpp)
+target_link_libraries(test_lib
+  ${PCL_LIBRARIES}
+  extract_feature)    
+
 add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature
   extract_feature ${catkin_LIBRARIES}
