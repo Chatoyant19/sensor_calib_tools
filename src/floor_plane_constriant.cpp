@@ -345,7 +345,7 @@ bool FloorPlaneConstriant::extractFloorPlaneRac(const pcl::PointCloud<pcl::Point
 
   Eigen::VectorXf coeffs;
   ransac.getModelCoefficients(coeffs);  
-  Eigen::Vector3d plane_normal = Eigen::Vector3d((double)coeffs.head<3>()(0),
-                                   (double)coeffs.head<3>()(1),
-                                   (double)coeffs.head<3>()(2));      
+  plane_normal = Eigen::Vector3d((double)coeffs.head<3>()(0),
+                                 (double)coeffs.head<3>()(1),
+                                 (double)coeffs.head<3>()(2));      
 }
