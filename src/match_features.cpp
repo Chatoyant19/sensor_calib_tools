@@ -95,8 +95,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
   int line_count = 0;
   std::vector<cv::Point2d> lidar_2d_list;
   std::vector<cv::Point2d> img_2d_list;
-  std::vector<Eigen::Vector2d> camera_direction_list;
-  std::vector<Eigen::Vector2d> lidar_direction_list;
+  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> camera_direction_list;
+  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> lidar_direction_list;
   for (size_t i = 0; i < search_cloud->points.size(); i++) {
     pcl::PointXYZ searchPoint = search_cloud->points[i];
     if ((kdtree->nearestKSearch(searchPoint, K, pointIdxNKNSearch,
@@ -117,7 +117,7 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
         cv::Point p_c_2d(tree_cloud->points[pointIdxNKNSearch[0]].x,
                          -tree_cloud->points[pointIdxNKNSearch[0]].y);
         Eigen::Vector2d direction_cam(0, 0);
-        std::vector<Eigen::Vector2d> points_cam;
+        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> points_cam;
         for (size_t i = 0; i < pointIdxNKNSearch.size(); i++) {
           Eigen::Vector2d p(tree_cloud->points[pointIdxNKNSearch[i]].x,
                             -tree_cloud->points[pointIdxNKNSearch[i]].y);
@@ -125,7 +125,7 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
         }
         calcDirection(points_cam, direction_cam);
         Eigen::Vector2d direction_lidar(0, 0);
-        std::vector<Eigen::Vector2d> points_lidar;
+        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> points_lidar;
         for (size_t i = 0; i < pointIdxNKNSearch.size(); i++) {
           Eigen::Vector2d p(
               tree_cloud_lidar->points[pointIdxNKNSearchLidar[i]].x,
@@ -191,7 +191,7 @@ void MatchFeatures::filterOutViewPcd(const pcl::PointCloud<pcl::PointXYZI>::Ptr&
 
 }
 
-void MatchFeatures::calcDirection(const std::vector<Eigen::Vector2d>& points,
+void MatchFeatures::calcDirection(const std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>& points,
                                   Eigen::Vector2d& direction) {
   Eigen::Vector2d mean_point(0, 0);
   for (size_t i = 0; i < points.size(); i++) {

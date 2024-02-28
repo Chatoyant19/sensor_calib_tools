@@ -21,7 +21,7 @@ class MatchFeatures {
   void filterOutViewPcd(const pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_line_cloud_3d,
                         const Eigen::Matrix4d& Tx_C_L,
                         pcl::PointCloud<pcl::PointXYZI>::Ptr& filtered_cloud_3d);
-  void calcDirection(const std::vector<Eigen::Vector2d>& points,
+  void calcDirection(const std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>& points,
                      Eigen::Vector2d& direction);                        
  private: 
   bool show_residual_;

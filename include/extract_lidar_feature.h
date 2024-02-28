@@ -36,7 +36,8 @@ class ExtractLidarFeature{
                  const pcl::KdTreeFLANN<pcl::PointXYZI>& kd_tree,
                  const pcl::PointCloud<pcl::PointXYZI>& input_cloud,
                  pcl::PointCloud<pcl::PointXYZI>::Ptr& lines);
-  void projectLine(const Plane* plane1, const Plane* plane2, std::vector<Eigen::Vector3d>& line_point);
+  void projectLine(const Plane* plane1, const Plane* plane2, 
+                   std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d>>& line_point);
   void mergeLine(const std::vector<pcl::PointCloud<pcl::PointXYZI>>& origin_line_list,  
                  std::vector<pcl::PointCloud<pcl::PointXYZI>>& merge_line_list);
   Eigen::Vector3d computeLineDirection(const pcl::PointCloud<pcl::PointXYZI>& line);
