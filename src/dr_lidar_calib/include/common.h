@@ -1,7 +1,7 @@
 #ifndef LIDAR_CAMERA_COMMON_H
 #define LIDAR_CAMERA_COMMON_H
 #include <Eigen/Core>
-#include <cv_bridge/cv_bridge.h>
+#include <opencv2/opencv.hpp>
 #include <pcl/common/io.h>
 #include <stdio.h>
 #include <string>

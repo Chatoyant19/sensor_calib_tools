@@ -243,7 +243,7 @@ void ExtractLidarFeature::extractLineByAdaVoxel(const std::vector<Plane*>& merge
   {  
     for(size_t p2_index = p1_index+1; p2_index < merge_plane_list.size(); p2_index++)
     {
-      std::vector<Eigen::Vector3d> line_point;
+      std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d>> line_point;
       projectLine(merge_plane_list[p1_index], merge_plane_list[p2_index], line_point);
       if(line_point.size() == 0) continue;
 
@@ -283,7 +283,8 @@ void ExtractLidarFeature::extractLineByAdaVoxel(const std::vector<Plane*>& merge
     }
 }
 
-void ExtractLidarFeature::projectLine(const Plane* plane1, const Plane* plane2, std::vector<Eigen::Vector3d>& line_point)
+void ExtractLidarFeature::projectLine(const Plane* plane1, const Plane* plane2, 
+  std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d>>& line_point)
 {
   float theta = plane1->normal.dot(plane2->normal);
   if(!(theta > theta_max_ && theta < theta_min_)) return;
@@ -628,7 +629,7 @@ void ExtractLidarFeature::calcLine(const std::vector<SinglePlane> &plane_list,
             matrix[2][3] = c2;
             matrix[2][4] = a2 * x2 + b2 * y2 + c2 * z2;
             // six types
-            std::vector<Eigen::Vector3d> points;
+            std::vector<Eigen::Vector3d, Eigen::aligned_allocator<Eigen::Vector3d>> points;
             Eigen::Vector3d point;
             matrix[3][1] = 1;
             matrix[3][2] = 0;
