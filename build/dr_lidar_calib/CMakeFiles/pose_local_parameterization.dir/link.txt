@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -O3 -Wall  -O3 -DNDEBUG   -shared -Wl,-soname,libpose_local_parameterization.so -o /home/wd/projects/calib_tools/dr_lidar_calib_ws/devel/lib/libpose_local_parameterization.so CMakeFiles/pose_local_parameterization.dir/src/pose_local_parameterization.cpp.o  /usr/lib/libceres.so.1.14.0 -lglog /usr/lib/x86_64-linux-gnu/libgflags.so.2.2.2 -lpthread 

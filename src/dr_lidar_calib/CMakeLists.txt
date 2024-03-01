@@ -94,9 +94,9 @@ target_link_libraries(match_features
   ${PCL_LIBRARIES}
   ${OpenCV_LIBS})   
 
-add_library(test_lib
+add_library(floor_plane_constriant
   src/floor_plane_constriant.cpp)
-target_link_libraries(test_lib
+target_link_libraries(floor_plane_constriant
   ${PCL_LIBRARIES}
   extract_feature)    
 
@@ -114,6 +114,18 @@ add_executable(extract_floor_plane app/extract_floor_plane.cpp)
 target_link_libraries(extract_floor_plane
   ${PCL_LIBRARIES} ${catkin_LIBRARIES}
 )
+
+add_executable(test_dr_lidar_calib app/test_dr_lidar_calib.cpp src/dr_lidar_calib.cpp)
+target_link_libraries(test_dr_lidar_calib
+  pose_local_parameterization
+  extract_feature
+  file_io
+  cost_function
+  match_features
+  floor_plane_constriant
+  ${catkin_LIBRARIES}
+)
+
 
 
 install(TARGETS

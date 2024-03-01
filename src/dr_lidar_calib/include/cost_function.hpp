@@ -2,6 +2,7 @@
 
 #include "common.h"
 #include "pose_local_parameterization.h"
+#include "eigen_types.hpp"
 
 // pnp calib with direction vector
 // auto diff, pinhole camera intrinsics model
@@ -9,8 +10,8 @@ class vpnp_calib_orin {
 public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-  vpnp_calib_orin(VPnPData p, Eigen::Matrix3d _inner, Eigen::Vector4d _distor, bool _use_p2line) :
-    pd(p), inner(_inner), distor(_distor), use_p2line(_use_p2line) {}
+  vpnp_calib_orin(VPnPData p, Eigen::Matrix3d _inner, Eigen::Vector4d _distor) :
+    pd(p), inner(_inner), distor(_distor) {}
   template <typename T>
   bool operator()(const T *_q, const T *_t, T *residuals) const {
     Eigen::Matrix<T, 3, 3> innerT = inner.cast<T>();
@@ -41,38 +42,36 @@ public:
       residuals[0] = ud - T(pd.u);
       residuals[1] = vd - T(pd.v);
     } else {
-      residuals[0] = ud - T(pd.u);
-      residuals[1] = vd - T(pd.v);
-      if(use_p2line) {
-        Eigen::Matrix<T, 2, 2> I =
-            Eigen::Matrix<float, 2, 2>::Identity().cast<T>();
-        Eigen::Matrix<T, 2, 1> n = pd.direction.cast<T>();
-        Eigen::Matrix<T, 1, 2> nt = pd.direction.transpose().cast<T>();
-        Eigen::Matrix<T, 2, 2> V = n * nt;
-        V = I - V;
-        Eigen::Matrix<T, 2, 1> R = Eigen::Matrix<float, 2, 1>::Zero().cast<T>();
-        R.coeffRef(0, 0) = residuals[0];
-        R.coeffRef(1, 0) = residuals[1];
-        R = V * R;
-        // Eigen::Matrix<T, 2, 2> R = Eigen::Matrix<float, 2,
-        // 2>::Zero().cast<T>(); R.coeffRef(0, 0) = residuals[0];
-        // R.coeffRef(1, 1) = residuals[1]; R = V * R * V.transpose();
-        residuals[0] = R.coeffRef(0, 0);
-        residuals[1] = R.coeffRef(1, 0);
-      }
+    residuals[0] = ud - T(pd.u);
+    residuals[1] = vd - T(pd.v);
+      Eigen::Matrix<T, 2, 2> I =
+          Eigen::Matrix<float, 2, 2>::Identity().cast<T>();
+      Eigen::Matrix<T, 2, 1> n = pd.direction.cast<T>();
+      Eigen::Matrix<T, 1, 2> nt = pd.direction.transpose().cast<T>();
+      Eigen::Matrix<T, 2, 2> V = n * nt;
+      V = I - V;
+      Eigen::Matrix<T, 2, 1> R = Eigen::Matrix<float, 2, 1>::Zero().cast<T>();
+      R.coeffRef(0, 0) = residuals[0];
+      R.coeffRef(1, 0) = residuals[1];
+      R = V * R;
+      // Eigen::Matrix<T, 2, 2> R = Eigen::Matrix<float, 2,
+      // 2>::Zero().cast<T>(); R.coeffRef(0, 0) = residuals[0];
+      // R.coeffRef(1, 1) = residuals[1]; R = V * R * V.transpose();
+      residuals[0] = R.coeffRef(0, 0);
+      residuals[1] = R.coeffRef(1, 0);
+      
     }
     return true;
   }
-  static ceres::CostFunction *Create(VPnPData p, Eigen::Matrix3d _inner, Eigen::Vector4d _distor, bool _use_p2line) {
+  static ceres::CostFunction *Create(VPnPData p, Eigen::Matrix3d _inner, Eigen::Vector4d _distor) {
     return (new ceres::AutoDiffCostFunction<vpnp_calib_orin, 2, 4, 3>(
-        new vpnp_calib_orin(p, _inner, _distor, _use_p2line)));
+        new vpnp_calib_orin(p, _inner, _distor)));
   }
 
 private:
   VPnPData pd;
   Eigen::Matrix3d inner;
   Eigen::Vector4d distor;
-  bool use_p2line;
 };
 
 // vpnp calib with direction vector
@@ -82,8 +81,8 @@ class vpnp_calib_pin_auto {
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   vpnp_calib_pin_auto(VPnPData p, Eigen::Matrix3d _R_dr_C, Eigen::Vector3d _t_dr_C, Eigen::Matrix3d _inner,
-                      Eigen::Vector4d _distor, bool _use_p2line) : 
-    pd(p), R_dr_C(_R_dr_C), t_dr_C(_t_dr_C), inner(_inner), distor(_distor), use_p2line(_use_p2line) {}
+                      Eigen::Vector4d _distor) : 
+    pd(p), R_dr_C(_R_dr_C), t_dr_C(_t_dr_C), inner(_inner), distor(_distor) {}
 
   template<typename T>
   bool operator()(const T *_q, const T *_t, T *residuals) const {
@@ -121,20 +120,19 @@ class vpnp_calib_pin_auto {
     } else {
       residuals[0] = ud - T(pd.u);
       residuals[1] = vd - T(pd.v);
-      if (use_p2line) {
-        Eigen::Matrix<T, 2, 2> I =
-                Eigen::Matrix<float, 2, 2>::Identity().cast<T>();
-        Eigen::Matrix<T, 2, 1> n = pd.direction.cast<T>();
-        Eigen::Matrix<T, 1, 2> nt = pd.direction.transpose().cast<T>();
-        Eigen::Matrix<T, 2, 2> V = n * nt;
-        V = I - V;
-        Eigen::Matrix<T, 2, 2> R = Eigen::Matrix<float, 2, 2>::Zero().cast<T>();
-        R.coeffRef(0, 0) = residuals[0];
-        R.coeffRef(1, 1) = residuals[1];
-        R = V * R * V.transpose();
-        residuals[0] = R.coeffRef(0, 0);
-        residuals[1] = R.coeffRef(1, 1);
-      }
+     
+      Eigen::Matrix<T, 2, 2> I =
+              Eigen::Matrix<float, 2, 2>::Identity().cast<T>();
+      Eigen::Matrix<T, 2, 1> n = pd.direction.cast<T>();
+      Eigen::Matrix<T, 1, 2> nt = pd.direction.transpose().cast<T>();
+      Eigen::Matrix<T, 2, 2> V = n * nt;
+      V = I - V;
+      Eigen::Matrix<T, 2, 2> R = Eigen::Matrix<float, 2, 2>::Zero().cast<T>();
+      R.coeffRef(0, 0) = residuals[0];
+      R.coeffRef(1, 1) = residuals[1];
+      R = V * R * V.transpose();
+      residuals[0] = R.coeffRef(0, 0);
+      residuals[1] = R.coeffRef(1, 1);
     }
     // residuals[0] = (ud - T(pd.u)) * T(pd.direction(1)) - (vd - T(pd.v)) * T(pd.direction(0));
     return true;
@@ -142,9 +140,9 @@ class vpnp_calib_pin_auto {
 
   static ceres::CostFunction *
   Create(VPnPData p, Eigen::Matrix3d _R_dr_C, Eigen::Vector3d _t_dr_C, Eigen::Matrix3d _inner,
-      Eigen::Vector4d _distor, bool _use_p2line) {
+      Eigen::Vector4d _distor) {
     return (new ceres::AutoDiffCostFunction<vpnp_calib_pin_auto, 2, 4, 3>(
-            new vpnp_calib_pin_auto(p, _R_dr_C, _t_dr_C, _inner, _distor, _use_p2line)));
+            new vpnp_calib_pin_auto(p, _R_dr_C, _t_dr_C, _inner, _distor)));
   }
 
  private:
@@ -154,7 +152,6 @@ class vpnp_calib_pin_auto {
   Eigen::Vector4d distor;
   Eigen::Matrix3d R_dr_C; // fix
   Eigen::Vector3d t_dr_C; // fix
-  bool use_p2line = true;
 };
 
 // analy diff, fisheye camera intrinsics model, p2p

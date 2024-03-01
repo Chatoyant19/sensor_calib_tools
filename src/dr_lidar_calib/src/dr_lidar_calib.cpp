@@ -40,6 +40,7 @@ void DrLidarCalib::initCameras() {
     cams_[cam_index].camera_model_ = param_.cams_model_vec[cam_index];
     cams_[cam_index].camera_matrix_ = param_.camera_matrix_vec[cam_index];
     cams_[cam_index].dist_coeffs_ = param_.dist_coeffs_vec[cam_index];
+    cams_[cam_index].Tx_dr_C_ = param_.camera_extrinsics_vec[cam_index];
  
     assert(param_.scene_num == param_.images[cam_index].size());
     cv::Mat new_K = cams_[cam_index].camera_matrix_;
