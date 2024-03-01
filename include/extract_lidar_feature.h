@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <pcl/kdtree/kdtree_flann.h>
 
 class VOXEL_LOC;
 class OCTO_TREE_ROOT;

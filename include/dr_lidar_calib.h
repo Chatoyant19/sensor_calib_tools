@@ -68,6 +68,7 @@ typedef struct {
   std::vector<std::string> cams_model_vec;
   std::vector<cv::Mat> camera_matrix_vec;
   std::vector<cv::Mat> dist_coeffs_vec;
+  std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> camera_extrinsics_vec;
   double canny_threshold;
   int rgb_edge_minLen;
 
@@ -91,7 +92,7 @@ typedef struct {
 class DrLidarCalib{
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
-  DrLidarCalib(const DrLidarCalibParam& param, const bool& debug_mode) : param_(param), debug_mode_(debug_mode) {}
+  DrLidarCalib(DrLidarCalibParam param) : param_(param) {}
   void init();
   void run(Eigen::Matrix4d& Tx_dr_L, 
     std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>>& cams_extrinsics_vec);
@@ -102,7 +103,6 @@ class DrLidarCalib{
 
  private:
   DrLidarCalibParam param_;
-  bool debug_mode_;
 
   std::vector<Camera> cams_;
   Lidar lidar_;
