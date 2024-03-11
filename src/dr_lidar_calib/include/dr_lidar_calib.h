@@ -25,8 +25,6 @@ class Camera {
   cv::Mat dist_coeffs_;
   Eigen::Matrix4d Tx_dr_C_;
 
-  std::vector<cv::Mat> raw_imgs;
-  std::vector<cv::Mat> rgb_imgs;
   std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> rgb_edge_clouds_;
 
   Eigen::Matrix4d Tx_C_L_;
@@ -53,7 +51,6 @@ public:
   Eigen::Matrix4d Tx_dr_L_;
   // 存储平面交接点云
   std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>  plane_line_cloud_vec_; 
-  std::vector<pcl::PointCloud<pcl::PointXYZI>> floor_plane_vec_;
 
   void update_TxDL(const Eigen::Matrix4d& T) {
     Tx_dr_L_ << T(0, 0), T(0, 1), T(0, 2), T(0, 3),
@@ -77,7 +74,6 @@ typedef struct {
   int rgb_edge_minLen;
 
   /***lidar***/
-  std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> map_pcd_vec_;
   std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> visual_pcd_vec_;
   Eigen::Matrix4d init_Tx_dr_L;
   bool use_ada_voxel;
@@ -89,7 +85,8 @@ typedef struct {
   double ransac_dis_threshold;
   int plane_size_threshold;
 
-  bool show_residual;
+  // for debug
+  bool show_residual = false;
   std::string result_path;
 } DrLidarCalibParam;
 
@@ -98,6 +95,8 @@ class DrLidarCalib{
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
   DrLidarCalib(DrLidarCalibParam param) : param_(param) {}
   void init();
+  void processLidar(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud);
+  // void processImage(const cv::Mat& raw_img);
   void run(Eigen::Matrix4d& Tx_dr_L, 
     std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>>& cams_extrinsics_vec);
  private:
