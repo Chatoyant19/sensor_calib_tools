@@ -13,6 +13,8 @@
 // #define debug
 // #define test
 
+std::string pcd_path_;
+
 std::string save_lidar_extrinsic_name_;
 void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& calib_param);
 
@@ -27,17 +29,6 @@ int main(int argc, char** argv) {
 
   // show init 
   for(size_t cam_index = 0; cam_index < calib_param.cams_name_vec.size(); ++cam_index) {
-    #ifdef test
-    std::cout << "cam_name: " << calib_param.cams_name_vec[cam_index] << std::endl;
-    Eigen::Quaterniond q_dr_c = Eigen::Quaterniond(calib_param.camera_extrinsics_vec[cam_index].block<3, 3>(0, 0));
-    std::cout << "camera extrinsics: " << q_dr_c.coeffs().transpose() << " " 
-              << calib_param.camera_extrinsics_vec[cam_index].block<3, 1>(0, 3).transpose() << std::endl;
-    Eigen::Quaterniond init_q_dr_l = Eigen::Quaterniond(calib_param.init_Tx_dr_L.block<3, 3>(0, 0));
-    std::cout << "init_Tx_dr_L: " << init_q_dr_l.coeffs().transpose() << std::endl 
-              << calib_param.init_Tx_dr_L.block<3, 1>(0, 3).transpose() << std::endl;    
-    std::cout << "camera_matrix: " << calib_param.camera_matrix_vec[cam_index] << std::endl;
-    std::cout << "dist_coeff: " << calib_param.dist_coeffs_vec[cam_index] << std::endl;                 
-    #endif
     Eigen::Matrix4d Tx_C_L = calib_param.camera_extrinsics_vec[cam_index].inverse() * calib_param.init_Tx_dr_L;
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
       cv::Mat init_img = show_tools::getProjectionImg(calib_param.images[cam_index][scene_index], calib_param.visual_pcd_vec_[scene_index],
@@ -49,6 +40,14 @@ int main(int argc, char** argv) {
 
   std::unique_ptr<DrLidarCalib> dr_lidar_calib = std::make_unique<DrLidarCalib>(calib_param);
   dr_lidar_calib->init();
+  for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
+    std::string map_points_path = pcd_path_ + "/" + std::to_string(scene_index) + ".pcd"; 
+    pcl::PointCloud<pcl::PointXYZI>::Ptr map_pcd = 
+      pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
+    pcl::io::loadPCDFile(map_points_path, *map_pcd);
+    dr_lidar_calib->processLidar(map_pcd);
+  }
+
   Eigen::Matrix4d Tx_dr_L;
   std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> cams_extrinsics_vec;
   dr_lidar_calib->run(Tx_dr_L, cams_extrinsics_vec);
@@ -72,17 +71,6 @@ int main(int argc, char** argv) {
 
   // show res
   for(size_t cam_index = 0; cam_index < calib_param.cams_name_vec.size(); ++cam_index) {
-    #ifdef test
-    std::cout << "cam_name: " << calib_param.cams_name_vec[cam_index] << std::endl;
-    Eigen::Quaterniond q_dr_c = Eigen::Quaterniond(cams_extrinsics_vec[cam_index].block<3, 3>(0, 0));
-    std::cout << "camera extrinsics: " << q_dr_c.coeffs().transpose() << " " 
-              << cams_extrinsics_vec[cam_index].block<3, 1>(0, 3).transpose() << std::endl;
-    Eigen::Quaterniond q_dr_l = Eigen::Quaterniond(Tx_dr_L.block<3, 3>(0, 0));
-    std::cout << "Tx_dr_L: " << q_dr_l.coeffs().transpose() << std::endl 
-              << Tx_dr_L.block<3, 1>(0, 3).transpose() << std::endl;    
-    std::cout << "camera_matrix: " << calib_param.camera_matrix_vec[cam_index] << std::endl;
-    std::cout << "dist_coeff: " << calib_param.dist_coeffs_vec[cam_index] << std::endl;                 
-    #endif
     Eigen::Matrix4d Tx_C_L = cams_extrinsics_vec[cam_index].inverse() * Tx_dr_L;
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
       cv::Mat res_img = show_tools::getProjectionImg(calib_param.images[cam_index][scene_index], calib_param.visual_pcd_vec_[scene_index],
@@ -104,13 +92,11 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
 
   std::string image_path;
   fSettings["ImageFilesPath"] >> image_path;
-  std::vector<std::string> cams_name_vec; 
-  fSettings["CameraName"] >> cams_name_vec;
+  fSettings["CameraName"] >> calib_param.cams_name_vec;
   calib_param.scene_num = fSettings["SceneNum"];
   std::string img_file_extension;
-  fSettings["img_file_extension"] >> img_file_extension;\
-  std::string pcd_path;
-  fSettings["LiDARFilesPath"] >> pcd_path;
+  fSettings["img_file_extension"] >> img_file_extension;
+  fSettings["LiDARFilesPath"] >> pcd_path_;
   std::string cameras_intrinsic_path;
   std::string cameras_extrinsic_path;
   fSettings["CamsIntrinsicPath"] >> cameras_intrinsic_path;
@@ -135,12 +121,12 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
 
   #ifdef debug
   std::cout << "ImageFilesPath: " << image_path << std::endl;
-  for(auto name: cams_name_vec)
+  for(auto name: calib_param.cams_name_vec)
     std::cout << name << ", ";
   std::cout << std::endl;
   std::cout << "SceneNum: " << calib_param.scene_num << std::endl;
   std::cout << "img_file_extension: " << img_file_extension << std::endl;
-  std::cout << "LiDARFilesPath: " << pcd_path << std::endl;
+  std::cout << "LiDARFilesPath: " << pcd_path_ << std::endl;
   std::cout << "CamsIntrinsicPath: " << cameras_intrinsic_path << std::endl;
   std::cout << "CamsExtrinsicPath: " << cameras_extrinsic_path << std::endl;
   std::cout << "Canny.gray_threshold: " << calib_param.canny_threshold << std::endl;
@@ -158,17 +144,14 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
   std::cout << "save_lidar_extrinsic_name: " << save_lidar_extrinsic_name_ << std::endl;
   #endif
 
-  int cam_num = cams_name_vec.size();
+  int cam_num = calib_param.cams_name_vec.size();
   calib_param.images.resize(cam_num);
-  calib_param.cams_name_vec.resize(cam_num);
   calib_param.cams_model_vec.resize(cam_num);
   calib_param.camera_matrix_vec.resize(cam_num);
   calib_param.dist_coeffs_vec.resize(cam_num);
   calib_param.camera_extrinsics_vec.resize(cam_num);
-  for(size_t cam_index = 0; cam_index < cams_name_vec.size(); ++cam_index) {
-    calib_param.cams_name_vec[cam_index] = cams_name_vec[cam_index];
-    
-    std::string cam_intrinsics_path = cameras_intrinsic_path + "/" + cams_name_vec[cam_index] + "_param.xml";
+  for(size_t cam_index = 0; cam_index < cam_num; ++cam_index) {
+    std::string cam_intrinsics_path = cameras_intrinsic_path + "/" + calib_param.cams_name_vec[cam_index] + "_param.xml";
     int img_height, img_width;
     std::string camera_model;
     file_io::readCamInFromXmlFile(cam_intrinsics_path, camera_model, calib_param.camera_matrix_vec[cam_index],
@@ -176,29 +159,20 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
     if(camera_model == "FISHEYE")
       calib_param.cams_model_vec[cam_index] = CameraModel::Fisheye;
     
-    std::string cam_extrinsics_path = cameras_extrinsic_path + "/" + cams_name_vec[cam_index] + "_transform.pb.txt";
+    std::string cam_extrinsics_path = cameras_extrinsic_path + "/" + calib_param.cams_name_vec[cam_index] + "_transform.pb.txt";
     file_io::readExtrinsicFromPbFile(cam_extrinsics_path, calib_param.camera_extrinsics_vec[cam_index]);
     
-    std::string cam_path = image_path + "/" + cams_name_vec[cam_index];
+    std::string cam_path = image_path + "/" + calib_param.cams_name_vec[cam_index];
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
       std::string img_path = cam_path + "/" + std::to_string(scene_index) + "." + img_file_extension;
-      #ifdef test
-      std::cout << "img_path: " << img_path << std::endl;
-      #endif
       cv::Mat raw_img = cv::imread(img_path);
       calib_param.images[cam_index].emplace_back(raw_img);
     }
   }
 
-  calib_param.map_pcd_vec_.resize(calib_param.scene_num);
   calib_param.visual_pcd_vec_.resize(calib_param.scene_num);
   for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
-    std::string map_points_path = pcd_path + "/" + std::to_string(scene_index) + ".pcd"; 
-    calib_param.map_pcd_vec_[scene_index] = 
-      pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
-    pcl::io::loadPCDFile(map_points_path, *calib_param.map_pcd_vec_[scene_index]);
-
-    std::string visual_points_path = pcd_path + "/" + std::to_string(scene_index) + "_visual.pcd"; 
+    std::string visual_points_path = pcd_path_ + "/" + std::to_string(scene_index) + "_visual.pcd"; 
     calib_param.visual_pcd_vec_[scene_index] = 
       pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
     pcl::io::loadPCDFile(visual_points_path, *calib_param.visual_pcd_vec_[scene_index]);

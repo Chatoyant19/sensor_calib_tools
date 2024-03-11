@@ -87,7 +87,7 @@ void cutVoxel(std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& feat_map,
               float voxel_size, float eigen_ratio, int layer_limit, double what)
 {
   float loc_xyz[3];
-  printf("total point size %ld\n", pl_feat.points.size());
+  printf("extract_floor_plane/total point size %ld\n", pl_feat.points.size());
   for(pcl::PointXYZI& p_c: pl_feat.points)
   {
     Eigen::Vector3d pvec_orig(p_c.x, p_c.y, p_c.z);
