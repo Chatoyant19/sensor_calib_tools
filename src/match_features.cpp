@@ -3,6 +3,7 @@
 #include <pcl/search/kdtree.h>
 #include "match_features.h"
 #include "eigen_types.hpp"
+#include "common.hpp"
 #include "show_tools.h"
 
 void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix, 
@@ -24,6 +25,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
   for(auto p : *filtered_lidar_line_cloud) {
     pts_3d.emplace_back(cv::Point3d(p.x, p.y, p.z));
   }
+  if(pts_3d.size() < 10) return;
+
   Eigen::Vector3d rvec_eigen = log(Tx_C_L).head<3>();
   Eigen::Vector3d tvec_eigen = log(Tx_C_L).tail<3>();
   cv::Vec3d rvec(rvec_eigen(0), rvec_eigen(1), rvec_eigen(2));

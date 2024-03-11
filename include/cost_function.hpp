@@ -1,6 +1,6 @@
 #include <ceres/ceres.h>
 
-#include "common.h"
+#include "common.hpp"
 #include "pose_local_parameterization.h"
 #include "eigen_types.hpp"
 

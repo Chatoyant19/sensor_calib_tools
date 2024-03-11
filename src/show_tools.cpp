@@ -1,6 +1,10 @@
 #include <pcl/search/kdtree.h>
+#include <pcl/common/transforms.h>
 
 #include "show_tools.h"
+
+enum ProjectionType { DEPTH, INTENSITY, BOTH };
+enum Direction { UP, DOWN, LEFT, RIGHT };
 
 namespace show_tools {
 cv::Mat getConnectImg(const pcl::PointCloud<pcl::PointXYZ>::Ptr& rgb_edge_cloud,
@@ -85,4 +89,186 @@ cv::Mat getConnectImg(const pcl::PointCloud<pcl::PointXYZ>::Ptr& rgb_edge_cloud,
   }
   return connect_img;
 } 
+
+cv::Mat fillImg(const cv::Mat &input_img,
+                const Direction first_direct,
+                const Direction second_direct) {
+  cv::Mat fill_img = input_img.clone();
+  for (int y = 2; y < input_img.rows - 2; y++) {
+    for (int x = 2; x < input_img.cols - 2; x++) {
+      if (input_img.at<uchar>(y, x) == 0) {
+        if (input_img.at<uchar>(y - 1, x) != 0) {
+          fill_img.at<uchar>(y, x) = input_img.at<uchar>(y - 1, x);
+        } else {
+          if ((input_img.at<uchar>(y, x - 1)) != 0) {
+            fill_img.at<uchar>(y, x) = input_img.at<uchar>(y, x - 1);
+          }
+        }
+      } else {
+        int left_depth = input_img.at<uchar>(y, x - 1);
+        int right_depth = input_img.at<uchar>(y, x + 1);
+        int up_depth = input_img.at<uchar>(y + 1, x);
+        int down_depth = input_img.at<uchar>(y - 1, x);
+        int current_depth = input_img.at<uchar>(y, x);
+        if ((current_depth - left_depth) > 5 &&
+            (current_depth - right_depth) > 5 && left_depth != 0 &&
+            right_depth != 0) {
+          fill_img.at<uchar>(y, x) = (left_depth + right_depth) / 2;
+        } else if ((current_depth - up_depth) > 5 &&
+                   (current_depth - down_depth) > 5 && up_depth != 0 &&
+                   down_depth != 0) {
+          fill_img.at<uchar>(y, x) = (up_depth + right_depth) / 2;
+        }
+      }
+    }
+  }
+  return fill_img;
+}
+
+void projection(const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_point,
+                const Eigen::Matrix4d& Tx_C_L,
+                const cv::Mat& camera_matrix, cv::Mat& distortion_coeff, 
+                const int& img_height, const int& img_width,
+                const float& min_depth, const float& max_depth,
+                cv::Mat &image_project) {
+  // filter out-view pcd;
+  pcl::PointCloud<pcl::PointXYZI>::Ptr transformed_pcd = pcl::PointCloud<pcl::PointXYZI>::Ptr(
+    new pcl::PointCloud<pcl::PointXYZI>);
+  pcl::transformPointCloud(*raw_point, *transformed_pcd, Tx_C_L);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr filted_pcd = pcl::PointCloud<pcl::PointXYZI>::Ptr(
+      new pcl::PointCloud<pcl::PointXYZI>);
+  for(auto p: *transformed_pcd) {
+    if(p.z < 0) continue;
+    filted_pcd->push_back(p);
+  }
+
+  std::vector<cv::Point3f> pts_3d;
+  std::vector<float> intensity_list;
+  float max_intensity = 0.0;
+  for(auto p: *filted_pcd) {
+    float depth = sqrt(pow(p.x, 2) + pow(p.y, 2) + pow(p.z, 2));
+    if(depth > min_depth && depth < max_depth) {
+      pts_3d.emplace_back(cv::Point3f(p.x, p.y, p.z));
+      intensity_list.emplace_back(p.intensity);
+    }
+
+    if(p.intensity > max_intensity)
+      max_intensity = p.intensity;
+  }
+
+  std::string projection_type = "depth";
+  if(max_intensity > 0) {
+    projection_type = "intensity";
+  }
+
+  cv::Vec3d rvec(0, 0, 0);
+  cv::Vec3d tvec(0, 0, 0);
+  std::vector<cv::Point2f> pts_2d;
+  cv::fisheye::projectPoints(pts_3d, pts_2d, rvec, tvec, camera_matrix, distortion_coeff);
+
+  image_project = cv::Mat::zeros(img_height, img_width, CV_16UC1);
+  for (size_t i = 0; i < pts_2d.size(); ++i) {
+    cv::Point2f point_2d = pts_2d[i];
+    if (point_2d.x <= 0 || point_2d.x >= img_width || point_2d.y <= 0 ||
+        point_2d.y >= img_height) 
+      continue;
+    else {
+      if(projection_type == "depth") {
+        float depth = sqrt(pow(pts_3d[i].x, 2) + pow(pts_3d[i].y, 2) +
+                          pow(pts_3d[i].z, 2));
+        float intensity = intensity_list[i];
+        float depth_weight = 1;
+        float grey = depth_weight * depth / max_depth * 65535 +
+                     (1 - depth_weight) * intensity / 150 * 65535;
+        if (image_project.at<ushort>(point_2d.y, point_2d.x) == 0) {
+          image_project.at<ushort>(point_2d.y, point_2d.x) = grey;
+        } else if (depth < image_project.at<ushort>(point_2d.y, point_2d.x)) {
+          image_project.at<ushort>(point_2d.y, point_2d.x) = grey;
+        }
+      }
+      else {
+        float intensity = intensity_list[i];
+        if (intensity > 100) {
+          intensity = 65535;
+        } else {
+          intensity = (intensity / 150.0) * 65535;
+        }
+        image_project.at<ushort>(point_2d.y, point_2d.x) = intensity;
+      }
+    }      
+  }
+  image_project.convertTo(image_project, CV_8UC1, 1 / 256.0);
+}
+
+void mapJet(double v, double vmin, double vmax, uint8_t &r, uint8_t &g,
+            uint8_t &b) {
+  r = 255;
+  g = 255;
+  b = 255;
+
+  if (v < vmin) {
+    v = vmin;
+  }
+
+  if (v > vmax) {
+    v = vmax;
+  }
+
+  double dr, dg, db;
+
+  if (v < 0.1242) {
+    db = 0.504 + ((1. - 0.504) / 0.1242) * v;
+    dg = dr = 0.;
+  } else if (v < 0.3747) {
+    db = 1.;
+    dr = 0.;
+    dg = (v - 0.1242) * (1. / (0.3747 - 0.1242));
+  } else if (v < 0.6253) {
+    db = (0.6253 - v) * (1. / (0.6253 - 0.3747));
+    dg = 1.;
+    dr = (v - 0.3747) * (1. / (0.6253 - 0.3747));
+  } else if (v < 0.8758) {
+    db = 0.;
+    dr = 1.;
+    dg = (0.8758 - v) * (1. / (0.8758 - 0.6253));
+  } else {
+    db = 0.;
+    dg = 0.;
+    dr = 1. - (v - 0.8758) * ((1. - 0.504) / (1. - 0.8758));
+  }
+
+  r = (uint8_t)(255 * dr);
+  g = (uint8_t)(255 * dg);
+  b = (uint8_t)(255 * db);
+}
+
+cv::Mat getProjectionImg(const cv::Mat& raw_img, const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_point,
+                         const Eigen::Matrix4d& Tx_C_L,
+                         const cv::Mat& camera_matrix, cv::Mat& distortion_coeff) {
+  float min_depth = 1;
+  float max_depth = 80;
+  
+  int img_height = raw_img.rows;
+  int img_width = raw_img.cols;
+  cv::Mat depth_projection_img;
+  projection(raw_point, Tx_C_L, camera_matrix, distortion_coeff, img_height, img_width, 
+    min_depth, max_depth, depth_projection_img);
+
+  cv::Mat merge_img;
+  raw_img.copyTo(merge_img);
+  for(int x = 0; x < raw_img.cols; ++x) {
+    for(int y = 0; y < raw_img.rows; ++y) {
+      uint8_t r, g, b;
+      float norm = depth_projection_img.at<uchar>(y, x) / 256.0;
+      mapJet(norm, 0, 1, r, g, b);
+
+      if(norm != 0.0) {
+        cv::circle(merge_img, cv::Point2i(x, y), 2, cv::Scalar(b, g, r), -1);
+      }
+    }
+  }
+
+  return merge_img;
+}
+
 } // namespace show_tools

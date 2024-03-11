@@ -1,9 +1,11 @@
 #include <pcl/common/transforms.h>
 #include <pcl/sample_consensus/ransac.h>
 #include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/io/pcd_io.h>
 #include "floor_plane_constriant.h"
 #include "extract_lidar_feature.hpp"
 #include "eigen_types.hpp"
+// #define test
 
 bool FloorPlaneConstriant::addFloorConstriant(const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_pcd, 
                                               const Eigen::Matrix4d& Tx_dr_L,
@@ -13,10 +15,19 @@ bool FloorPlaneConstriant::addFloorConstriant(const pcl::PointCloud<pcl::PointXY
 
   pcl::PointCloud<pcl::PointXYZI> floor_pcd;
   filteredPcd(transformed_pcd, floor_pcd);  
+  // #ifdef test
+  // std::string path = "/home/wd/datasets/beijing/2/floor_pcd.pcd";
+  // pcl::io::savePCDFile(path, floor_pcd);
+  // #endif
 
   pcl::PointCloud<pcl::PointXYZI> floor_plane_cloud;
   Eigen::Vector3d plane_normal;
   if(extractFloorPlane(floor_pcd, floor_plane_cloud, plane_normal)) {
+    // #ifdef test
+    // std::string path_1 = "/home/wd/datasets/beijing/2/floor_plane_cloud.pcd";
+    // pcl::io::savePCDFile(path_1, floor_plane_cloud);
+    // std::cout << "plane_normal: " << plane_normal.transpose() << std::endl;
+    // #endif
     update_Tx_dr_L = computeRollPitchAndZ(floor_plane_cloud, Tx_dr_L, plane_normal);
     return true;
   }
@@ -74,7 +85,8 @@ bool FloorPlaneConstriant::extractFloorPlane(const pcl::PointCloud<pcl::PointXYZ
   }
 
   if(floor_plane_cloud.size() < 0) return false;         
-  plane_normal = computePlaneNormal(floor_plane_cloud);                                         
+  plane_normal = computePlaneNormal(floor_plane_cloud);   
+  return true;                                      
 }
 
 void FloorPlaneConstriant::cutVoxel(std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& feat_map,
@@ -288,6 +300,10 @@ Eigen::Matrix4d FloorPlaneConstriant::computeRollPitchAndZ(const pcl::PointCloud
 
     // test translation z
     pcl::transformPointCloud(floor_plane_cloud_lidar, floor_plane_cloud_truth, update_Tx_dr_L);
+    #ifdef test
+    std::string path_1 = "/home/wd/datasets/beijing/2/floor_plane_cloud.pcd";
+    pcl::io::savePCDFile(path_1, floor_plane_cloud_truth);
+    #endif
     double refine_z_mean = 0.0;
     for(auto p: floor_plane_cloud_truth) {
       refine_z_mean += p.z;

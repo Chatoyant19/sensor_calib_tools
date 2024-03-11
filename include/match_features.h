@@ -5,8 +5,8 @@
 #include <pcl/point_types.h>
 #include <Eigen/Dense>
 
-#include "common.h"
-
+// #include "common.h"
+struct VPnPData;
 class MatchFeatures {
  public:
   MatchFeatures(bool show_residual) : show_residual_(show_residual) {}

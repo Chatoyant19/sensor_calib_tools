@@ -126,6 +126,13 @@ target_link_libraries(test_dr_lidar_calib
   ${catkin_LIBRARIES}
 )
 
+add_executable(test_show_tools app/test_show_tools.cpp src/show_tools.cpp)
+target_link_libraries(test_show_tools
+  file_io
+  ${OpenCV_LIBS}
+  ${catkin_LIBRARIES}
+)
+
 
 
 install(TARGETS

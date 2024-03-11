@@ -1,42 +1,44 @@
 %YAML:1.0
 
-ImageFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/img
-LiDARFilesPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/pcd
+ImageFilesPath: /media/lam_data/标定数据/上海小车/20号/直线往返/lidar_baselink/pre_data/img
+LiDARFilesPath: /media/lam_data/标定数据/上海小车/20号/直线往返/lidar_baselink/pre_data/pcd
 
-CamsIntrinsicPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/camera_baselink/camera
-CamsExtrinsicPath: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/camera_baselink/camera
+CamsIntrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
+CamsExtrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
 
-SceneNum: 1
+SceneNum: 3
 
-init_extrinsics_file: /media/lam_data/标定数据/2pb65/新方案数据/20231129/line/lidar_baselink/pre_data/base_init_transform.pb.txt
-ResultPath:  /home/wd/datasets/65/RESULT
+init_extrinsics_file: /media/lam_data/标定数据/上海小车/20号/直线往返/lidar_baselink/pre_data/base_init_transform.pb.txt
+ResultPath:  /home/wd/datasets/3/RESULT_1
 
 CameraName:
   - avm_front
   - avm_left
   - avm_rear
   - avm_right
-  - front_near
-  - left_front
-  - left_rear
-  - rear_medium
-  - right_front
-  - right_rear
+  # - front_near
+  # - left_front
+  # - left_rear
+  # - rear_medium
+  # - right_front
+  # - right_rear
 
 
 Canny.gray_threshold: 10
 Canny.len_threshold: 50
 
 # Params for Voxel Cutting & Plane Fitting & Edge Extraction
-# Voxel.size: 0.6
-Voxel.size: 0.5
+UseAdaVoxel: 0
+Voxel.size: 0.6
+# Voxel.size: 0.5
 Voxel.eigen_ratio: 0.05
 Plane.min_points_size: 30
 Plane.normal_theta_min: 20
 Plane.normal_theta_max: 170
-# Ransac.dis_threshold: 0.02
-Ransac.dis_threshold: 0.015
-Edge.min_dis_threshold: 0.05
+Ransac.dis_threshold: 0.02
+# Ransac.dis_threshold: 0.015
+Edge.min_dis_threshold: 0.08
+# Edge.min_dis_threshold: 0.05
 
 save_lidar_extrinsic_name: roof_transform.pb.txt
 

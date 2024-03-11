@@ -166,7 +166,7 @@ bool writeProtoToTextFile(std::string& file,
   return flag;
 }
 
-void writeSensorExToPbFile(const Eigen::Matrix4d& extrinsic, std::string& output_file) {
+void writeExtrinsicToPbFile(const Eigen::Matrix4d& extrinsic, std::string& output_file) {
   tutorial::SensorExtrinsic extrinsic_pb;
   tutorial::Rotation* rot = extrinsic_pb.add_rotation();
   Eigen::Matrix3d rotation_matrix = extrinsic.topLeftCorner(3, 3);

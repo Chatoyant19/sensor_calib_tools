@@ -12,10 +12,14 @@ class ExtractLidarFeature;
 class FloorPlaneConstriant;
 class MatchFeatures;
 
+// todo,extend
+enum CameraModel {Fisheye, Pinhole};
+
 class Camera {
  public:
   std::string cam_name_;
-  std::string camera_model_ = "fisheye";
+  // todo convert to enum
+  CameraModel camera_model_;
   int width_, height_;
   cv::Mat camera_matrix_;
   cv::Mat dist_coeffs_;
@@ -35,7 +39,7 @@ class Camera {
                0.0,     0.0,     0.0,    1.0;                 
   }
 
-  void update_TDC(const Eigen::Matrix4d& T)
+  void update_TxDC(const Eigen::Matrix4d& T)
   {
     Tx_dr_C_ << T(0, 0), T(0, 1), T(0, 2), T(0, 3),
                 T(1, 0), T(1, 1), T(1, 2), T(1, 3),
@@ -51,7 +55,7 @@ public:
   std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>  plane_line_cloud_vec_; 
   std::vector<pcl::PointCloud<pcl::PointXYZI>> floor_plane_vec_;
 
-  void update_TDL(const Eigen::Matrix4d& T) {
+  void update_TxDL(const Eigen::Matrix4d& T) {
     Tx_dr_L_ << T(0, 0), T(0, 1), T(0, 2), T(0, 3),
                 T(1, 0), T(1, 1), T(1, 2), T(1, 3),
                 T(2, 0), T(2, 1), T(2, 2), T(2, 3),
@@ -65,7 +69,7 @@ typedef struct {
   /***camera***/
   std::vector<std::vector<cv::Mat>> images;
   std::vector<std::string> cams_name_vec;
-  std::vector<std::string> cams_model_vec;
+  std::vector<CameraModel> cams_model_vec;
   std::vector<cv::Mat> camera_matrix_vec;
   std::vector<cv::Mat> dist_coeffs_vec;
   std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> camera_extrinsics_vec;
