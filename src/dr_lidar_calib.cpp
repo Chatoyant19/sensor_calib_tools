@@ -56,23 +56,16 @@ void DrLidarCalib::initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec
   
   extract_image_feature_ = 
     std::make_unique<ExtractImageFeature>(param_.canny_threshold, param_.rgb_edge_minLen);
-    
+
   for(size_t cam_index = 0; cam_index < cams_.size(); ++cam_index) {
     cams_[cam_index].cam_name_ = param_.cams_name_vec[cam_index];
-    std::cout << "####debug 0-2-0" << std::endl;
     cams_[cam_index].camera_model_ = param_.cams_model_vec[cam_index];
-    std::cout << "####debug 0-2-1" << std::endl;
     cams_[cam_index].camera_matrix_ = param_.camera_matrix_vec[cam_index];
-    std::cout << "####debug 0-2-2" << std::endl;
     cams_[cam_index].dist_coeffs_ = param_.dist_coeffs_vec[cam_index];
-    std::cout << "####debug 0-2-3" << std::endl;
     cams_[cam_index].Tx_dr_C_ = param_.camera_extrinsics_vec[cam_index];
-    std::cout << "####debug 0-2-4" << std::endl;
     cams_[cam_index].Tx_C_L_ = cams_[cam_index].Tx_dr_C_.inverse() * lidar_.Tx_dr_L_;
-    std::cout << "####debug 0-3" << std::endl;
     cv::Mat new_K = cams_[cam_index].camera_matrix_;
     cv::Mat map1, map2;
-    std::cout << "###param_.scene_num: " << param_.scene_num << std::endl;
     for(size_t scene_index = 0; scene_index < param_.scene_num; ++scene_index) {
       cv::Mat raw_img = imgs_vec[scene_index][cam_index];
       cv::Mat undistort_img;
@@ -80,7 +73,6 @@ void DrLidarCalib::initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec
         cv::fisheye::initUndistortRectifyMap(cams_[cam_index].camera_matrix_, cams_[cam_index].dist_coeffs_, 
           cv::Mat(), new_K, (cv::Size(raw_img.cols,raw_img.rows)), CV_16SC2, map1, map2);
         cv::remap(raw_img, undistort_img, map1, map2, cv::INTER_LINEAR);
-        std::cout << "####debug 0-4" << std::endl;
       }
 
       cams_[cam_index].width_ = undistort_img.cols;
@@ -90,9 +82,7 @@ void DrLidarCalib::initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec
       pcl::PointCloud<pcl::PointXYZ>::Ptr rgb_egde_clouds = pcl::PointCloud<pcl::PointXYZ>::Ptr(
         new pcl::PointCloud<pcl::PointXYZ>);
       extract_image_feature_->getEdgeFeatures(undistort_img, rgb_egde_clouds);
-      std::cout << "####debug 0-5" << std::endl;
       cams_[cam_index].rgb_edge_clouds_.emplace_back(rgb_egde_clouds);
-      std::cout << "####debug 0-6" << std::endl;
     }
   }
   
