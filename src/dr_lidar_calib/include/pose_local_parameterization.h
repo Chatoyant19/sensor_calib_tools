@@ -1,4 +1,5 @@
-#pragma once
+#ifndef POSE_LOCAL_PARAMETERIZATION
+#define POSE_LOCAL_PARAMETERIZATION
 
 #include <ceres/ceres.h>
 
@@ -14,4 +15,6 @@ class PoseLocalParameterization : public ceres::LocalParameterization {
 
   virtual int LocalSize() const;
 };
+
+#endif
 

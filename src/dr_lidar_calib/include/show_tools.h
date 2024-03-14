@@ -1,4 +1,5 @@
-#pragma once 
+#ifndef SHOW_TOOLS
+#define SHOW_TOOLS
 
 #include <opencv2/opencv.hpp>
 #include <pcl/point_cloud.h>
@@ -12,3 +13,5 @@ cv::Mat getProjectionImg(const cv::Mat& raw_img, const pcl::PointCloud<pcl::Poin
                          const Eigen::Matrix4d& Tx_C_L,
                          const cv::Mat& camera_matrix, cv::Mat& distortion_coeff);                                           
 } // namespace show_tools
+
+#endif

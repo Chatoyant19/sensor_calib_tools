@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FLOOR_PLANE_CONSTRAINT
+#define FLOOR_PLANE_CONSTRAINT
+
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <unordered_map>
@@ -41,3 +43,5 @@ class FloorPlaneConstriant{
   double plane_ransac_thred_ = 0.025;
 
 };
+
+#endif

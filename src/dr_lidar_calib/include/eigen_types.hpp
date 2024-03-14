@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EIGEN_TYPES
+#define EIGEN_TYPES
 
 #include <Eigen/Core>
 #include <Eigen/Dense>
@@ -6,7 +7,7 @@
 
 typedef Eigen::Matrix<double, 6, 1> Vector6d;
 
-Eigen::AngleAxisd convertRotationMatrixToAngleAxis(const Eigen::Matrix3d& R) {
+static Eigen::AngleAxisd convertRotationMatrixToAngleAxis(const Eigen::Matrix3d& R) {
   const double trace = R(0, 0) + R(1, 1) + R(2, 2);
   Eigen::Quaterniond q = Eigen::Quaterniond(1.0, 0.0, 0.0, 0.0);
   if (trace > 0) {
@@ -67,17 +68,7 @@ Eigen::AngleAxisd convertRotationMatrixToAngleAxis(const Eigen::Matrix3d& R) {
   return angle_axis;
 }
 
-
-// Vector6d log_R_t(const Eigen::Matrix3d R, const Eigen::Vector3d t) {
-//   Vector6d tf_vec;
-//   Eigen::AngleAxisd angle_axis = convertRotationMatrixToAngleAxis(R);
-//   Eigen::Vector3d rvec = angle_axis.angle() * angle_axis.axis();
-//   tf_vec.head<3>() = rvec;
-//   tf_vec.tail<3>() = t;
-//   return tf_vec;
-// }
-
-Eigen::Matrix3d exp_R(const Eigen::Vector3d& rotation_vec) {
+static Eigen::Matrix3d exp_R(const Eigen::Vector3d& rotation_vec) {
   const double half_angle = rotation_vec.norm() / 2.0;
   if (half_angle <= std::numeric_limits<double>::epsilon()) {
     return (Eigen::Matrix3d::Identity());
@@ -90,7 +81,7 @@ Eigen::Matrix3d exp_R(const Eigen::Vector3d& rotation_vec) {
   return (q.toRotationMatrix());
 }
 
-Eigen::Matrix4d exp_T(const Vector6d& tf) {
+static Eigen::Matrix4d exp_T(const Vector6d& tf) {
   Eigen::Matrix4d T_exp = Eigen::Matrix4d::Identity();
   Eigen::Matrix3d R_exp = exp_R(tf.head<3>());
   T_exp.block<3, 3>(0, 0) = R_exp;
@@ -98,15 +89,15 @@ Eigen::Matrix4d exp_T(const Vector6d& tf) {
   return T_exp;
 }
 
-Eigen::Matrix3d rplus(const Eigen::Matrix3d& R, const Eigen::Vector3d& rot_vec) { 
+static Eigen::Matrix3d rplus(const Eigen::Matrix3d& R, const Eigen::Vector3d& rot_vec) { 
   return (R * exp_R(rot_vec));
 }
 
-Eigen::Matrix3d lplus(const Eigen::Matrix3d& R, const Eigen::Vector3d& rot_vec) {
+static Eigen::Matrix3d lplus(const Eigen::Matrix3d& R, const Eigen::Vector3d& rot_vec) {
   return (exp_R(rot_vec) * R);
 }
 
-Eigen::Matrix4d bundlePlus(const Eigen::Matrix4d& pose, const Vector6d& delta) {
+static Eigen::Matrix4d bundlePlus(const Eigen::Matrix4d& pose, const Vector6d& delta) {
   Eigen::Matrix4d res = Eigen::Matrix4d::Identity();
   Eigen::Matrix3d pose_R = pose.topLeftCorner(3, 3);
   
@@ -118,7 +109,7 @@ Eigen::Matrix4d bundlePlus(const Eigen::Matrix4d& pose, const Vector6d& delta) {
   return res;
 }
 
-Vector6d log(const Eigen::Matrix4d T) {
+static Vector6d log(const Eigen::Matrix4d T) {
   Vector6d tf_vec;
   Eigen::Matrix3d R = T.topLeftCorner(3, 3);
   Eigen::Vector3d t = T.topRightCorner(3, 1);
@@ -129,7 +120,7 @@ Vector6d log(const Eigen::Matrix4d T) {
   return tf_vec;
 }
 
-Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
+static Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
   Eigen::Vector3d ypr;
   ypr(0) = atan2(R(1, 0), R(0, 0));
   ypr(1) = asin(-R(2, 0));
@@ -137,7 +128,7 @@ Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
   return ypr;
 }   
 
- Eigen::Matrix3d convertEulerYPRToRotationMatrix(const Eigen::Vector3d& yaw_pitch_roll) {
+static Eigen::Matrix3d convertEulerYPRToRotationMatrix(const Eigen::Vector3d& yaw_pitch_roll) {
   const double r = yaw_pitch_roll(2);
   const double p = yaw_pitch_roll(1);
   const double y = yaw_pitch_roll(0);
@@ -156,7 +147,7 @@ Eigen::Vector3d convertRotationMatrixToEulerYPR(const Eigen::Matrix3d& R) {
   return R;
 }
 
-Eigen::AngleAxisd convertEulerYPRToAngleAxis(const Eigen::Vector3d& yaw_pitch_roll) {
+static Eigen::AngleAxisd convertEulerYPRToAngleAxis(const Eigen::Vector3d& yaw_pitch_roll) {
   // euler to Quanterion
   const double r = yaw_pitch_roll(2) * 0.5;
   const double p = yaw_pitch_roll(1) * 0.5;
@@ -195,3 +186,19 @@ Eigen::AngleAxisd convertEulerYPRToAngleAxis(const Eigen::Vector3d& yaw_pitch_ro
   angle_axis.axis() = q.vec() / sin_half_theta;
   return angle_axis;
 }
+
+static Eigen::Vector3d convertRotationToEulerYPR(const Eigen::Matrix3d& rotation) {
+  Eigen::Quaterniond quaternion = Eigen::Quaterniond(rotation);
+  Eigen::Vector3d ypr;
+  const double qw = quaternion.w();
+  const double qx = quaternion.x();
+  const double qy = quaternion.y();
+  const double qz = quaternion.z();
+  const double qy2 = qy * qy;
+  ypr(2) = atan2(2 * (qw * qx + qy * qz), 1 - 2 * (qx * qx + qy2));
+  ypr(1) = asin(2 * (qw * qy - qx * qz));
+  ypr(0) = atan2(2 * (qw * qz + qx * qy), 1 - 2 * (qy2 + qz * qz));
+  return ypr;
+}
+
+#endif

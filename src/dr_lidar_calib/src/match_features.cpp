@@ -3,7 +3,7 @@
 #include <pcl/search/kdtree.h>
 #include "match_features.h"
 #include "eigen_types.hpp"
-#include "common.hpp"
+#include "extract_lidar_feature.hpp"
 #include "show_tools.h"
 
 void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix, 

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef EXTRACT_IMAGE_FEATURE
+#define EXTRACT_IMAGE_FEATURE
+
 #include <opencv2/opencv.hpp>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -18,3 +20,5 @@ class ExtractImageFeature{
   double canny_threshold_;
   int rgb_edge_minLen_;                  
 };
+
+#endif

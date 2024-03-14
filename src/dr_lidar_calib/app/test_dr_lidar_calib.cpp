@@ -10,10 +10,13 @@
 #include "floor_plane_constriant.h"
 #include "show_tools.h"
 
-// #define debug
-// #define test
+#define debug
+using namespace dr_lidar_calib;
 
 std::string pcd_path_;
+std::vector<std::vector<cv::Mat>> imgs_vec_;
+std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> visual_pcd_vec_;
+Eigen::Matrix4d init_Tx_dr_L_;
 
 std::string save_lidar_extrinsic_name_;
 void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& calib_param);
@@ -27,19 +30,20 @@ int main(int argc, char** argv) {
   DrLidarCalibParam calib_param;
   loadConfigFile(calib_setting_path, calib_param);
 
+  #ifdef debug
   // show init 
   for(size_t cam_index = 0; cam_index < calib_param.cams_name_vec.size(); ++cam_index) {
-    Eigen::Matrix4d Tx_C_L = calib_param.camera_extrinsics_vec[cam_index].inverse() * calib_param.init_Tx_dr_L;
+    Eigen::Matrix4d Tx_C_L = calib_param.camera_extrinsics_vec[cam_index].inverse() * init_Tx_dr_L_;
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
-      cv::Mat init_img = show_tools::getProjectionImg(calib_param.images[cam_index][scene_index], calib_param.visual_pcd_vec_[scene_index],
+      cv::Mat init_img = show_tools::getProjectionImg(imgs_vec_[scene_index][cam_index], visual_pcd_vec_[scene_index],
         Tx_C_L, calib_param.camera_matrix_vec[cam_index], calib_param.dist_coeffs_vec[cam_index]);
       cv::imwrite(calib_param.result_path + "/" + calib_param.cams_name_vec[cam_index] + 
         "_sceneID_" + std::to_string(scene_index) + "_init.png", init_img);
     }
   }
+  #endif
 
   std::unique_ptr<DrLidarCalib> dr_lidar_calib = std::make_unique<DrLidarCalib>(calib_param);
-  dr_lidar_calib->init();
   for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
     std::string map_points_path = pcd_path_ + "/" + std::to_string(scene_index) + ".pcd"; 
     pcl::PointCloud<pcl::PointXYZI>::Ptr map_pcd = 
@@ -48,9 +52,11 @@ int main(int argc, char** argv) {
     dr_lidar_calib->processLidar(map_pcd);
   }
 
+  // dr_lidar_calib->init();
+
   Eigen::Matrix4d Tx_dr_L;
   std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> cams_extrinsics_vec;
-  dr_lidar_calib->run(Tx_dr_L, cams_extrinsics_vec);
+  dr_lidar_calib->run(init_Tx_dr_L_, visual_pcd_vec_, imgs_vec_, Tx_dr_L, cams_extrinsics_vec);
 
   /***write extrinsics to files***/
   std::string lidar_extrinsics_folder = calib_param.result_path + "/lidar";
@@ -73,7 +79,7 @@ int main(int argc, char** argv) {
   for(size_t cam_index = 0; cam_index < calib_param.cams_name_vec.size(); ++cam_index) {
     Eigen::Matrix4d Tx_C_L = cams_extrinsics_vec[cam_index].inverse() * Tx_dr_L;
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
-      cv::Mat res_img = show_tools::getProjectionImg(calib_param.images[cam_index][scene_index], calib_param.visual_pcd_vec_[scene_index],
+      cv::Mat res_img = show_tools::getProjectionImg(imgs_vec_[scene_index][cam_index], visual_pcd_vec_[scene_index],
         Tx_C_L, calib_param.camera_matrix_vec[cam_index], calib_param.dist_coeffs_vec[cam_index]);
       cv::imwrite(calib_param.result_path + "/" + calib_param.cams_name_vec[cam_index] + 
         "_sceneID_" + std::to_string(scene_index) + "_res.png", res_img);
@@ -145,7 +151,7 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
   #endif
 
   int cam_num = calib_param.cams_name_vec.size();
-  calib_param.images.resize(cam_num);
+  imgs_vec_.resize(calib_param.scene_num);
   calib_param.cams_model_vec.resize(cam_num);
   calib_param.camera_matrix_vec.resize(cam_num);
   calib_param.dist_coeffs_vec.resize(cam_num);
@@ -166,22 +172,22 @@ void loadConfigFile(const std::string& calib_setting_path, DrLidarCalibParam& ca
     for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
       std::string img_path = cam_path + "/" + std::to_string(scene_index) + "." + img_file_extension;
       cv::Mat raw_img = cv::imread(img_path);
-      calib_param.images[cam_index].emplace_back(raw_img);
+      imgs_vec_[scene_index].emplace_back(raw_img);
     }
   }
 
-  calib_param.visual_pcd_vec_.resize(calib_param.scene_num);
+  visual_pcd_vec_.resize(calib_param.scene_num);
   for(size_t scene_index = 0; scene_index < calib_param.scene_num; ++scene_index) {
     std::string visual_points_path = pcd_path_ + "/" + std::to_string(scene_index) + "_visual.pcd"; 
-    calib_param.visual_pcd_vec_[scene_index] = 
+    visual_pcd_vec_[scene_index] = 
       pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
-    pcl::io::loadPCDFile(visual_points_path, *calib_param.visual_pcd_vec_[scene_index]);
+    pcl::io::loadPCDFile(visual_points_path, *visual_pcd_vec_[scene_index]);
   }
 
-  file_io::readExtrinsicFromPbFile(init_extrinsics_file, calib_param.init_Tx_dr_L);
+  file_io::readExtrinsicFromPbFile(init_extrinsics_file, init_Tx_dr_L_);
   #ifdef debug
-  Eigen::Quaterniond init_q_dr_l = Eigen::Quaterniond(calib_param.init_Tx_dr_L.block<3, 3>(0, 0));
+  Eigen::Quaterniond init_q_dr_l = Eigen::Quaterniond(init_Tx_dr_L_.block<3, 3>(0, 0));
   std::cout << "init_Tx_dr_L: " << init_q_dr_l.coeffs().transpose() << std::endl 
-            << calib_param.init_Tx_dr_L.block<3, 1>(0, 3).transpose() << std::endl;
+            << init_Tx_dr_L_.block<3, 1>(0, 3).transpose() << std::endl;
   #endif
 }

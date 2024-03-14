@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EXTRACT_LIDAR_FEATURE_HPP
+#define EXTRACT_LIDAR_FEATURE_HPP
 
 #include <Eigen/Dense>
 #include <Eigen/Core>
@@ -20,10 +21,15 @@
 #define NMATCH 5
 #define DVEL 6
 
-
+struct VPnPData {
+  double x, y, z, u, v;
+  Eigen::Vector2d direction;
+  Eigen::Vector2d direction_lidar;
+  int number;
+};
 
 // int layer_limit = 5; // origin: 3
-int MIN_PT = 30;
+static int MIN_PT = 30;
 // double what = 0.95; // origin: 0.98
 
 class VOXEL_LOC
@@ -57,7 +63,7 @@ namespace std
   };
 }
 
-Eigen::Matrix3d Exp(const Eigen::Vector3d &ang)
+static Eigen::Matrix3d Exp(const Eigen::Vector3d &ang)
 {
   double ang_norm = ang.norm();
   Eigen::Matrix3d Eye3 = Eigen::Matrix3d::Identity();
@@ -75,7 +81,7 @@ Eigen::Matrix3d Exp(const Eigen::Vector3d &ang)
   }
 }
 
-Eigen::Vector3d Log(const Eigen::Matrix3d &R)
+static Eigen::Vector3d Log(const Eigen::Matrix3d &R)
 {
   double theta = (R.trace() > 3.0 - 1e-6) ? 0.0 : std::acos(0.5 * (R.trace() - 1));
   Eigen::Vector3d K(R(2,1) - R(1,2), R(0,2) - R(2,0), R(1,0) - R(0,1));
@@ -464,7 +470,7 @@ struct M_POINT {
 };
 
 // Similar with PCL voxelgrid filter
-void down_sampling_voxel(pcl::PointCloud<pcl::PointXYZI> &pl_feat,
+static void down_sampling_voxel(pcl::PointCloud<pcl::PointXYZI> &pl_feat,
                          double voxel_size) {
   int intensity = rand() % 255;
   if (voxel_size < 0.01) {
@@ -514,6 +520,62 @@ void down_sampling_voxel(pcl::PointCloud<pcl::PointXYZI> &pl_feat,
     pl_feat[i].intensity = iter->second.intensity / iter->second.count;
     i++;
   }
+}
+
+static void downsample_voxel(const pcl::PointCloud<pcl::PointXYZI>& pc, 
+  pcl::PointCloud<pcl::PointXYZI>& pc_sam, double voxel_size) {
+	if (voxel_size < 0.01)
+		return;
+
+	std::unordered_map<VOXEL_LOC, M_POINT> feature_map;
+	size_t pt_size = pc.size();
+
+	for (size_t i = 0; i < pt_size; i++)
+	{
+		pcl::PointXYZI pt_trans = pc[i];
+		float loc_xyz[3];
+		for (int j = 0; j < 3; j++)
+		{
+			loc_xyz[j] = pt_trans.data[j] / voxel_size;
+			if (loc_xyz[j] < 0)
+				loc_xyz[j] -= 1.0;
+		}
+
+		VOXEL_LOC position((int64_t)loc_xyz[0], (int64_t)loc_xyz[1], (int64_t)loc_xyz[2]);
+		auto iter = feature_map.find(position);
+		if (iter != feature_map.end())
+		{
+			iter->second.xyz[0] += pt_trans.x;
+			iter->second.xyz[1] += pt_trans.y;
+			iter->second.xyz[2] += pt_trans.z;
+			iter->second.count++;
+		}
+		else
+		{
+			M_POINT anp;
+			anp.xyz[0] = pt_trans.x;
+			anp.xyz[1] = pt_trans.y;
+			anp.xyz[2] = pt_trans.z;
+			anp.count = 1;
+			feature_map[position] = anp;
+		}
+	}
+
+	pt_size = feature_map.size();
+	// pc.clear();
+	// pc.resize(pt_size);
+  pc_sam.clear();
+  // std::cout << "pc_sam size: " << pc_sam.size() << std::endl;
+  pc_sam.resize(pt_size);
+
+	size_t i = 0;
+	for (auto iter = feature_map.begin(); iter != feature_map.end(); ++iter)
+	{
+		pc_sam[i].x = iter->second.xyz[0] / iter->second.count;
+		pc_sam[i].y = iter->second.xyz[1] / iter->second.count;
+		pc_sam[i].z = iter->second.xyz[2] / iter->second.count;
+		i++;
+	}
 }
 
 typedef struct SinglePlane
@@ -567,3 +629,5 @@ template <class T> void calc(T matrix[4][5], Eigen::Vector3d &solution) {
     //        return DBL_MIN;
   }
 }
+
+#endif

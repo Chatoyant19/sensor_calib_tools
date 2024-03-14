@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EXTRACT_LIDAR_FEATURE
+#define EXTRACT_LIDAR_FEATURE
 
 #include <unordered_map>
 #include <pcl/point_cloud.h>
@@ -70,3 +71,5 @@ class ExtractLidarFeature{
   double ransac_dis_threshold_;
   int plane_size_threshold_;
 };
+
+#endif
