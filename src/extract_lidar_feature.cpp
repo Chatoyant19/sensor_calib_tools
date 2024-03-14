@@ -40,7 +40,7 @@ void ExtractLidarFeature::cutVoxel(std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*
                                    pcl::PointCloud<pcl::PointXYZI>& pl_feat)
 {
   float loc_xyz[3];
-  printf("extract_lidar_feature/total point size %ld\n", pl_feat.points.size());
+  printf("extract_total point size %ld\n", pl_feat.points.size());
   for(pcl::PointXYZI& p_c: pl_feat.points)
   {
     Eigen::Vector3d pvec_orig(p_c.x, p_c.y, p_c.z);

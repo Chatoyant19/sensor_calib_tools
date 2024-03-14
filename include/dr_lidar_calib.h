@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DR_LIDAR_CALIB
+#define DR_LIDAR_CALIB
+
 #include <vector>
 #include <string>
 #include <opencv2/opencv.hpp>
@@ -15,6 +17,7 @@ class MatchFeatures;
 // todo,extend
 enum CameraModel {Fisheye, Pinhole};
 
+namespace dr_lidar_calib {
 class Camera {
  public:
   std::string cam_name_;
@@ -64,7 +67,7 @@ typedef struct {
   int scene_num;
 
   /***camera***/
-  std::vector<std::vector<cv::Mat>> images;
+  // std::vector<std::vector<cv::Mat>> images;
   std::vector<std::string> cams_name_vec;
   std::vector<CameraModel> cams_model_vec;
   std::vector<cv::Mat> camera_matrix_vec;
@@ -74,7 +77,7 @@ typedef struct {
   int rgb_edge_minLen;
 
   /***lidar***/
-  std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> visual_pcd_vec_;
+  // std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> visual_pcd_vec;
   Eigen::Matrix4d init_Tx_dr_L;
   bool use_ada_voxel;
   double voxel_size;
@@ -93,15 +96,19 @@ typedef struct {
 class DrLidarCalib{
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
-  DrLidarCalib(DrLidarCalibParam param) : param_(param) {}
-  void init();
+  DrLidarCalib(const DrLidarCalibParam& param);
   void processLidar(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud);
-  // void processImage(const cv::Mat& raw_img);
-  void run(Eigen::Matrix4d& Tx_dr_L, 
+  // void processImage();
+  
+  void run(const Eigen::Matrix4d& init_Tx_dr_L,
+    const std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>& visual_pcd_vec,
+    const std::vector<std::vector<cv::Mat>>& imgs_vec, Eigen::Matrix4d& Tx_dr_L, 
     std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>>& cams_extrinsics_vec);
  private:
-  void initLidar();
-  void initCameras();
+  void init(const Eigen::Matrix4d& init_Tx_dr_L,
+    const std::vector<std::vector<cv::Mat>>& imgs_vec);
+  void initLidar(const Eigen::Matrix4d& init_Tx_dr_L);
+  void initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec);
   void extractImagesFeatures();
 
  private:
@@ -115,3 +122,6 @@ class DrLidarCalib{
   std::unique_ptr<ExtractLidarFeature> extract_lidar_feature_;
   std::unique_ptr<MatchFeatures> match_features_;
 };
+
+} // namespace dr_lidar_calib
+#endif

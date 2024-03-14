@@ -1,8 +1,11 @@
+#ifndef COST_FUNTION
+#define COST_FUNTION
+
 #include <ceres/ceres.h>
 
-#include "common.hpp"
 #include "pose_local_parameterization.h"
 #include "eigen_types.hpp"
+#include "extract_lidar_feature.hpp"
 
 // pnp calib with direction vector
 // auto diff, pinhole camera intrinsics model
@@ -292,3 +295,5 @@ private:
     Eigen::Matrix3d R_dr_C; // fix
     Eigen::Vector3d t_dr_C; // fix
 };
+
+#endif

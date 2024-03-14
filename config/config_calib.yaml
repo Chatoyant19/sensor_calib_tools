@@ -1,15 +1,25 @@
 %YAML:1.0
 
-ImageFilesPath: /home/wd/datasets/3/img
-LiDARFilesPath: /home/wd/datasets/3/pcd
+BaseLidar:
+  pcds_file: /media/lam_data/标定数据/上海小车/20号/直线往返/lidarpcd/23-12-28_12-24-44_826/pcd/lidar_roof_front
+  max_dis: 40
+  min_dis: 1
+  # hesai64, bp32, helios32, ft120, yijing
+  lidar_type: ft120 
+  tz: 1.2
+
+RefNum: 0
+Step: 5
+SceneNum: 3
+
+DrPosesFile: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/video/dr_tum.txt
+
+ImageFilesPath: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/jpg
 
 CamsIntrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
 CamsExtrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
 
-SceneNum: 3
-
 init_extrinsics_file: /home/wd/datasets/3/init_transform_dr_front.pb.txt
-ResultPath:  /home/wd/datasets/3/RESULT_2
 
 CameraName:
   - avm_front
@@ -23,6 +33,7 @@ CameraName:
   # - right_front
   # - right_rear
 
+AroudCameraStampFile: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/video/video_frame_info
 
 Canny.gray_threshold: 10
 Canny.len_threshold: 50
@@ -42,4 +53,5 @@ Edge.min_dis_threshold: 0.08
 
 save_lidar_extrinsic_name: roof_transform.pb.txt
 
-img_file_extension: bmp
+ResultPath:  /home/wd/datasets/3/RESULT_2
+

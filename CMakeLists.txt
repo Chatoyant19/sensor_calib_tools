@@ -60,78 +60,78 @@ install(DIRECTORY config/
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/rapidxml-1.13)
 
-add_library(pose_local_parameterization
+add_executable(test_main
+  app/test_main.cpp
+  src/multi_lidars_calib.cpp
+  src/dr_lidar_calib.cpp
+  src/lidar_odometry.cpp
+  src/lidar_compensation.cpp
+  src/common.cpp
+  src/handeye.cpp
+  src/pose_optimization.cpp
   src/pose_local_parameterization.cpp
-)
-target_link_libraries(pose_local_parameterization
-  ${CERES_LIBRARIES}
-)
-
-add_library(extract_feature
   src/extract_lidar_feature.cpp
-  src/extract_image_feature.cpp)
-target_link_libraries(extract_feature  
-  ${PCL_LIBRARIES}
-  ${OpenCV_LIBS})
-
-add_library(file_io
+  src/extract_image_feature.cpp
   src/file_io.cpp
-  src/sensor_extrinsic.pb.cc)
-target_link_libraries(file_io
-  ${PCL_LIBRARIES}
-  ${PROTOBUF_LIBRARY})
-
-add_library(cost_function
-  include/cost_function.hpp
-  src/pose_local_parameterization.cpp)
-target_link_libraries(cost_function
-  ${CERES_LIBRARIES}) 
-  
-add_library(match_features
+  src/sensor_extrinsic.pb.cc
   src/match_features.cpp
-  src/show_tools.cpp)
-target_link_libraries(match_features
-  ${PCL_LIBRARIES}
-  ${OpenCV_LIBS})   
-
-add_library(floor_plane_constriant
+  src/show_tools.cpp
   src/floor_plane_constriant.cpp)
-target_link_libraries(floor_plane_constriant
+target_link_libraries(test_main
+  ${CERES_LIBRARIES}
   ${PCL_LIBRARIES}
-  extract_feature)    
+  ${OpenCV_LIBS}
+  ${PROTOBUF_LIBRARY}
+  ${catkin_LIBRARIES}
+)     
 
-add_executable(test_extract_lidar_feature app/test_extract_lidar_feature.cpp)
+add_executable(test_extract_lidar_feature 
+  app/test_extract_lidar_feature.cpp
+  src/extract_lidar_feature.cpp)
 target_link_libraries(test_extract_lidar_feature
-  extract_feature ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES} 
+  ${catkin_LIBRARIES}
 )
 
-add_executable(test_extract_image_features app/test_extract_image_features.cpp)
+add_executable(test_extract_image_features 
+  app/test_extract_image_features.cpp
+  src/extract_image_feature.cpp)
 target_link_libraries(test_extract_image_features
-  extract_feature ${catkin_LIBRARIES}
+  ${OpenCV_LIBS} 
+  ${catkin_LIBRARIES}
 )
 
-add_executable(extract_floor_plane app/extract_floor_plane.cpp)
+add_executable(extract_floor_plane 
+  app/extract_floor_plane.cpp)
 target_link_libraries(extract_floor_plane
   ${PCL_LIBRARIES} ${catkin_LIBRARIES}
 )
 
-add_executable(test_dr_lidar_calib app/test_dr_lidar_calib.cpp src/dr_lidar_calib.cpp)
+add_executable(test_dr_lidar_calib 
+  app/test_dr_lidar_calib.cpp 
+  src/dr_lidar_calib.cpp
+  src/pose_local_parameterization.cpp
+  src/extract_lidar_feature.cpp
+  src/extract_image_feature.cpp
+  src/file_io.cpp
+  src/sensor_extrinsic.pb.cc
+  src/match_features.cpp
+  src/show_tools.cpp
+  src/floor_plane_constriant.cpp)
 target_link_libraries(test_dr_lidar_calib
-  pose_local_parameterization
-  extract_feature
-  file_io
-  cost_function
-  match_features
-  floor_plane_constriant
+  ${CERES_LIBRARIES}
+  ${PCL_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${PROTOBUF_LIBRARY}
   ${catkin_LIBRARIES}
 )
 
-add_executable(test_show_tools app/test_show_tools.cpp src/show_tools.cpp)
-target_link_libraries(test_show_tools
-  file_io
-  ${OpenCV_LIBS}
-  ${catkin_LIBRARIES}
-)
+# add_executable(test_show_tools app/test_show_tools.cpp src/show_tools.cpp)
+# target_link_libraries(test_show_tools
+#   file_io
+#   ${OpenCV_LIBS}
+#   ${catkin_LIBRARIES}
+# )
 
 
 

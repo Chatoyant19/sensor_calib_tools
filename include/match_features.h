@@ -1,11 +1,11 @@
-#pragma once
+#ifndef MATCH_FEATURE
+#define MATCH_FEATURE
 
 #include <opencv2/opencv.hpp>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <Eigen/Dense>
 
-// #include "common.h"
 struct VPnPData;
 class MatchFeatures {
  public:
@@ -28,3 +28,5 @@ class MatchFeatures {
   float direction_theta_min_ = cos(DEG2RAD(30.0));
   float direction_theta_max_ = cos(DEG2RAD(150.0));
 };
+
+#endif

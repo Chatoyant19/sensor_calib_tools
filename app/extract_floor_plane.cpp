@@ -127,7 +127,6 @@ void extractFloorPlane(const std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& sur
   int surf_cnt = 0;
   for(auto iter = surf_map.begin(); iter != surf_map.end(); iter++)
   {
-    std::cout << "#### " << surf_cnt << "####" << std::endl;
     std::vector<Plane*> plane_list;
     iter->second->get_plane_list(plane_list);
 
