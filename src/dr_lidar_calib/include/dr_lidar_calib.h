@@ -8,11 +8,12 @@
 #include <Eigen/Geometry>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
+#include "extract_lidar_feature.h"
 
-class ExtractImageFeature;
-class ExtractLidarFeature;
-class FloorPlaneConstriant;
-class MatchFeatures;
+// class ExtractImageFeature;
+// class ExtractLidarFeature;
+// class FloorPlaneConstriant;
+// class MatchFeatures;
 
 // todo,extend
 enum CameraModel {Fisheye, Pinhole};
@@ -117,10 +118,10 @@ class DrLidarCalib{
   std::vector<Camera> cams_;
   Lidar lidar_;
 
-  std::unique_ptr<FloorPlaneConstriant> floor_plane_constraint_;
-  std::unique_ptr<ExtractImageFeature> extract_image_feature_;
+  // std::unique_ptr<FloorPlaneConstriant> floor_plane_constraint_;
+  // std::unique_ptr<ExtractImageFeature> extract_image_feature_;
   std::unique_ptr<ExtractLidarFeature> extract_lidar_feature_;
-  std::unique_ptr<MatchFeatures> match_features_;
+  // std::unique_ptr<MatchFeatures> match_features_;
 };
 
 } // namespace dr_lidar_calib

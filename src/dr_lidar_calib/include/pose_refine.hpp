@@ -5,12 +5,10 @@
 #include <cmath>
 #include <thread>
 #include <fstream>
-#include <ros/ros.h>
 #include <unordered_map>
 #include <Eigen/StdVector>
 #include <opencv2/imgproc.hpp>
 #include <pcl/common/transforms.h>
-#include <pcl_conversions/pcl_conversions.h>
 #include "extract_lidar_feature.hpp"
 #include "common.h"
 

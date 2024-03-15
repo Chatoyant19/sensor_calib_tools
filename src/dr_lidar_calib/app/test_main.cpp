@@ -5,12 +5,7 @@
 #include "multi_lidars_calib.h"
 #include "dr_lidar_calib.h"
 #include "file_io.h"
-#include "extract_lidar_feature.h"
-#include "exrtace_image_feature.h"
-#include "match_features.h"
-#include "floor_plane_constriant.h"
 #include "show_tools.h"
-#include "lidar_compensation.h"
 
 // #define debug
 // #define test
@@ -34,6 +29,7 @@ std::vector<cv::Mat> getSyncImgs(const dr_lidar_calib::DrLidarCalibParam& calib_
   const double& lidar_stamp);
 
 int main(int argc, char** argv) {
+  time_t t_start = clock();
   if ( argc != 2 ) {
     std::cout<<"Usage: test_main path_to_config_file"<< std::endl;
     return -1;
@@ -46,25 +42,28 @@ int main(int argc, char** argv) {
   std::cout << "base_pcds_name_que: " << base_pcds_name_que_.size() << std::endl;
   #endif
 
+  std::unique_ptr<multi_lidars_calib::MultiLidarsCalib> multi_lidars_calib = 
+      std::make_unique<multi_lidars_calib::MultiLidarsCalib>(step_); 
   std::unique_ptr<dr_lidar_calib::DrLidarCalib> dr_lidar_calib = 
       std::make_unique<dr_lidar_calib::DrLidarCalib>(calib_param); 
   std::vector<std::vector<cv::Mat>> imgs_vec;
   std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> visual_pcd_vec;
+
+  // todo: online
+  TimesVector time_pairs;
+  if (calib_param.scene_num > 0) {
+    time_pairs = multi_lidars_calib->getCutTimepairs(calib_param.scene_num, dr_poses_ptr_);
+    #ifdef debug
+    for(auto time: time_pairs)
+      std::cout << "time: " << time.first << ", " << time.second << std::endl;
+    #endif
+  }
+  
   if(ref_num_ > 0) {
     // todo: multi lidars calib
   }
   else {
-    std::unique_ptr<multi_lidars_calib::MultiLidarsCalib> multi_lidars_calib = 
-      std::make_unique<multi_lidars_calib::MultiLidarsCalib>(base_lidar, step_);    
-
-    TimesVector time_pairs;
-    if (calib_param.scene_num > 0) {
-      time_pairs = multi_lidars_calib->getCutTimepairs(calib_param.scene_num, dr_poses_ptr_);
-      #ifdef debug
-      for(auto time: time_pairs)
-        std::cout << "time: " << time.first << ", " << time.second << std::endl;
-      #endif
-    }
+    multi_lidars_calib->initBaseLidar(base_lidar);
 
     int scene_index = 0;
     StampedPoseVectorPtr sample_pcd_poses_ptr = std::make_shared<StampedPoseVector>();
@@ -93,16 +92,6 @@ int main(int argc, char** argv) {
             StampedPcd stamp_map;
             StampedPcd stamp_visual;
             multi_lidars_calib->runBaseLidar(sample_pcds_ptr, sample_pcd_poses_ptr, stamp_map, stamp_visual);
-            #ifdef test
-            std::cout << "sample_pcds_ptr size: " << sample_pcds_ptr->size() << std::endl;
-            std::cout << "sample_pcd_poses_ptr size: " << sample_pcd_poses_ptr->size() << std::endl;
-            std::string pose_path = "/home/wd/datasets/3/" + std::to_string(scene_index) + "_pose.txt";
-            file_io::writeStampPoseToFile(sample_pcd_poses_ptr, pose_path);
-            std::string map_pcd_path = "/home/wd/datasets/3/" + std::to_string(scene_index) + "_map.pcd";
-            pcl::io::savePCDFile(map_pcd_path, *stamp_map.second);
-            std::string visual_pcd_path = "/home/wd/datasets/3/" + std::to_string(scene_index) + "_visual.pcd";
-            pcl::io::savePCDFile(visual_pcd_path, *stamp_visual.second);
-            #endif
             
             sample_pcd_poses_ptr->clear();
             sample_pcds_ptr->clear();
@@ -121,21 +110,10 @@ int main(int argc, char** argv) {
     std::cout << "base lidar pose traj size: " << base_lidar.lidar_poses_ptr->size() << std::endl;
     // todo: save lidar pose to check
     #endif
-
-    // preCameras(calib_param, imgs_vec);
-    #ifdef test
-    std::cout << "imgs_vec size: " << imgs_vec.size() << std::endl;  
-    for(auto imgs: imgs_vec) {
-      for(auto img: imgs) {
-        cv::imshow("img", img);
-        cv::waitKey(0);
-      }
-    }
-    #endif
-
-    init_Tx_dr_L_ =
-      multi_lidars_calib->estimateInitExtrinsics(dr_poses_ptr_, base_lidar.lidar_poses_ptr, base_lidar.tz);
   }
+
+  init_Tx_dr_L_ =
+      multi_lidars_calib->estimateInitExtrinsics(dr_poses_ptr_, base_lidar.lidar_poses_ptr, base_lidar.tz);
 
   #ifdef debug
   // show init 
@@ -181,6 +159,9 @@ int main(int argc, char** argv) {
         "_sceneID_" + std::to_string(scene_index) + "_res.png", res_img);
     }
   }
+
+  time_t t_end = clock();
+  std::cout << "calib process use time: " << (double) (t_end - t_start) / (CLOCKS_PER_SEC) << "s" << std::endl;
 
   return 0;
 }
@@ -246,7 +227,7 @@ void loadConfigFile(const std::string& calib_setting_path, multi_lidars_calib::L
     mkdir(calib_param.result_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   }
 
-  fSettings["save_lidar_extrinsic_name"] >> save_lidar_extrinsic_name_;
+  fSettings["SaveLidarExtrinsicName"] >> save_lidar_extrinsic_name_;
 
   #ifdef debug
   std::cout << "BaseLidar/pcds_file: " << base_pcds_file << std::endl;
@@ -276,7 +257,7 @@ void loadConfigFile(const std::string& calib_setting_path, multi_lidars_calib::L
   std::cout << "Plane.normal_theta_min: " << calib_param.theta_min << std::endl;
   std::cout << "Plane.normal_theta_max: " << calib_param.theta_max << std::endl;
   std::cout << "ResultPath: " << calib_param.result_path << std::endl;
-  std::cout << "save_lidar_extrinsic_name: " << save_lidar_extrinsic_name_ << std::endl;
+  std::cout << "SaveLidarExtrinsicName: " << save_lidar_extrinsic_name_ << std::endl;
   #endif
 
   file_io::loadPcdFilePath(base_pcds_file, base_pcds_name_que_);
