@@ -58,7 +58,8 @@ typedef struct {
 class MultiLidarsCalib {
  public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
-  MultiLidarsCalib(Lidar& lidar, const int& step);
+  MultiLidarsCalib(const int& step);
+  void initBaseLidar(Lidar& lidar);
   bool processBaseLidar(Lidar& lidar, 
     const double& pcd_stamp, const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
     Eigen::Matrix4d& pose,

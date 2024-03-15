@@ -14,13 +14,12 @@ typedef struct SinglePlane;
 
 class ExtractLidarFeature{
  public:
-  // EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
-
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
   ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio, const double& p2line_dis_thre,
-                      double& theta_min, double& theta_max);
+                      const double& theta_min, const double& theta_max);
   ExtractLidarFeature(const double& voxel_size, const double& ransac_dis_threshold, const int& plane_size_threshold,
                       const double& p2line_dis_thre,
-                      double& theta_min, double& theta_max);
+                      const double& theta_min, const double& theta_max);
 
   void getEdgeFeaturesByAdaVoxel(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud,
     pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_edge_cloud);

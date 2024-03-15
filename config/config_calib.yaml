@@ -19,8 +19,6 @@ ImageFilesPath: /media/lam_data/标定数据/上海小车/20号/直线往返/vid
 CamsIntrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
 CamsExtrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
 
-init_extrinsics_file: /home/wd/datasets/3/init_transform_dr_front.pb.txt
-
 CameraName:
   - avm_front
   - avm_left
@@ -51,7 +49,7 @@ Ransac.dis_threshold: 0.02
 Edge.min_dis_threshold: 0.08
 # Edge.min_dis_threshold: 0.05
 
-save_lidar_extrinsic_name: roof_transform.pb.txt
+SaveLidarExtrinsicName: roof_transform.pb.txt
 
-ResultPath:  /home/wd/datasets/3/RESULT_2
+ResultPath:  /home/wd/datasets/3/RESULT_1
 

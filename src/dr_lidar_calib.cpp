@@ -13,24 +13,22 @@ namespace dr_lidar_calib {
 DrLidarCalib::DrLidarCalib(const DrLidarCalibParam& param) {
   param_ = param;
 
-  if(param_.use_ada_voxel) 
-    extract_lidar_feature_ = 
-        std::make_unique<ExtractLidarFeature>(param_.voxel_size, param_.eigen_ratio, param_.p2line_dis_thred, 
-                                              param_.theta_min, param_.theta_max);
-  else
-      extract_lidar_feature_ = 
-      std::make_unique<ExtractLidarFeature>(param_.voxel_size, param_.ransac_dis_threshold, param_.plane_size_threshold, 
-                                            param_.p2line_dis_thred, param_.theta_min, param_.theta_max);
+  if(param_.use_ada_voxel) {
+    extract_lidar_feature_ =
+       std::make_unique<ExtractLidarFeature>(param_.voxel_size, param_.eigen_ratio, param_.p2line_dis_thred, 
+                                             param_.theta_min, param_.theta_max);
+  }
+  else {
+    extract_lidar_feature_ =
+    std::make_unique<ExtractLidarFeature>(param_.voxel_size, param_.ransac_dis_threshold, param_.plane_size_threshold, 
+                                          param_.p2line_dis_thred, param_.theta_min, param_.theta_max);
+  } 
 }
 
 void DrLidarCalib::init(const Eigen::Matrix4d& init_Tx_dr_L, const std::vector<std::vector<cv::Mat>>& imgs_vec) {
   initLidar(init_Tx_dr_L);
 
   initCameras(imgs_vec);
-
-  floor_plane_constraint_ = std::make_unique<FloorPlaneConstriant>();
-
-  match_features_ = std::make_unique<MatchFeatures>(param_.show_residual);
 }
 
 void DrLidarCalib::initLidar(const Eigen::Matrix4d& init_Tx_dr_L) {
@@ -41,10 +39,12 @@ void DrLidarCalib::initLidar(const Eigen::Matrix4d& init_Tx_dr_L) {
 void DrLidarCalib::processLidar(const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_lidar_cloud) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr line_clouds = 
         pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
-  if(param_.use_ada_voxel) 
+  if(param_.use_ada_voxel) {
     extract_lidar_feature_->getEdgeFeaturesByAdaVoxel(input_lidar_cloud, line_clouds);
-  else 
-    extract_lidar_feature_->getEdgeFeatures(input_lidar_cloud, line_clouds);  
+  }
+  else {
+    extract_lidar_feature_->getEdgeFeatures(input_lidar_cloud, line_clouds); 
+  } 
   std::cout << "line_clouds size: " << line_clouds->size() << std::endl; 
 
   lidar_.plane_line_cloud_vec_.emplace_back(line_clouds);
@@ -54,7 +54,7 @@ void DrLidarCalib::initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec
   cams_.resize(param_.cams_name_vec.size());
   std::cout << "init " << cams_.size() << " cameras." << std::endl;
   
-  extract_image_feature_ = 
+  std::unique_ptr<ExtractImageFeature> extract_image_feature = 
     std::make_unique<ExtractImageFeature>(param_.canny_threshold, param_.rgb_edge_minLen);
 
   for(size_t cam_index = 0; cam_index < cams_.size(); ++cam_index) {
@@ -81,7 +81,7 @@ void DrLidarCalib::initCameras(const std::vector<std::vector<cv::Mat>>& imgs_vec
       // extrace images line features
       pcl::PointCloud<pcl::PointXYZ>::Ptr rgb_egde_clouds = pcl::PointCloud<pcl::PointXYZ>::Ptr(
         new pcl::PointCloud<pcl::PointXYZ>);
-      extract_image_feature_->getEdgeFeatures(undistort_img, rgb_egde_clouds);
+      extract_image_feature->getEdgeFeatures(undistort_img, rgb_egde_clouds);
       cams_[cam_index].rgb_edge_clouds_.emplace_back(rgb_egde_clouds);
     }
   }
@@ -97,8 +97,10 @@ void DrLidarCalib::run(const Eigen::Matrix4d& init_Tx_dr_L,
   Eigen::Matrix4d Tx_dr_L_new = Eigen::Matrix4d::Identity();
   // todo: compare results
   // todo: 考虑地面约束失败的情况
-  if(floor_plane_constraint_->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, Tx_dr_L_new)) {
-  // if (floor_plane_constraint_->addFloorConstriantRac(visual_pcd_vec[0], lidar_.Tx_dr_L_, Tx_dr_L_new)) {
+  std::unique_ptr<FloorPlaneConstriant> floor_plane_constraint = 
+    std::make_unique<FloorPlaneConstriant>();
+  if(floor_plane_constraint->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, Tx_dr_L_new)) {
+  // if (floor_plane_constraint->addFloorConstriantRac(visual_pcd_vec[0], lidar_.Tx_dr_L_, Tx_dr_L_new)) {
     lidar_.update_TxDL(Tx_dr_L_new);
 
     for(int cam_index = 0; cam_index < cams_.size(); ++cam_index) {
@@ -152,7 +154,9 @@ void DrLidarCalib::run(const Eigen::Matrix4d& init_Tx_dr_L,
         for(int scene_index = 0; scene_index < param_.scene_num; ++scene_index) {
           std::vector<VPnPData> vpnp_list;
           cv::Mat residual_img;
-          match_features_->buildVPnp(cams_[cam_index].camera_matrix_, cams_[cam_index].width_, cams_[cam_index].height_,
+          std::unique_ptr<MatchFeatures> match_features = 
+            std::make_unique<MatchFeatures>(param_.show_residual);
+          match_features->buildVPnp(cams_[cam_index].camera_matrix_, cams_[cam_index].width_, cams_[cam_index].height_,
                                      cams_[cam_index].rgb_edge_clouds_[scene_index], lidar_.plane_line_cloud_vec_[scene_index],
                                      cams_[cam_index].Tx_C_L_, dis_threshold, vpnp_list, residual_img);
           if(vpnp_list.size() == 0) {
@@ -199,7 +203,7 @@ void DrLidarCalib::run(const Eigen::Matrix4d& init_Tx_dr_L,
       options.use_nonmonotonic_steps = true;
       ceres::Solver::Summary summary;
       ceres::Solve(options, &problem, &summary);
-      std::cout << summary.BriefReport() << std::endl;
+      // std::cout << summary.BriefReport() << std::endl;
 
       lidar_.Tx_dr_L_.block<3, 3>(0, 0) = m_q.toRotationMatrix();
       lidar_.Tx_dr_L_.block<3, 1>(0, 3) = m_t;
@@ -215,7 +219,7 @@ void DrLidarCalib::run(const Eigen::Matrix4d& init_Tx_dr_L,
   // floor plane constrint again
   Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
   Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
-  floor_plane_constraint_->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, T_dr_L_new);
+  floor_plane_constraint->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, T_dr_L_new);
   T_dr_pr = T_dr_L_new * (lidar_.Tx_dr_L_.inverse());
   lidar_.update_TxDL(T_dr_L_new);
 

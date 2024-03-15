@@ -1,8 +1,5 @@
 #include <unordered_map>
 #include "multi_lidars_calib.h"
-#include "lidar_odometry.h"
-#include "lidar_compensation.h"
-#include "extract_lidar_feature.hpp"
 #include "pose_refine.hpp"
 #include "handeye.h"
 #include "common.h"
@@ -11,13 +8,19 @@
 // #define debug
 
 namespace multi_lidars_calib {
-MultiLidarsCalib::MultiLidarsCalib(Lidar& lidar, const int& step) {
+MultiLidarsCalib::MultiLidarsCalib(const int& step) {
+  #ifdef debug
+  std::cout << "step: " << step << std::endl;
+  #endif
+  step_ = step;
+}
+
+void MultiLidarsCalib::initBaseLidar(Lidar& lidar) {
   #ifdef debug
   std::cout << "lidar.use_compensation: " << lidar.use_compensation << std::endl;
   std::cout << "lidar.lidar_type: " << lidar.lidar_type << std::endl;
   std::cout << "lidar.min_dis: " << lidar.min_dis << std::endl;
   std::cout << "lidar.max_dis: " << lidar.max_dis << std::endl;
-  std::cout << "step: " << step << std::endl;
   #endif
   lidar.odomet = std::make_unique<LidarOdometry>(lidar.use_compensation);
   lidar.compens = std::make_unique<LidarCompensation>(lidar.lidar_type);
@@ -25,7 +28,6 @@ MultiLidarsCalib::MultiLidarsCalib(Lidar& lidar, const int& step) {
   // lidar.sample_poses_ptr = std::make_shared<StampedPoseVector>();
   // lidar.sample_pcds_ptr = std::make_shared<StampedPcdVector>();
   lidar.cnt = 0;
-  step_ = step;
 }
 
 bool MultiLidarsCalib::processBaseLidar(Lidar& lidar, 
@@ -187,9 +189,9 @@ void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
       quad_save.emplace_back(refine_q);
       trans_save.emplace_back(refine_t);
     }
-    lm_opt.evaluate_only_residual(quad_save, trans_save, residual_save);
+    // lm_opt.evaluate_only_residual(quad_save, trans_save, residual_save);
     // std::cout << "####debug residual_save: " << residual_save << std::endl;
-    lm_opt.evaluate_only_residual(lm_opt.poses, lm_opt.ts, residual_lm);
+    // lm_opt.evaluate_only_residual(lm_opt.poses, lm_opt.ts, residual_lm);
     // std::cout << "####debug residual_lm: " << residual_lm << std::endl;
 
     for(int i = 0; i < window_size; ++i) {
@@ -198,9 +200,9 @@ void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
       pose_seq->at(i).second.block<3, 1>(0, 3) = refine_t;
     }
 
-    if(std::abs(residual_lm - residual_save) < 1e-4) {
-      break;
-    }  
+    // if(std::abs(residual_lm - residual_save) < 1e-4) {
+    //   break;
+    // }  
   }
   std::cout << "---------------------" << std::endl;
   std::cout << "complete" << std::endl;

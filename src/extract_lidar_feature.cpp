@@ -11,7 +11,7 @@
 
 ExtractLidarFeature::ExtractLidarFeature(const double& voxel_size, const double& eigen_ratio,
                                          const double& p2line_dis_thre,
-                                         double& theta_min, double& theta_max) {
+                                         const double& theta_min, const double& theta_max) {
   std::cout << "use adaptive voxel" << std::endl;
   voxel_size_ = voxel_size;
   eigen_ratio_ = eigen_ratio;
@@ -373,7 +373,7 @@ double ExtractLidarFeature::cosineSimilarity(const Eigen::Vector3d& v1, const Ei
 ExtractLidarFeature::ExtractLidarFeature(const double& voxel_size, const double& ransac_dis_threshold,
                                          const int& plane_size_threshold,
                                          const double& p2line_dis_thre,
-                                         double& theta_min, double& theta_max) {
+                                         const double& theta_min, const double& theta_max) {
   voxel_size_ = voxel_size;
   ransac_dis_threshold_ = ransac_dis_threshold;
   plane_size_threshold_ = plane_size_threshold;
