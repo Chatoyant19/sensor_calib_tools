@@ -169,10 +169,10 @@ void projection(const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_point,
   // todo
   #ifdef fisheye
   // cv::fisheye::projectPoints(pts_3d, pts_2d, rvec, tvec, camera_matrix, distortion_coeff);
-  #elif
+  #else
   cv::projectPoints(pts_3d, rvec, tvec, camera_matrix, distortion_coeff, pts_2d);
   #endif
-  
+
   image_project = cv::Mat::zeros(img_height, img_width, CV_16UC1);
   for (size_t i = 0; i < pts_2d.size(); ++i) {
     cv::Point2f point_2d = pts_2d[i];
