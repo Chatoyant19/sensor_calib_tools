@@ -8,9 +8,9 @@
 
 class VOXEL_LOC;
 class OCTO_TREE_ROOT;
-typedef struct Plane;
-typedef struct Voxel;
-typedef struct SinglePlane;
+typedef struct Plane Plane;
+typedef struct Voxel Voxel;
+typedef struct SinglePlane SinglePlane;
 
 class ExtractLidarFeature{
  public:

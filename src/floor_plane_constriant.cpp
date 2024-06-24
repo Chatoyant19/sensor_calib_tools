@@ -19,6 +19,7 @@ bool FloorPlaneConstriant::addFloorConstriant(const pcl::PointCloud<pcl::PointXY
   // std::string path = "/home/wd/datasets/beijing/2/floor_pcd.pcd";
   // pcl::io::savePCDFile(path, floor_pcd);
   // #endif
+  assert(floor_pcd.size() > 50);
 
   pcl::PointCloud<pcl::PointXYZI> floor_plane_cloud;
   Eigen::Vector3d plane_normal;
@@ -84,7 +85,10 @@ bool FloorPlaneConstriant::extractFloorPlane(const pcl::PointCloud<pcl::PointXYZ
     }
   }
 
-  if(floor_plane_cloud.size() < 0) return false;         
+  if(floor_plane_cloud.size() < 0) {
+    std::cout << "cannot extract floor plane cloud!" << std::endl;
+    return false;
+  }         
   plane_normal = computePlaneNormal(floor_plane_cloud);   
   return true;                                      
 }

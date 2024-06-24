@@ -208,13 +208,19 @@ void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
   std::cout << "complete" << std::endl;
 }
 
-double distance_thred = 6.0;
+double distance_thred = 7.0;
 double radians_thred = 1.0;
 TimesVector MultiLidarsCalib::getCutTimepairs(const int& cut_num, const StampedPoseVectorPtr& pose_seq) { 
   TimesVector time_pair;
   time_pair.resize(cut_num);
   int seg_cnt = 0;
   for(size_t i = 0; i < pose_seq->size(); ) { 
+    size_t length = 30;
+    if(!vehicleIsStatic(pose_seq, pose_seq->at(i).second, i, length)) {
+      ++i;
+      continue;
+    }
+    i = i + 20;
     time_pair[seg_cnt].first = pose_seq->at(i).first;
     Eigen::Matrix4d start_pose = pose_seq->at(i).second;
     bool find_traj_end = false;
@@ -231,7 +237,7 @@ TimesVector MultiLidarsCalib::getCutTimepairs(const int& cut_num, const StampedP
       } 
 
       if(std::abs(delta_yaw) > 3.0) {
-        i = j + 20;
+        i = j + 1;
         break;
       }
     }
@@ -240,6 +246,18 @@ TimesVector MultiLidarsCalib::getCutTimepairs(const int& cut_num, const StampedP
     ++seg_cnt;
     if(seg_cnt == cut_num) return time_pair;
   }
+}
+
+bool MultiLidarsCalib::vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
+                                       const Eigen::Matrix4d& element, 
+                                       const size_t& start,
+                                       const size_t& length) {
+  if(start + length > pose_seq->size())
+    return false;  
+
+  return std::all_of(pose_seq->begin() + start, pose_seq->begin() + start + length, 
+                     [&element](const StampedPose& stamped_mat) { 
+                        return stamped_mat.second == element; });                                      
 }
 
 } // namespace multi_lidars_calib
