@@ -219,9 +219,10 @@ void DrLidarCalib::run(const Eigen::Matrix4d& init_Tx_dr_L,
   // floor plane constrint again
   Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
   Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
-  floor_plane_constraint->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, T_dr_L_new);
-  T_dr_pr = T_dr_L_new * (lidar_.Tx_dr_L_.inverse());
-  lidar_.update_TxDL(T_dr_L_new);
+  if(floor_plane_constraint->addFloorConstriant(visual_pcd_vec[0], lidar_.Tx_dr_L_, T_dr_L_new)) {
+    T_dr_pr = T_dr_L_new * (lidar_.Tx_dr_L_.inverse());
+    lidar_.update_TxDL(T_dr_L_new);
+  }
 
   Tx_dr_L = lidar_.Tx_dr_L_;
   cams_extrinsics_vec.resize(cams_.size());

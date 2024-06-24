@@ -88,10 +88,24 @@ int main(int argc, char** argv) {
             sample_pcds_ptr->emplace_back(StampedPcd(stamp, out_pcd));  
           }
           if(stamp > time_pairs[scene_index].second) {
+            #ifdef test
+            // std::cout << "sample_pcds_ptr size: " << sample_pcds_ptr->size() << std::endl;
+            // std::cout << "sample_pcd_poses_ptr size: " << sample_pcd_poses_ptr->size() << std::endl;
+            // sample_pcd_poses_ptr->clear();
+            // std::string pose_path = "/home/wd/datasets/3/RESULT_1/" + std::to_string(scene_index) + "_pose.txt";
+            // file_io::readStampPoseFromFile(pose_path, sample_pcd_poses_ptr);
+            #endif
+
             // process sample pcd and pose
             StampedPcd stamp_map;
             StampedPcd stamp_visual;
             multi_lidars_calib->runBaseLidar(sample_pcds_ptr, sample_pcd_poses_ptr, stamp_map, stamp_visual);
+            #ifdef test
+            std::string map_pcd_path = calib_param.result_path + "/" + std::to_string(scene_index) + "_map.pcd";
+            pcl::io::savePCDFile(map_pcd_path, *stamp_map.second);
+            std::string visual_pcd_path = calib_param.result_path + "/" + std::to_string(scene_index) + "_visual.pcd";
+            pcl::io::savePCDFile(visual_pcd_path, *stamp_visual.second);
+            #endif
             
             sample_pcd_poses_ptr->clear();
             sample_pcds_ptr->clear();
@@ -110,11 +124,26 @@ int main(int argc, char** argv) {
     std::cout << "base lidar pose traj size: " << base_lidar.lidar_poses_ptr->size() << std::endl;
     // todo: save lidar pose to check
     #endif
+
+    // #ifdef test
+    // std::cout << "imgs_vec size: " << imgs_vec.size() << std::endl;  
+    // for(auto imgs: imgs_vec) {
+    //   for(auto img: imgs) {
+    //     cv::imshow("img", img);
+    //     cv::waitKey(0);
+    //   }
+    // }
+    // #endif
   }
 
   init_Tx_dr_L_ =
       multi_lidars_calib->estimateInitExtrinsics(dr_poses_ptr_, base_lidar.lidar_poses_ptr, base_lidar.tz);
-
+  #ifdef test
+  std::cout << "init_Tx_dr_L_: " << init_Tx_dr_L_ << std::endl;
+  // std::string extrinsic_file = "/home/wd/datasets/3/RESULT_1/init.pb.txt";
+  // file_io::readExtrinsicFromPbFile(extrinsic_file, init_Tx_dr_L_);
+  #endif
+  
   #ifdef debug
   // show init 
   for(size_t cam_index = 0; cam_index < calib_param.cams_name_vec.size(); ++cam_index) {

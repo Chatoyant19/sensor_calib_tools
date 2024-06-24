@@ -5,6 +5,7 @@
 #include <Eigen/Dense>
 #include <opencv2/opencv.hpp>
 #include <queue>
+#include <memory>
 
 typedef std::pair<double, Eigen::Matrix4d> StampedPose;
 typedef std::vector<StampedPose, Eigen::aligned_allocator<StampedPose>> StampedPoseVector;

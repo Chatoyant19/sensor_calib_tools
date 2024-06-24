@@ -80,6 +80,10 @@ class MultiLidarsCalib {
                        pcl::PointCloud<pcl::PointXYZI>::Ptr& compensated_pcd);
   void refineBasePose(const StampedPcdVectorPtr& pcds_seq,
     StampedPoseVectorPtr& pose_seq);
+  bool vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
+                       const Eigen::Matrix4d& element, 
+                       const size_t& start,
+                       const size_t& length);
  
  private:
   int step_;
