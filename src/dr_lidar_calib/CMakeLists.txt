@@ -138,6 +138,14 @@ target_link_libraries(test_show_tools
 )
 
 
+add_executable(test_file_io app/test_file_io.cpp
+              src/file_io 
+              src/sensor_extrinsic.pb.cc)
+target_link_libraries(test_file_io
+  ${OpenCV_LIBS}
+  ${PROTOBUF_LIBRARY}
+  ${catkin_LIBRARIES}
+)     
 
 install(TARGETS
   # multi_dr_lidar_calib

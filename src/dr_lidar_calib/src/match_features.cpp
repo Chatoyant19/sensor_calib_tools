@@ -1,38 +1,39 @@
+#include "match_features.h"
 
 #include <pcl/common/transforms.h>
 #include <pcl/search/kdtree.h>
-#include "match_features.h"
+
 #include "eigen_types.hpp"
 #include "extract_lidar_feature.hpp"
 #include "show_tools.h"
 
-void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix, 
-                              const int& camera_width, const int& camera_height,
-                              const pcl::PointCloud<pcl::PointXYZ>::Ptr& cam_edge_cloud_2d,
-                              const pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_line_cloud_3d,
-                              const Eigen::Matrix4d& Tx_C_L,
-                              const int& dis_threshold,
-                              std::vector<VPnPData>& pnp_list,
-                              cv::Mat& residual_img) {
+void MatchFeatures::buildVPnp(
+    const cv::Mat& camera_matrix, const int& camera_width,
+    const int& camera_height,
+    const pcl::PointCloud<pcl::PointXYZ>::Ptr& cam_edge_cloud_2d,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_line_cloud_3d,
+    const Eigen::Matrix4d& Tx_C_L, const int& dis_threshold,
+    std::vector<VPnPData>& pnp_list, cv::Mat& residual_img) {
   pnp_list.clear();
-  cv::Mat distortion_coeff = (cv::Mat_<double>(4, 1) << 0.0, 0.0, 0.0, 0.0 );                                
-  
-  pcl::PointCloud<pcl::PointXYZI>::Ptr filtered_lidar_line_cloud = 
-    pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
+  cv::Mat distortion_coeff = (cv::Mat_<double>(4, 1) << 0.0, 0.0, 0.0, 0.0);
+
+  pcl::PointCloud<pcl::PointXYZI>::Ptr filtered_lidar_line_cloud =
+      pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   filterOutViewPcd(lidar_line_cloud_3d, Tx_C_L, filtered_lidar_line_cloud);
-  
+
   std::vector<cv::Point3d> pts_3d;
-  for(auto p : *filtered_lidar_line_cloud) {
+  for (auto p : *filtered_lidar_line_cloud) {
     pts_3d.emplace_back(cv::Point3d(p.x, p.y, p.z));
   }
-  if(pts_3d.size() < 10) return;
+  if (pts_3d.size() < 10) return;
 
   Eigen::Vector3d rvec_eigen = log(Tx_C_L).head<3>();
   Eigen::Vector3d tvec_eigen = log(Tx_C_L).tail<3>();
   cv::Vec3d rvec(rvec_eigen(0), rvec_eigen(1), rvec_eigen(2));
   cv::Vec3d tvec(tvec_eigen(0), tvec_eigen(1), tvec_eigen(2));
   std::vector<cv::Point2d> pts_2d;
-  cv::projectPoints(pts_3d, rvec, tvec, camera_matrix, distortion_coeff, pts_2d);
+  cv::projectPoints(pts_3d, rvec, tvec, camera_matrix, distortion_coeff,
+                    pts_2d);
 
   std::vector<std::vector<std::vector<pcl::PointXYZI>>> img_pts_container;
   for (int y = 0; y < camera_height; ++y) {
@@ -56,7 +57,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
     pi_3d.y = pts_3d[i].y;
     pi_3d.z = pts_3d[i].z;
     pi_3d.intensity = 1;
-    if (p.x > 0 && p.x < camera_width && pts_2d[i].y > 0 && pts_2d[i].y < camera_height) {
+    if (p.x > 0 && p.x < camera_width && pts_2d[i].y > 0 &&
+        pts_2d[i].y < camera_height) {
       if (img_pts_container[pts_2d[i].y][pts_2d[i].x].size() == 0) {
         lidar_edge_cloud_2d->points.push_back(p);
         img_pts_container[pts_2d[i].y][pts_2d[i].x].push_back(pi_3d);
@@ -68,7 +70,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
 
   if (show_residual_) {
     residual_img =
-      show_tools::getConnectImg(cam_edge_cloud_2d, lidar_edge_cloud_2d, dis_threshold, camera_width, camera_height);
+        show_tools::getConnectImg(cam_edge_cloud_2d, lidar_edge_cloud_2d,
+                                  dis_threshold, camera_width, camera_height);
   }
 
   pcl::search::KdTree<pcl::PointXYZ>::Ptr kdtree(
@@ -98,8 +101,10 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
   int line_count = 0;
   std::vector<cv::Point2d> lidar_2d_list;
   std::vector<cv::Point2d> img_2d_list;
-  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> camera_direction_list;
-  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> lidar_direction_list;
+  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>
+      camera_direction_list;
+  std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>
+      lidar_direction_list;
   for (size_t i = 0; i < search_cloud->points.size(); i++) {
     pcl::PointXYZ searchPoint = search_cloud->points[i];
     if ((kdtree->nearestKSearch(searchPoint, K, pointIdxNKNSearch,
@@ -120,7 +125,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
         cv::Point p_c_2d(tree_cloud->points[pointIdxNKNSearch[0]].x,
                          -tree_cloud->points[pointIdxNKNSearch[0]].y);
         Eigen::Vector2d direction_cam(0, 0);
-        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> points_cam;
+        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>
+            points_cam;
         for (size_t i = 0; i < pointIdxNKNSearch.size(); i++) {
           Eigen::Vector2d p(tree_cloud->points[pointIdxNKNSearch[i]].x,
                             -tree_cloud->points[pointIdxNKNSearch[i]].y);
@@ -128,7 +134,8 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
         }
         calcDirection(points_cam, direction_cam);
         Eigen::Vector2d direction_lidar(0, 0);
-        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>> points_lidar;
+        std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>
+            points_lidar;
         for (size_t i = 0; i < pointIdxNKNSearch.size(); i++) {
           Eigen::Vector2d p(
               tree_cloud_lidar->points[pointIdxNKNSearchLidar[i]].x,
@@ -137,7 +144,7 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
         }
         calcDirection(points_lidar, direction_lidar);
         // direction.normalize();
-        
+
         lidar_2d_list.push_back(p_l_2d);
         img_2d_list.push_back(p_c_2d);
         camera_direction_list.push_back(direction_cam);
@@ -172,30 +179,32 @@ void MatchFeatures::buildVPnp(const cv::Mat& camera_matrix,
       }
     }
   }
-
 }
 
-void MatchFeatures::filterOutViewPcd(const pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_line_cloud_3d,
-                                     const Eigen::Matrix4d& Tx_C_L,
-                                     pcl::PointCloud<pcl::PointXYZI>::Ptr& filtered_cloud_3d) {
-  pcl::PointCloud<pcl::PointXYZI>::Ptr camera_pcd = pcl::PointCloud<pcl::PointXYZI>::Ptr(
-        new pcl::PointCloud<pcl::PointXYZI>);
+void MatchFeatures::filterOutViewPcd(
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr& lidar_line_cloud_3d,
+    const Eigen::Matrix4d& Tx_C_L,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr& filtered_cloud_3d) {
+  pcl::PointCloud<pcl::PointXYZI>::Ptr camera_pcd =
+      pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   pcl::transformPointCloud(*lidar_line_cloud_3d, *camera_pcd, Tx_C_L);
 
-  pcl::PointCloud<pcl::PointXYZI>::Ptr tmp_pcd = pcl::PointCloud<pcl::PointXYZI>::Ptr(
-        new pcl::PointCloud<pcl::PointXYZI>); 
-  for(auto p: *camera_pcd) {
-    if(p.z < 0) continue;
-      tmp_pcd->push_back(p);
+  pcl::PointCloud<pcl::PointXYZI>::Ptr tmp_pcd =
+      pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
+  for (auto p : *camera_pcd) {
+    if (p.z < 0) continue;
+    tmp_pcd->push_back(p);
   }
 
-  Eigen::Matrix4d Tx_L_C = Tx_C_L.inverse();;
+  Eigen::Matrix4d Tx_L_C = Tx_C_L.inverse();
+  ;
   pcl::transformPointCloud(*tmp_pcd, *filtered_cloud_3d, Tx_L_C);
-
 }
 
-void MatchFeatures::calcDirection(const std::vector<Eigen::Vector2d, Eigen::aligned_allocator<Eigen::Vector2d>>& points,
-                                  Eigen::Vector2d& direction) {
+void MatchFeatures::calcDirection(
+    const std::vector<Eigen::Vector2d,
+                      Eigen::aligned_allocator<Eigen::Vector2d>>& points,
+    Eigen::Vector2d& direction) {
   Eigen::Vector2d mean_point(0, 0);
   for (size_t i = 0; i < points.size(); i++) {
     mean_point(0) += points[i](0);
@@ -216,6 +225,6 @@ void MatchFeatures::calcDirection(const std::vector<Eigen::Vector2d, Eigen::alig
   Eigen::MatrixXd evalsReal;
   evalsReal = evals.real();
   Eigen::MatrixXf::Index evalsMax;
-  evalsReal.rowwise().sum().maxCoeff(&evalsMax); //得到最大特征值的位置
+  evalsReal.rowwise().sum().maxCoeff(&evalsMax);  //得到最大特征值的位置
   direction << evecs.real()(0, evalsMax), evecs.real()(1, evalsMax);
 }

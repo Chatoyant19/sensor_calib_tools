@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 
   Eigen::Matrix4d Tx_dr_L;
   std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> cams_extrinsics_vec;
-  dr_lidar_calib->run(init_Tx_dr_L_, visual_pcd_vec_, imgs_vec_, Tx_dr_L, cams_extrinsics_vec);
+  dr_lidar_calib->run(init_Tx_dr_L_, visual_pcd_vec_, imgs_vec_, Tx_dr_L, cams_extrinsics_vec, false);
 
   /***write extrinsics to files***/
   std::string lidar_extrinsics_folder = calib_param.result_path + "/lidar";

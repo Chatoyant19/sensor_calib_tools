@@ -2,11 +2,13 @@
 #ifndef MULTI_LIDARS_CALIB
 #define MULTI_LIDARS_CALIB
 
-#include <Eigen/Dense>
-#include <vector>
-#include <memory>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+
+#include <Eigen/Dense>
+#include <memory>
+#include <vector>
+
 #include "lidar_odometry.h"
 
 // just for LidarType_enum_type. how to forward declaration?
@@ -16,11 +18,13 @@
 // class LidarCompensation;
 
 typedef std::pair<double, Eigen::Matrix4d> StampedPose;
-typedef std::vector<StampedPose, Eigen::aligned_allocator<StampedPose>> StampedPoseVector;
+typedef std::vector<StampedPose, Eigen::aligned_allocator<StampedPose>>
+    StampedPoseVector;
 typedef std::shared_ptr<StampedPoseVector> StampedPoseVectorPtr;
 
 typedef std::pair<double, pcl::PointCloud<pcl::PointXYZI>::Ptr> StampedPcd;
-typedef std::vector<StampedPcd, Eigen::aligned_allocator<StampedPcd>> StampedPcdVector;
+typedef std::vector<StampedPcd, Eigen::aligned_allocator<StampedPcd>>
+    StampedPcdVector;
 typedef std::shared_ptr<StampedPcdVector> StampedPcdVectorPtr;
 
 typedef std::pair<double, double> Times;
@@ -57,39 +61,45 @@ typedef struct {
 
 class MultiLidarsCalib {
  public:
-  EIGEN_MAKE_ALIGNED_OPERATOR_NEW 
+  EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   MultiLidarsCalib(const int& step);
   void initBaseLidar(Lidar& lidar);
-  bool processBaseLidar(Lidar& lidar, 
-    const double& pcd_stamp, const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
-    Eigen::Matrix4d& pose,
-    pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd);
-  Eigen::Matrix4d estimateInitExtrinsics(const StampedPoseVectorPtr& pose_seq1, 
-    const StampedPoseVectorPtr& pose_seq2, const double& tz);
+  bool processBaseLidar(Lidar& lidar, const double& pcd_stamp,
+                        const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
+                        Eigen::Matrix4d& pose,
+                        pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd);
+  Eigen::Matrix4d estimateInitExtrinsics(const StampedPoseVectorPtr& pose_seq1,
+                                         const StampedPoseVectorPtr& pose_seq2,
+                                         const double& tz);
   void runBaseLidar(const StampedPcdVectorPtr& pcds_seq,
-                    StampedPoseVectorPtr& pose_seq,
-                    StampedPcd& stamp_map,
+                    StampedPoseVectorPtr& pose_seq, StampedPcd& stamp_map,
                     StampedPcd& stamp_visual);
-  TimesVector getCutTimepairs(const int& cut_num, const StampedPoseVectorPtr& pose_seq);                    
+  TimesVector getCutTimepairs(const int& cut_num,
+                              const StampedPoseVectorPtr& pose_seq,
+                              const size_t& th_time = 5);
+  static bool routeIsOk(const int &cut_num, const StampedPoseVectorPtr &pose_seq,
+                        const size_t &th_time);
  private:
-  bool processLidar(Lidar& lidar, 
-    const double& pcd_stamp, const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
-    Eigen::Matrix4d& out_pose, pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd);
-  bool lidarCompensate(Lidar& lidar,const pcl::PointCloud<pcl::PointXYZI>::Ptr& origin_pcd,
+  bool processLidar(Lidar& lidar, const double& pcd_stamp,
+                    const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
+                    Eigen::Matrix4d& out_pose,
+                    pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd);
+  bool lidarCompensate(Lidar& lidar,
+                       const pcl::PointCloud<pcl::PointXYZI>::Ptr& origin_pcd,
                        const double& timestamp, const Eigen::Matrix4d& pose,
                        pcl::PointCloud<pcl::PointXYZI>::Ptr& compensated_pcd);
   void refineBasePose(const StampedPcdVectorPtr& pcds_seq,
-    StampedPoseVectorPtr& pose_seq);
-  bool vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
-                       const Eigen::Matrix4d& element, 
-                       const size_t& start,
-                       const size_t& length);
- 
+                      StampedPoseVectorPtr& pose_seq);
+  static bool vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
+                              const Eigen::Matrix4d& element, const size_t& start,
+                              const size_t& length);
+
  private:
   int step_;
   RefinePoseParam refine_pose_param_;
+  static TimesVector time_pairs_;
 };
 
-} // namespace multi_lidars_calib
+}  // namespace multi_lidars_calib
 
 #endif

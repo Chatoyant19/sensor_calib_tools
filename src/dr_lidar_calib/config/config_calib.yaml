@@ -1,7 +1,7 @@
 %YAML:1.0
 
 BaseLidar:
-  pcds_file: /media/lam_data/标定数据/上海小车/20号/直线往返/lidarpcd/23-12-28_12-24-44_826/pcd/lidar_roof_front
+  pcds_file: /mount_dir/lam_data/calibration_jira/DG_0725/pcd
   max_dis: 40
   min_dis: 1
   # hesai64, bp32, helios32, ft120, yijing
@@ -11,14 +11,23 @@ BaseLidar:
 RefNum: 0
 Step: 5
 SceneNum: 3
+ThTime: 3
 
-DrPosesFile: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/video/dr_tum.txt
+ShowResidual: 1
+UseCADPrior: 1
 
-ImageFilesPath: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/jpg
+DrPosesFile: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/video/dr_tum.txt
+AroundCameraStampFile: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/video/video_frame_info
+ImageFilesPath: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/jpg
+CamsIntrinsicPath: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output/camera_bk/
+CamsExtrinsicPath: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output/camera_bk/
+LidarExtrinsicFile: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt
 
-CamsIntrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
-CamsExtrinsicPath: /media/lam_data/标定数据/上海小车/20号/直线往返/camera_baselink/camera
+SaveLidarExtrinsicName: roof_front_transform.pb.txt
+ResultPath:  /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output
 
+
+#####
 CameraName:
   - avm_front
   - avm_left
@@ -30,8 +39,6 @@ CameraName:
   # - rear_medium
   # - right_front
   # - right_rear
-
-AroudCameraStampFile: /media/lam_data/标定数据/上海小车/20号/直线往返/video/23-12-28_11-28-06_902/video/video_frame_info
 
 Canny.gray_threshold: 10
 Canny.len_threshold: 50
@@ -48,8 +55,3 @@ Ransac.dis_threshold: 0.02
 # Ransac.dis_threshold: 0.015
 Edge.min_dis_threshold: 0.08
 # Edge.min_dis_threshold: 0.05
-
-SaveLidarExtrinsicName: roof_transform.pb.txt
-
-ResultPath:  /home/wd/datasets/3/RESULT_1
-

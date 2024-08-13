@@ -1,17 +1,19 @@
 #include "exrtace_image_feature.h"
 
-void ExtractImageFeature::getEdgeFeatures(const cv::Mat& raw_image, 
-                                     pcl::PointCloud<pcl::PointXYZ>::Ptr& rgb_edge_cloud) {
+void ExtractImageFeature::getEdgeFeatures(
+    const cv::Mat& raw_image,
+    pcl::PointCloud<pcl::PointXYZ>::Ptr& rgb_edge_cloud) {
   cv::Mat grey_img;
   cv::cvtColor(raw_image, grey_img, cv::COLOR_BGR2GRAY);
 
   edgeDetector(grey_img, rgb_edge_cloud);
 }
 
-void ExtractImageFeature::edgeDetector(const cv::Mat& src_img, 
-                                       pcl::PointCloud<pcl::PointXYZ>::Ptr& edge_cloud) {
+void ExtractImageFeature::edgeDetector(
+    const cv::Mat& src_img, pcl::PointCloud<pcl::PointXYZ>::Ptr& edge_cloud) {
   int gaussian_size = 5;
-  cv::GaussianBlur(src_img, src_img, cv::Size(gaussian_size, gaussian_size), 0, 0);
+  cv::GaussianBlur(src_img, src_img, cv::Size(gaussian_size, gaussian_size), 0,
+                   0);
 
   int width = src_img.cols;
   int height = src_img.rows;
@@ -33,8 +35,8 @@ void ExtractImageFeature::edgeDetector(const cv::Mat& src_img,
       p.y = -contours[i][j].y;
       p.z = 0;
       edge_img.at<uchar>(-p.y, p.x) = 255;
-    } 
-  }  
+    }
+  }
 
   for (int x = 0; x < edge_img.cols; x++) {
     for (int y = 0; y < edge_img.rows; y++) {
@@ -46,5 +48,5 @@ void ExtractImageFeature::edgeDetector(const cv::Mat& src_img,
         edge_cloud->points.push_back(p);
       }
     }
-  }                
+  }
 }
