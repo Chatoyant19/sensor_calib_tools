@@ -10,8 +10,8 @@
 // #define test
 
 bool FloorPlaneConstriant::addFloorConstraint(
-    const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_pcd,
-    const Eigen::Matrix4d& Tx_dr_L, Eigen::Matrix4d& update_Tx_dr_L) {
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &raw_pcd,
+    const Eigen::Matrix4d &Tx_dr_L, Eigen::Matrix4d &update_Tx_dr_L) {
   pcl::PointCloud<pcl::PointXYZI> transformed_pcd;
   pcl::transformPointCloud(*raw_pcd, transformed_pcd, Tx_dr_L);
 
@@ -23,7 +23,7 @@ bool FloorPlaneConstriant::addFloorConstraint(
   // #endif
   // assert(floor_pcd.size() > 50);
   if (floor_pcd.size() < 50) {
-    std::cerr << "cannot addFloorConstraint, "
+    std::cerr << "cannot addFloorConstraint, too few points, "
               << "floor_pcd size: " << floor_pcd << std::endl;
     return false;
   }
@@ -36,6 +36,7 @@ bool FloorPlaneConstriant::addFloorConstraint(
     // pcl::io::savePCDFile(path_1, floor_plane_cloud);
     // std::cout << "plane_normal: " << plane_normal.transpose() << std::endl;
     // #endif
+    floor_plane_cloud_ = floor_plane_cloud;
     update_Tx_dr_L =
         computeRollPitchAndZ(floor_plane_cloud, Tx_dr_L, plane_normal);
     return true;
@@ -45,9 +46,9 @@ bool FloorPlaneConstriant::addFloorConstraint(
 }
 
 void FloorPlaneConstriant::filteredPcd(
-    const pcl::PointCloud<pcl::PointXYZI>& raw_pcd,
-    pcl::PointCloud<pcl::PointXYZI>& cloud) {
-  for (const auto& p : raw_pcd) {
+    const pcl::PointCloud<pcl::PointXYZI> &raw_pcd,
+    pcl::PointCloud<pcl::PointXYZI> &cloud) {
+  for (const auto &p : raw_pcd) {
     if (std::abs(p.x) < 20 && std::abs(p.y) < 20 && std::abs(p.z) < 0.25)
       cloud.push_back(p);
   }
@@ -55,20 +56,20 @@ void FloorPlaneConstriant::filteredPcd(
 
 // todo: compute plane normal vector!
 bool FloorPlaneConstriant::extractFloorPlane(
-    const pcl::PointCloud<pcl::PointXYZI>& cloud,
-    pcl::PointCloud<pcl::PointXYZI>& floor_plane_cloud,
-    Eigen::Vector3d& plane_normal) {
-  std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*> surf_map;
+    const pcl::PointCloud<pcl::PointXYZI> &cloud,
+    pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud,
+    Eigen::Vector3d &plane_normal) {
+  std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT *> surf_map;
   pcl::PointCloud<pcl::PointXYZI> tmp_cloud = cloud;
   cutVoxel(surf_map, tmp_cloud);
   for (auto iter = surf_map.begin(); iter != surf_map.end(); ++iter)
     iter->second->recut();
 
   for (auto iter = surf_map.begin(); iter != surf_map.end(); iter++) {
-    std::vector<Plane*> plane_list;
+    std::vector<Plane *> plane_list;
     iter->second->get_plane_list(plane_list);
 
-    std::vector<Plane*> merge_plane_list;
+    std::vector<Plane *> merge_plane_list;
     if (plane_list.size() > 1) {
       mergePlane(plane_list, merge_plane_list);
       plane_list = merge_plane_list;
@@ -94,7 +95,7 @@ bool FloorPlaneConstriant::extractFloorPlane(
     }
   }
 
-  if (floor_plane_cloud.size() < 0) {
+  if (floor_plane_cloud.size() <= 0) {
     std::cout << "cannot extract floor plane cloud!" << std::endl;
     return false;
   }
@@ -103,11 +104,11 @@ bool FloorPlaneConstriant::extractFloorPlane(
 }
 
 void FloorPlaneConstriant::cutVoxel(
-    std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT*>& feat_map,
-    pcl::PointCloud<pcl::PointXYZI>& pl_feat) {
+    std::unordered_map<VOXEL_LOC, OCTO_TREE_ROOT *> &feat_map,
+    pcl::PointCloud<pcl::PointXYZI> &pl_feat) {
   float loc_xyz[3];
   printf("extract_floor_plane/total point size %ld\n", pl_feat.points.size());
-  for (pcl::PointXYZI& p_c : pl_feat.points) {
+  for (pcl::PointXYZI &p_c : pl_feat.points) {
     Eigen::Vector3d pvec_orig(p_c.x, p_c.y, p_c.z);
 
     for (int j = 0; j < 3; j++) {
@@ -115,15 +116,15 @@ void FloorPlaneConstriant::cutVoxel(
       if (loc_xyz[j] < 0) loc_xyz[j] -= 1.0;
     }
 
-    VOXEL_LOC position((int64_t)loc_xyz[0], (int64_t)loc_xyz[1],
-                       (int64_t)loc_xyz[2]);
+    VOXEL_LOC position((int64_t) loc_xyz[0], (int64_t) loc_xyz[1],
+                       (int64_t) loc_xyz[2]);
     auto iter = feat_map.find(position);
     if (iter != feat_map.end()) {
       iter->second->all_points.push_back(pvec_orig);
       iter->second->vec_orig.push_back(pvec_orig);
       iter->second->sig_orig.push(pvec_orig);
     } else {
-      OCTO_TREE_ROOT* ot =
+      OCTO_TREE_ROOT *ot =
           new OCTO_TREE_ROOT(eigen_ratio_, layer_limit_, what_);
       ot->all_points.push_back(pvec_orig);
       ot->vec_orig.push_back(pvec_orig);
@@ -138,17 +139,17 @@ void FloorPlaneConstriant::cutVoxel(
   }
 }
 
-void FloorPlaneConstriant::mergePlane(const std::vector<Plane*>& origin_list,
-                                      std::vector<Plane*>& merge_list) {
+void FloorPlaneConstriant::mergePlane(const std::vector<Plane *> &origin_list,
+                                      std::vector<Plane *> &merge_list) {
   for (size_t i = 0; i < origin_list.size(); i++)
-    origin_list[i]->id = 0;  // 初始化
-  int current_id = 1;        // 平面id
+    origin_list[i]->id = 0; // 初始化
+  int current_id = 1;       // 平面id
   for (auto iter = origin_list.end() - 1; iter != origin_list.begin(); iter--) {
     for (auto iter2 = origin_list.begin(); iter2 != iter; iter2++) {
       Eigen::Vector3d normal_diff =
-          (*iter)->normal - (*iter2)->normal;  // 发向量同向
+          (*iter)->normal - (*iter2)->normal; // 法向量同向
       Eigen::Vector3d normal_add =
-          (*iter)->normal + (*iter2)->normal;  // 发向量反向
+          (*iter)->normal + (*iter2)->normal; // 法向量反向
       double dis1 = fabs((*iter)->normal(0) * (*iter2)->center(0) +
                          (*iter)->normal(1) * (*iter2)->center(1) +
                          (*iter)->normal(2) * (*iter2)->center(2) + (*iter)->d);
@@ -156,7 +157,7 @@ void FloorPlaneConstriant::mergePlane(const std::vector<Plane*>& origin_list,
           fabs((*iter2)->normal(0) * (*iter)->center(0) +
                (*iter2)->normal(1) * (*iter)->center(1) +
                (*iter2)->normal(2) * (*iter)->center(2) + (*iter2)->d);
-      if (normal_diff.norm() < 0.2 || normal_add.norm() < 0.2)  // 11.3度
+      if (normal_diff.norm() < 0.2 || normal_add.norm() < 0.2) // 11.3度
         if (dis1 < 0.05 && dis2 < 0.05) {
           if ((*iter)->id == 0 && (*iter2)->id == 0) {
             (*iter)->id = current_id;
@@ -173,15 +174,15 @@ void FloorPlaneConstriant::mergePlane(const std::vector<Plane*>& origin_list,
   for (size_t i = 0; i < origin_list.size(); i++) {
     auto it =
         std::find(merge_flag.begin(), merge_flag.end(), origin_list[i]->id);
-    if (it != merge_flag.end()) continue;  // 已经merge过的平面，直接跳过
+    if (it != merge_flag.end()) continue; // 已经merge过的平面，直接跳过
 
-    if (origin_list[i]->id == 0)  // 没有merge的平面
+    if (origin_list[i]->id == 0) // 没有merge的平面
     {
       if (origin_list[i]->points_size > 100)
         merge_list.push_back(origin_list[i]);
       continue;
     }
-    Plane* merge_plane = new Plane;
+    Plane *merge_plane = new Plane;
     (*merge_plane) = (*origin_list[i]);
     for (size_t j = 0; j < origin_list.size(); j++) {
       if (i == j) continue;
@@ -189,7 +190,7 @@ void FloorPlaneConstriant::mergePlane(const std::vector<Plane*>& origin_list,
         if (origin_list[j]->id == origin_list[i]->id)
           for (auto pv : origin_list[j]->plane_points)
             merge_plane->plane_points.push_back(
-                pv);  // 跟当前平面id相同的都merge
+                pv); // 跟当前平面id相同的都merge
     }
     merge_plane->covariance = Eigen::Matrix3d::Zero();
     merge_plane->center = Eigen::Vector3d::Zero();
@@ -233,13 +234,13 @@ void FloorPlaneConstriant::mergePlane(const std::vector<Plane*>& origin_list,
 }
 
 Eigen::Vector3d FloorPlaneConstriant::computePlaneNormal(
-    const pcl::PointCloud<pcl::PointXYZI>& floor_plane_cloud) {
+    const pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud) {
   // 构造数据矩阵
   Eigen::MatrixXd A(floor_plane_cloud.size(), 3);
   for (size_t i = 0; i < floor_plane_cloud.size(); ++i) {
     A(i, 0) = floor_plane_cloud[i].x;
     A(i, 1) = floor_plane_cloud[i].y;
-    A(i, 2) = 1;  // 添加常数项
+    A(i, 2) = 1; // 添加常数项
   }
 
   // 构造观测值向量
@@ -254,14 +255,14 @@ Eigen::Vector3d FloorPlaneConstriant::computePlaneNormal(
   // 构造平面法向量
   Eigen::Vector3d normal;
   normal << coeffs(0), coeffs(1),
-      -1.0;  // 平面方程为 ax + by + cz + d = 0，c为-1
+      -1.0; // 平面方程为 ax + by + cz + d = 0，c为-1
 
-  return normal.normalized();  // 归一化法向量
+  return normal.normalized(); // 归一化法向量
 }
 
 Eigen::Matrix4d FloorPlaneConstriant::computeRollPitchAndZ(
-    const pcl::PointCloud<pcl::PointXYZI>& floor_plane_cloud,
-    const Eigen::Matrix4d& Tx_dr_L, Eigen::Vector3d& plane_normal) {
+    const pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud,
+    const Eigen::Matrix4d &Tx_dr_L, Eigen::Vector3d &plane_normal) {
   Eigen::Matrix4d update_Tx_dr_L = Eigen::Matrix4d::Identity();
 
   pcl::PointCloud<pcl::PointXYZI> floor_plane_cloud_lidar;
@@ -308,8 +309,9 @@ Eigen::Matrix4d FloorPlaneConstriant::computeRollPitchAndZ(
     z_mean /= double(floor_plane_cloud_truth.size());
     std::cout << "z_mean: " << z_mean << std::endl;
 
+    Tx_dr_pr(2, 3) -= z_mean;
     update_Tx_dr_L = Tx_dr_pr * Tx_dr_L;
-    update_Tx_dr_L(2, 3) -= z_mean;
+    // update_Tx_dr_L(2, 3) -= z_mean;
 
     // test translation z
     pcl::transformPointCloud(floor_plane_cloud_lidar, floor_plane_cloud_truth,
@@ -334,19 +336,27 @@ Eigen::Matrix4d FloorPlaneConstriant::computeRollPitchAndZ(
 }
 
 bool FloorPlaneConstriant::addFloorConstraintRac(
-    const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_pcd,
-    const Eigen::Matrix4d& Tx_dr_L, Eigen::Matrix4d& update_Tx_dr_L) {
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &raw_pcd,
+    const Eigen::Matrix4d &Tx_dr_L, Eigen::Matrix4d &update_Tx_dr_L) {
   pcl::PointCloud<pcl::PointXYZI> transformed_pcd;
   pcl::transformPointCloud(*raw_pcd, transformed_pcd, Tx_dr_L);
 
   pcl::PointCloud<pcl::PointXYZI> floor_pcd;
   filteredPcd(transformed_pcd, floor_pcd);
 
+  if (floor_pcd.size() < 50) {
+    std::cerr << "cannot addFloorConstraint, too few points, "
+              << "floor_pcd size: " << floor_pcd << std::endl;
+    return false;
+  }
+
   pcl::PointCloud<pcl::PointXYZI> floor_plane_cloud;
   Eigen::Vector3d plane_normal;
   if (extractFloorPlaneRac(floor_pcd, floor_plane_cloud, plane_normal)) {
     update_Tx_dr_L =
         computeRollPitchAndZ(floor_plane_cloud, Tx_dr_L, plane_normal);
+
+    floor_plane_cloud_ = floor_plane_cloud;
     return true;
   } else {
     return false;
@@ -354,9 +364,9 @@ bool FloorPlaneConstriant::addFloorConstraintRac(
 }
 
 bool FloorPlaneConstriant::extractFloorPlaneRac(
-    const pcl::PointCloud<pcl::PointXYZI>& cloud,
-    pcl::PointCloud<pcl::PointXYZI>& floor_plane_cloud,
-    Eigen::Vector3d& plane_normal) {
+    const pcl::PointCloud<pcl::PointXYZI> &cloud,
+    pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud,
+    Eigen::Vector3d &plane_normal) {
   pcl::SampleConsensusModelPlane<pcl::PointXYZI>::Ptr model_p(
       new pcl::SampleConsensusModelPlane<pcl::PointXYZI>(cloud.makeShared()));
   pcl::RandomSampleConsensus<pcl::PointXYZI> ransac(model_p);
@@ -376,6 +386,23 @@ bool FloorPlaneConstriant::extractFloorPlaneRac(
   Eigen::VectorXf coeffs;
   ransac.getModelCoefficients(coeffs);
   plane_normal =
-      Eigen::Vector3d((double)coeffs.head<3>()(0), (double)coeffs.head<3>()(1),
-                      (double)coeffs.head<3>()(2));
+      Eigen::Vector3d((double) coeffs.head<3>()(0), (double) coeffs.head<3>()(1),
+                      (double) coeffs.head<3>()(2));
+
+  if(std::abs(coeffs.head<3>().dot(Eigen::Vector3f::UnitZ())) < 0.98) {
+    std::cerr << "the normal is not vertical!" << std::endl;
+    return false;
+  }
+
+  if (floor_plane_cloud.size() <= 0) {
+    std::cout << "cannot extract floor plane cloud!" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
+void FloorPlaneConstriant::getFloorPlaneCloud(
+  pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud) {
+  floor_plane_cloud = floor_plane_cloud_;
 }

@@ -101,10 +101,15 @@ target_link_libraries(test_extract_image_features
   ${catkin_LIBRARIES}
 )
 
-add_executable(extract_floor_plane 
-  app/extract_floor_plane.cpp)
-target_link_libraries(extract_floor_plane
-  ${PCL_LIBRARIES} ${catkin_LIBRARIES}
+add_executable(test_extract_floor_plane 
+  app/test_extract_floor_plane.cpp
+  src/file_io.cpp
+  src/sensor_extrinsic.pb.cc
+  src/floor_plane_constriant.cpp)
+target_link_libraries(test_extract_floor_plane
+  ${PCL_LIBRARIES} 
+  ${PROTOBUF_LIBRARY}
+  ${catkin_LIBRARIES}
 )
 
 add_executable(test_dr_lidar_calib 

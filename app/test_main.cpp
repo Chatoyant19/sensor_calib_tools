@@ -117,7 +117,7 @@ int main(int argc, char **argv) {
             StampedPcd stamp_visual;
             multi_lidar_calibrator_->runBaseLidar(
                 sample_pcds_ptr, sample_pcd_poses_ptr, stamp_map, stamp_visual);
-#ifdef test
+#ifdef debug
             std::string map_pcd_path = calib_param.result_path + "/" +
                 std::to_string(scene_index) + "_map.pcd";
             pcl::io::savePCDFile(map_pcd_path, *stamp_map.second);
@@ -170,7 +170,6 @@ int main(int argc, char **argv) {
 #endif
   bool has_CAD_prior = false;
   if (calib_param.use_CAD_prior) {
-    // std::string extrinsic_file = "/home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt";
     std::string extrinsic_file = lidar_extrinsic_file_;
     if (!file_io::readExtrinsicFromPbFile(extrinsic_file, init_Tx_DR_Lidar_)) {
       std::cerr << "Failed to read lidar CAD file!" << std::endl;
