@@ -13,19 +13,18 @@ Step: 5
 SceneNum: 3
 ThTime: 3
 
-ShowResidual: 1
+ShowResidual: 0
 UseCADPrior: 1
 
-DrPosesFile: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/video/dr_tum.txt
-AroundCameraStampFile: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/video/video_frame_info
-ImageFilesPath: /mount_dir/lam_data/calibration_jira/DG_0725/video/24-07-26_10-44-09_268/jpg
-CamsIntrinsicPath: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output/camera_bk/
-CamsExtrinsicPath: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output/camera_bk/
-LidarExtrinsicFile: /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt
+DrPosesFile: /home/wd/datasets/FT120/flashbot-2131/dr_tum.txt
+AroundCameraStampFile: /media/lam_data/calibration_jira/FLASHBOT-2131/video/24-04-22_10-56-42_656/video/video_frame_info
+ImageFilesPath: /media/lam_data/calibration_jira/FLASHBOT-2131/video/24-04-22_10-56-42_656/jpg
+CamsIntrinsicPath: /media/lam_data/calibration_jira/DG_0725/camera_baselink/camera
+CamsExtrinsicPath: /media/lam_data/calibration_jira/DG_0725/camera_baselink/camera
+LidarExtrinsicFile: /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt
 
 SaveLidarExtrinsicName: roof_front_transform.pb.txt
-ResultPath:  /home/CN/xiang.zhao/ws_dropngo_collection/dng_flashbot_2.2_cget/sources/lam/01_preresearch_calibration/dr_lidar_calib/#output
-
+ResultPath:  /home/wd/datasets/FT120/RESULT
 
 #####
 CameraName:

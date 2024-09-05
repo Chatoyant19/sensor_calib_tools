@@ -19,7 +19,8 @@ class FloorPlaneConstriant {
   bool addFloorConstraintRac(
       const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_pcd,
       const Eigen::Matrix4d& Tx_dr_L, Eigen::Matrix4d& update_Tx_dr_L);
-
+  void getFloorPlaneCloud(pcl::PointCloud<pcl::PointXYZI> &floor_plane_cloud);
+  
  private:
   void filteredPcd(const pcl::PointCloud<pcl::PointXYZI>& raw_pcd,
                    pcl::PointCloud<pcl::PointXYZI>& cloud);
@@ -46,6 +47,8 @@ class FloorPlaneConstriant {
   double what_ = 0.98;   // origin: 0.98, what???
 
   double plane_ransac_thred_ = 0.025;
+
+  pcl::PointCloud<pcl::PointXYZI> floor_plane_cloud_;
 };
 
 #endif

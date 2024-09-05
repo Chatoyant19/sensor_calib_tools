@@ -1,0 +1,15 @@
+%YAML:1.0
+img_path: /home/wd/datasets/112/12461.766689000.jpg
+# map
+pcd_path: /home/wd/datasets/112/pcd/0_visual.pcd
+# online pcd
+# pcd_path: /home/wd/datasets/29/main_online_pcd/1.pcd
+
+# image config
+camera_intrinsics_file: /media/lam_data/标定数据/ma112/新方案数据/20240201/line/camera_baselink/camera/avm_front_param.xml
+camera_extrinsics_file: /home/wd/datasets/27/RESULT_0/avm_front_transform.pb.txt
+
+# lidar config
+lidar_extrinsics_file: /home/wd/datasets/27/RESULT_0/roof_transform.pb.txt
+
+save_img_path: /home/wd/datasets/

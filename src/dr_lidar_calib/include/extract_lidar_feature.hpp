@@ -6,6 +6,7 @@
 #include <Eigen/Core>
 #include <Eigen/Dense>
 #include <vector>
+#include <unordered_map>
 
 #define SMALL_EPS 1e-10
 #define HASH_P 116101
