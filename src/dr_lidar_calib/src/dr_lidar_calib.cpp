@@ -9,9 +9,11 @@
 #include "exrtace_image_feature.h"
 #include "extract_lidar_feature.h"
 #include "extract_lidar_feature.hpp"
+#include "file_io.h"
 #include "floor_plane_constriant.h"
 #include "match_features.h"
-#include "file_io.h"
+
+// #define debug
 
 namespace dr_lidar_calib {
 
@@ -88,7 +90,6 @@ void DrLidarCalib::initCameras(
 // extract lidar line features
 void DrLidarCalib::processLidar(
     const pcl::PointCloud<pcl::PointXYZI>::Ptr &input_lidar_cloud) {
-  std::cerr << "========== processLidar-begin ==========" << std::endl;
   pcl::PointCloud<pcl::PointXYZI>::Ptr line_clouds =
       pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   if (param_.use_ada_voxel) {
@@ -100,7 +101,6 @@ void DrLidarCalib::processLidar(
   std::cout << "line_clouds size: " << line_clouds->size() << std::endl;
 
   lidar_.plane_line_cloud_vec_.emplace_back(line_clouds);
-  std::cerr << "========== processLidar-end ==========" << std::endl;
 }
 
 void DrLidarCalib::run(
@@ -109,13 +109,10 @@ void DrLidarCalib::run(
     const std::vector<std::vector<cv::Mat>> &imgs_vec,
     Eigen::Matrix4d &Tx_dr_L,
     std::vector<Eigen::Matrix4d, Eigen::aligned_allocator<Eigen::Matrix4d>> &
-    cams_extrinsics_vec,
+        cams_extrinsics_vec,
     bool has_CAD_prior) {
-  std::cerr << "===== Estimate DR-Lidar =====" << std::endl;
-
   init(init_Tx_DR_Lidar, imgs_vec);
 
-  std::cerr << "planar constraints - 1" << std::endl;
   // floor plane constraint
   Eigen::Matrix4d new_Tx_DR_Lidar = Eigen::Matrix4d::Identity();
   // todo: compare results
@@ -124,7 +121,7 @@ void DrLidarCalib::run(
       std::make_unique<FloorPlaneConstriant>();
   // 根据平面信息优化Tx_DR_Lidar，并更新Tx_Camera_Lidar[根据Tx_Camera_DR * Tx_DR_Lidar]
   if (floor_plane_constraint->addFloorConstraint(
-      visual_pcd_vec[0], lidar_.Tx_dr_L_, new_Tx_DR_Lidar)) {
+          visual_pcd_vec[0], lidar_.Tx_dr_L_, new_Tx_DR_Lidar)) {
     // if (floor_plane_constraint->addFloorConstraintRac(visual_pcd_vec[0],
     // lidar_.Tx_dr_L_, new_Tx_DR_Lidar)) {
     lidar_.update_TxDL(new_Tx_DR_Lidar);
@@ -134,9 +131,12 @@ void DrLidarCalib::run(
           cams_[cam_index].Tx_dr_C_.inverse() * lidar_.Tx_dr_L_;
     }
   }
+
+#ifdef debug
   std::cout << "Tx_DR_Lidar_1: " << new_Tx_DR_Lidar << std::endl;
   std::string Tx_DR_Lidar_1_file = param_.result_path + "/" + "Tx_DR_Lidar_1.pb.txt";
   file_io::writeExtrinsicToPbFile(new_Tx_DR_Lidar, Tx_DR_Lidar_1_file);
+#endif
 
   assert(lidar_.plane_line_cloud_vec_.size() == param_.scene_num);
   std::cout << "successfully load " << param_.scene_num << " point clouds."
@@ -175,8 +175,7 @@ void DrLidarCalib::run(
       // prior
       if (has_CAD_prior) {
         auto translation_prior_cost = new ceres::AutoDiffCostFunction<TranslationError, 3, 3>(
-            new TranslationError(m_t, 1e10)
-        );
+            new TranslationError(m_t, 1e10));
         problem.AddResidualBlock(translation_prior_cost, nullptr, m_t.data());
       }
 
@@ -269,11 +268,13 @@ void DrLidarCalib::run(
       }
     }
   }
+
+#ifdef debug
   std::cout << "Tx_DR_Lidar_2: " << lidar_.Tx_dr_L_ << std::endl;
   std::string Tx_DR_Lidar_2_file = param_.result_path + "/" + "Tx_DR_Lidar_2.pb.txt";
   file_io::writeExtrinsicToPbFile(lidar_.Tx_dr_L_, Tx_DR_Lidar_2_file);
+#endif
 
-  std::cerr << "planar constraints - 2" << std::endl;
   // floor plane constraints again
   Eigen::Matrix4d T_dr_L_new = Eigen::Matrix4d::Identity();
   Eigen::Matrix4d T_dr_pr = Eigen::Matrix4d::Identity();
@@ -282,9 +283,12 @@ void DrLidarCalib::run(
     T_dr_pr = T_dr_L_new * (lidar_.Tx_dr_L_.inverse());
     lidar_.update_TxDL(T_dr_L_new);
   }
+
+#ifdef debug
   std::cout << "Tx_DR_Lidar_3: " << T_dr_L_new << std::endl;
   std::string Tx_DR_Lidar_3_file = param_.result_path + "/" + "Tx_DR_Lidar_3.pb.txt";
   file_io::writeExtrinsicToPbFile(T_dr_L_new, Tx_DR_Lidar_3_file);
+#endif
 
   // update results
   Tx_dr_L = lidar_.Tx_dr_L_;
@@ -292,8 +296,6 @@ void DrLidarCalib::run(
   for (size_t cam_index = 0; cam_index < cams_.size(); ++cam_index) {
     cams_extrinsics_vec[cam_index] = T_dr_pr * cams_[cam_index].Tx_dr_C_;
   }
-
-  std::cerr << "===== Estimate DR-Lidar Done! =====" << std::endl;
 }
 
-}  // namespace dr_lidar_calib
+} // namespace dr_lidar_calib
