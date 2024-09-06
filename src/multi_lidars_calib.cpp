@@ -13,14 +13,14 @@ namespace multi_lidars_calib {
 
 TimesVector MultiLidarsCalib::time_pairs_;
 
-MultiLidarsCalib::MultiLidarsCalib(const int& step) {
+MultiLidarsCalib::MultiLidarsCalib(const int &step) {
 #ifdef debug
   std::cout << "step: " << step << std::endl;
 #endif
   step_ = step;
 }
 
-void MultiLidarsCalib::initBaseLidar(Lidar& lidar) {
+void MultiLidarsCalib::initBaseLidar(Lidar &lidar) {
 #ifdef debug
   std::cout << "lidar.use_compensation: " << lidar.use_compensation
             << std::endl;
@@ -37,28 +37,25 @@ void MultiLidarsCalib::initBaseLidar(Lidar& lidar) {
 }
 
 bool MultiLidarsCalib::processBaseLidar(
-    Lidar& lidar, const double& pcd_stamp,
-    const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
-    Eigen::Matrix4d& pose, pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd) {
-  // std::cerr << "========== processBaseLidar-begin ==========" << std::endl;
+    Lidar &lidar, const double &pcd_stamp,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &input_pcd,
+    Eigen::Matrix4d &pose, pcl::PointCloud<pcl::PointXYZI>::Ptr &out_pcd) {
   if (processLidar(lidar, pcd_stamp, input_pcd, pose, out_pcd)) {
     ++lidar.cnt;
     lidar.lidar_poses_ptr->emplace_back(StampedPose(pcd_stamp, pose));
     if (lidar.cnt % step_ == 0) {
       // lidar.sample_poses_ptr->emplace_back(StampedPose(pcd_stamp, pose));
       // lidar.sample_pcds_ptr->emplace_back(StampedPcd(pcd_stamp, out_pcd));
-      // std::cerr << "========== processBaseLidar-end ==========" << std::endl;
       return true;
     }
   }
-  // std::cerr << "========== processBaseLidar-end ==========" << std::endl;
   return false;
 }
 
 bool MultiLidarsCalib::processLidar(
-    Lidar& lidar, const double& pcd_stamp,
-    const pcl::PointCloud<pcl::PointXYZI>::Ptr& input_pcd,
-    Eigen::Matrix4d& out_pose, pcl::PointCloud<pcl::PointXYZI>::Ptr& out_pcd) {
+    Lidar &lidar, const double &pcd_stamp,
+    const pcl::PointCloud<pcl::PointXYZI>::Ptr &input_pcd,
+    Eigen::Matrix4d &out_pose, pcl::PointCloud<pcl::PointXYZI>::Ptr &out_pcd) {
   pcl::PointCloud<pcl::PointXYZI>::Ptr pcd(new pcl::PointCloud<pcl::PointXYZI>);
   for (auto p : *input_pcd) {
     if ((!std::isfinite(p.x) || !std::isfinite(p.y) || !isfinite(p.z)) ||
@@ -79,7 +76,7 @@ bool MultiLidarsCalib::processLidar(
       return false;
     }
     *out_pcd = *compensated_pcd;
-  } else {  // todo: compensate
+  } else { // todo: compensate
     *out_pcd = *input_pcd;
   }
 
@@ -90,9 +87,9 @@ bool MultiLidarsCalib::processLidar(
 static double last_timestamp;
 static Eigen::Matrix4d last_pose;
 bool MultiLidarsCalib::lidarCompensate(
-    Lidar& lidar, const pcl::PointCloud<pcl::PointXYZI>::Ptr& origin_pcd,
-    const double& timestamp, const Eigen::Matrix4d& pose,
-    pcl::PointCloud<pcl::PointXYZI>::Ptr& compensated_pcd) {
+    Lidar &lidar, const pcl::PointCloud<pcl::PointXYZI>::Ptr &origin_pcd,
+    const double &timestamp, const Eigen::Matrix4d &pose,
+    pcl::PointCloud<pcl::PointXYZI>::Ptr &compensated_pcd) {
   if (lidar.compens->is_compensate_inited_ == false) {
     last_timestamp = timestamp;
     last_pose = pose;
@@ -114,8 +111,8 @@ bool MultiLidarsCalib::lidarCompensate(
 
 // todo
 Eigen::Matrix4d MultiLidarsCalib::estimateInitExtrinsics(
-    const StampedPoseVectorPtr& pose_seq1,
-    const StampedPoseVectorPtr& pose_seq2, const double& tz) {
+    const StampedPoseVectorPtr &pose_seq1,
+    const StampedPoseVectorPtr &pose_seq2, const double &tz) {
   std::unique_ptr<HandEyeCalib> init_calib =
       std::make_unique<HandEyeCalib>(pose_seq2, pose_seq1);
   init_calib->processingPoses();
@@ -127,11 +124,10 @@ Eigen::Matrix4d MultiLidarsCalib::estimateInitExtrinsics(
   return res;
 }
 
-void MultiLidarsCalib::runBaseLidar(const StampedPcdVectorPtr& pcds_seq,
-                                    StampedPoseVectorPtr& pose_seq,
-                                    StampedPcd& stamp_map,
-                                    StampedPcd& stamp_visual) {
-  std::cerr << "========== runBaseLidar-begin ==========" << std::endl;
+void MultiLidarsCalib::runBaseLidar(const StampedPcdVectorPtr &pcds_seq,
+                                    StampedPoseVectorPtr &pose_seq,
+                                    StampedPcd &stamp_map,
+                                    StampedPcd &stamp_visual) {
   refineBasePose(pcds_seq, pose_seq);
   Eigen::Matrix4d start_pose = pose_seq->at(0).second;
   double stamp = pose_seq->at(0).first;
@@ -156,17 +152,15 @@ void MultiLidarsCalib::runBaseLidar(const StampedPcdVectorPtr& pcds_seq,
   }
 
   stamp_map = StampedPcd(stamp, map);
-  std::cerr << "========== runBaseLidar-end ==========" << std::endl;
 }
 
-void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
-                                      StampedPoseVectorPtr& pose_seq) {
-  std::cerr << "========== refineBasePose-begin ==========" << std::endl;
+void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr &pcds_seq,
+                                      StampedPoseVectorPtr &pose_seq) {
   for (int loop = 0; loop < refine_pose_param_.max_iter; ++loop) {
     std::cout << "---------------------" << std::endl;
     std::cout << "iteration " << loop << std::endl;
     int window_size = pose_seq->size();
-    std::unordered_map<VOXEL_LOC, pose_refine::OCTO_TREE*> surf_map;
+    std::unordered_map<VOXEL_LOC, pose_refine::OCTO_TREE *> surf_map;
     pose_refine::LM_OPTIMIZER lm_opt(window_size);
 
     for (size_t i = 0; i < window_size; ++i) {
@@ -202,7 +196,7 @@ void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
       delete iter->second;
 
     std::vector<Eigen::Quaterniond,
-                Eigen::aligned_allocator<Eigen::Quaterniond> >
+                Eigen::aligned_allocator<Eigen::Quaterniond>>
         quad_save;
     vector_vec3d trans_save;
     double residual_lm = 0.0;
@@ -230,13 +224,12 @@ void MultiLidarsCalib::refineBasePose(const StampedPcdVectorPtr& pcds_seq,
   }
   std::cout << "---------------------" << std::endl;
   std::cout << "complete" << std::endl;
-  std::cerr << "========== refineBasePose-begin ==========" << std::endl;
 }
 
 double distance_thred = 7.0;
 double radians_thred = 1.57;
 bool MultiLidarsCalib::routeIsOk(const int &cut_num, const StampedPoseVectorPtr &pose_seq,
-                                        const size_t &th_time) {
+                                 const size_t &th_time) {
   std::cout << "=== Check DR-Traj ===" << std::endl;
   time_pairs_.resize(cut_num);
   int seg_cnt = 0;
@@ -260,8 +253,10 @@ bool MultiLidarsCalib::routeIsOk(const int &cut_num, const StampedPoseVectorPtr 
       double distance = std::sqrt(
           delta_pose.block<3, 1>(0, 3).x() * delta_pose.block<3, 1>(0, 3).x() +
           delta_pose.block<3, 1>(0, 3).y() * delta_pose.block<3, 1>(0, 3).y());
-      if ((distance > distance_thred/* || 
-           std::abs(delta_yaw) > radians_thred*/) && !find_traj_end) {
+      if ((distance > distance_thred /* || 
+           std::abs(delta_yaw) > radians_thred*/
+           ) &&
+          !find_traj_end) {
         time_pairs_[seg_cnt].second = pose_seq->at(j).first;
         find_traj_end = true;
       }
@@ -290,16 +285,16 @@ bool MultiLidarsCalib::routeIsOk(const int &cut_num, const StampedPoseVectorPtr 
 TimesVector MultiLidarsCalib::getCutTimepairs(const int &cut_num, const StampedPoseVectorPtr &pose_seq,
                                               const size_t &th_time) {
 
-  if(routeIsOk(cut_num, pose_seq, th_time)) {
+  if (routeIsOk(cut_num, pose_seq, th_time)) {
     return time_pairs_;
-  }  
-  return TimesVector(); 
+  }
+  return TimesVector();
 }
 
-bool MultiLidarsCalib::vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
-                                       const Eigen::Matrix4d& element,
-                                       const size_t& start,
-                                       const size_t& th_time) {
+bool MultiLidarsCalib::vehicleIsStatic(const StampedPoseVectorPtr &pose_seq,
+                                       const Eigen::Matrix4d &element,
+                                       const size_t &start,
+                                       const size_t &th_time) {
   size_t length = pose_seq->size();
   double start_time = pose_seq->at(start).first;
   // std::cerr << "start_time: " << start_time << std::endl;
@@ -318,7 +313,7 @@ bool MultiLidarsCalib::vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
 
   return std::all_of(pose_seq->begin() + start,
                      pose_seq->begin() + start + length,
-                     [&element](const StampedPose& stamped_mat) {
+                     [&element](const StampedPose &stamped_mat) {
                        return stamped_mat.second == element;
                      });
   // Eigen::Vector3d ele_trans = element.block<3, 1>(0, 3);
@@ -335,4 +330,4 @@ bool MultiLidarsCalib::vehicleIsStatic(const StampedPoseVectorPtr& pose_seq,
   // return true;
 }
 
-}  // namespace multi_lidars_calib
+} // namespace multi_lidars_calib
