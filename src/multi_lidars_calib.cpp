@@ -245,7 +245,9 @@ bool MultiLidarsCalib::routeIsOk(const int &cut_num, const StampedPoseVectorPtr 
     Eigen::Matrix4d start_pose = pose_seq->at(i).second;
     bool find_traj_end = false;
     double delta_yaw = 0.0;
-    for (size_t j = i + 1; j < pose_seq->size(); ++j) {
+
+    size_t j = i + 1;
+    for (; j < pose_seq->size(); ++j) {
       Eigen::Matrix4d curr_pose = pose_seq->at(j).second;
       Eigen::Matrix4d delta_pose = start_pose.inverse() * curr_pose;
       Eigen::Matrix3d delta_rot = delta_pose.block<3, 3>(0, 0);
@@ -262,18 +264,18 @@ bool MultiLidarsCalib::routeIsOk(const int &cut_num, const StampedPoseVectorPtr 
       }
 
       if (std::abs(delta_yaw) > 1.57) {
-        i = j + 1;
         break;
       }
     }
+    i = j + 1;
 
     if (find_traj_end) ++seg_cnt;
 
     if ((seg_cnt == cut_num)) return true;
 
-    if (std::abs(delta_yaw) <= 1.57) {
-      std::cerr << "vehicle need to turn around" << std::endl;
-    }
+    // if (std::abs(delta_yaw) <= 1.57) {
+    //   std::cerr << "vehicle need to turn around" << std::endl;
+    // }
   }
 
   std::cerr << "Failed!! seg_cnt: " << seg_cnt << " "
