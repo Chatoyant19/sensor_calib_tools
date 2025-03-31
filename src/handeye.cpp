@@ -854,10 +854,10 @@ void HandEyeCalib::refineEstimate(Eigen::Matrix4d& H_odo_cam) const {
     }
   }
 
-  ceres::LocalParameterization* quaternionParameterization =
-      new ceres::QuaternionParameterization;
+  ceres::Manifold* quaternionParameterization =
+      new ceres::QuaternionManifold;
 
-  problem.SetParameterization(q_coeffs, quaternionParameterization);
+  problem.SetManifold(q_coeffs, quaternionParameterization);
 
   ceres::Solver::Options options;
   options.linear_solver_type = ceres::DENSE_QR;

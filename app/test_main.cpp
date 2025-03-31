@@ -1,3 +1,20 @@
+// Copyright 2025. All Rights Reserved.
+// Author: Dan Wang
+/**********************************************************
+ * purpose:
+ *  calib base_link-cameras, base_link-lidars
+ *
+ * pipeline:
+ *    input: 
+ *    output: 
+ *    
+ * usage:
+ *    1. 
+ *    2. 
+ * 
+ * todo: =>tools
+ *********************************************************/
+
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -21,7 +38,7 @@ std::string around_cam_stamp_file_;
 std::string image_paths_;
 std::string cameras_intrinsic_path_;
 std::string cameras_extrinsic_path_;
-std::string lidar_extrinsic_file_;
+std::string lidar_prior_extrinsic_file_;
 Eigen::Matrix4d init_Tx_DR_Lidar_;
 std::string save_lidar_extrinsic_name_;
 
@@ -47,7 +64,7 @@ int main(int argc, char **argv) {
   dr_lidar_calib::DrLidarCalibParam calib_param;
   loadConfigFile(calib_setting_path, base_lidar, calib_param);
 #ifdef debug
-  std::cout << "base_pcds_name_que: " << base_pcds_name_que_.size()
+  std::cout << "base_pcds_name_que_: " << base_pcds_name_que_.size()
             << std::endl;
 #endif
 
@@ -170,7 +187,7 @@ int main(int argc, char **argv) {
 #endif
   bool has_CAD_prior = false;
   if (calib_param.use_CAD_prior) {
-    std::string extrinsic_file = lidar_extrinsic_file_;
+    std::string extrinsic_file = lidar_prior_extrinsic_file_;
     if (!file_io::readExtrinsicFromPbFile(extrinsic_file, init_Tx_DR_Lidar_)) {
       std::cerr << "Failed to read lidar CAD file!" << std::endl;
       exit(-1);
@@ -308,7 +325,7 @@ void loadConfigFile(const std::string &calib_setting_path,
   fSettings["CamsIntrinsicPath"] >> cameras_intrinsic_path_;
   fSettings["CamsExtrinsicPath"] >> cameras_extrinsic_path_;
 
-  fSettings["LidarExtrinsicFile"] >> lidar_extrinsic_file_;
+  fSettings["LidarPriorExtrinsicFile"] >> lidar_prior_extrinsic_file_;
   fSettings["UseCADPrior"] >> calib_param.use_CAD_prior;
 
   fSettings["ResultPath"] >> calib_param.result_path;
@@ -346,7 +363,7 @@ void loadConfigFile(const std::string &calib_setting_path,
 
   std::cout << "CamsIntrinsicPath: " << cameras_intrinsic_path_ << std::endl;
   std::cout << "CamsExtrinsicPath: " << cameras_extrinsic_path_ << std::endl;
-  std::cout << "LidarExtrinsicFile: " << lidar_extrinsic_file_ << std::endl;
+  std::cout << "LidarPriorExtrinsicFile: " << lidar_prior_extrinsic_file_ << std::endl;
   std::cout << "Canny.gray_threshold: " << calib_param.canny_threshold
             << std::endl;
   std::cout << "Canny.len_threshold: " << calib_param.rgb_edge_minLen
@@ -400,6 +417,7 @@ void loadConfigFile(const std::string &calib_setting_path,
                 << " intrinsic file!" << std::endl;
       exit(-1);
     }
+    // todo: support fisheye only
     if (camera_model == "FISHEYE")
       calib_param.cams_model_vec[cam_index] = CameraModel::Fisheye;
 

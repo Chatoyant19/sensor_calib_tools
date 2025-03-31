@@ -5,7 +5,7 @@
 
 #include "eigen_types.hpp"
 #include "extract_lidar_feature.hpp"
-#include "pose_local_parameterization.h"
+// #include "pose_local_parameterization.h"
 
 // pnp calib with direction vector
 // auto diff, pinhole camera intrinsics model

@@ -72,30 +72,81 @@ bool SurfNormAnalyticCostFunction::Evaluate(double const *const *parameters,
   return true;
 }
 
-bool PoseSE3Parameterization::Plus(const double *x, const double *delta,
-                                   double *x_plus_delta) const {
+// bool PoseSE3Parameterization::Plus(const double *x, const double *delta,
+//                                    double *x_plus_delta) const {
+//   Eigen::Map<const Eigen::Vector3d> trans(x + 4);
+
+//   Eigen::Quaterniond delta_q;
+//   Eigen::Vector3d delta_t;
+//   getTransformFromSe3(Eigen::Map<const Eigen::Matrix<double, 6, 1>>(delta),
+//                       delta_q, delta_t);
+//   Eigen::Map<const Eigen::Quaterniond> quater(x);
+//   Eigen::Map<Eigen::Quaterniond> quater_plus(x_plus_delta);
+//   Eigen::Map<Eigen::Vector3d> trans_plus(x_plus_delta + 4);
+
+//   quater_plus = delta_q * quater;
+//   trans_plus = delta_q * trans + delta_t;
+
+//   return true;
+// }
+
+// bool PoseSE3Parameterization::ComputeJacobian(const double *x,
+//                                               double *jacobian) const {
+//   Eigen::Map<Eigen::Matrix<double, 7, 6, Eigen::RowMajor>> j(jacobian);
+//   (j.topRows(6)).setIdentity();
+//   (j.bottomRows(1)).setZero();
+
+//   return true;
+// }
+
+bool PoseSE3Manifold::Plus(const double* x, const double* delta, 
+                           double* x_plus_delta) const {
   Eigen::Map<const Eigen::Vector3d> trans(x + 4);
+  Eigen::Map<const Eigen::Quaterniond> quater(x);
 
   Eigen::Quaterniond delta_q;
   Eigen::Vector3d delta_t;
   getTransformFromSe3(Eigen::Map<const Eigen::Matrix<double, 6, 1>>(delta),
                       delta_q, delta_t);
-  Eigen::Map<const Eigen::Quaterniond> quater(x);
+  
   Eigen::Map<Eigen::Quaterniond> quater_plus(x_plus_delta);
   Eigen::Map<Eigen::Vector3d> trans_plus(x_plus_delta + 4);
-
+                            
   quater_plus = delta_q * quater;
   trans_plus = delta_q * trans + delta_t;
-
+ 
   return true;
 }
 
-bool PoseSE3Parameterization::ComputeJacobian(const double *x,
-                                              double *jacobian) const {
+bool PoseSE3Manifold::PlusJacobian(const double *x,
+                                   double *jacobian) const {
   Eigen::Map<Eigen::Matrix<double, 7, 6, Eigen::RowMajor>> j(jacobian);
   (j.topRows(6)).setIdentity();
   (j.bottomRows(1)).setZero();
 
+  return true;
+}
+
+bool PoseSE3Manifold::Minus(const double* x1, const double* x2, double* delta) const {
+  Eigen::Map<const Eigen::Vector3d> trans1(x1 + 4);
+  Eigen::Map<const Eigen::Quaterniond> quat1(x1);
+
+  Eigen::Map<const Eigen::Vector3d> trans2(x2 + 4);
+  Eigen::Map<const Eigen::Quaterniond> quat2(x2);
+
+  Eigen::Quaterniond delta_q = quat2 * quat1.inverse();  // 计算旋转差
+  Eigen::Vector3d delta_t = trans2 - trans1;             // 计算平移差
+
+  Eigen::Map<Eigen::Matrix<double, 6, 1>> se3_delta(delta);
+  se3_delta.head<3>() = delta_q.vec(); // 旋转部分
+  se3_delta.tail<3>() = delta_t;       // 平移部分
+
+  return true;
+}
+
+bool PoseSE3Manifold::MinusJacobian(const double* x, double* jacobian) const {
+  Eigen::Map<Eigen::Matrix<double, 6, 6, Eigen::RowMajor>> j(jacobian);
+  j.setIdentity(); // 简化：假设扰动是线性
   return true;
 }
 

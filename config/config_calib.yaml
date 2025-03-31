@@ -21,7 +21,7 @@ AroundCameraStampFile: /media/lam_data/calibration_jira/FLASHBOT-2131/video/24-0
 ImageFilesPath: /media/lam_data/calibration_jira/FLASHBOT-2131/video/24-04-22_10-56-42_656/jpg
 CamsIntrinsicPath: /media/lam_data/calibration_jira/DG_0725/camera_baselink/camera
 CamsExtrinsicPath: /media/lam_data/calibration_jira/DG_0725/camera_baselink/camera
-LidarExtrinsicFile: /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt
+LidarPriorExtrinsicFile: /home/wd/projects/calib_tools/dr_lidar_calib_ws/src/dr_lidar_calib/assets/CarModels/CN01/lidar/roof_front_transform.pb.txt
 
 SaveLidarExtrinsicName: roof_front_transform.pb.txt
 ResultPath:  /home/wd/datasets/FT120/RESULT

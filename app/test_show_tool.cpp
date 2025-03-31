@@ -1,3 +1,17 @@
+// Copyright 2025. All Rights Reserved.
+// Author: Dan Wang
+/**********************************************************
+ * purpose:
+ *  show calibration result-project point cloud to image.
+ *
+ * pipeline:
+ *    input: pcd and image file, camera intrinsics file, T_base-link_camera and T_base-link_lidar file 
+ *    output: save jpg file, show calibration result
+ *    
+ * usage:
+ *    ./test_show_tool /home/danwa/projects/calib_tools/config/config_show_tools.yaml
+ * 
+ *********************************************************/
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>

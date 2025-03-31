@@ -1,0 +1,15 @@
+%YAML:1.0
+img_path: /media/danwa/locmap/ZM/工作/dataset/calib/vv6/video/24-03-12_17-46-31_212/jpg/avm_front/970.533322000.jpg
+# map
+pcd_path: /media/danwa/locmap/ZM/工作/dataset/calib/vv6/pcd/lidar_roof/970.000133000.pcd
+# online pcd
+# pcd_path: /home/wd/datasets/29/main_online_pcd/1.pcd
+
+# image config
+camera_intrinsics_file: /media/danwa/locmap/ZM/工作/dataset/calib/vv6/camera_baselink/camera/avm_front_param.xml
+camera_extrinsics_file: /media/danwa/locmap/ZM/工作/dataset/calib/vv6/REAULT/camera/avm_front_transform.pb.txt
+
+# lidar config
+lidar_extrinsics_file: /media/danwa/locmap/ZM/工作/dataset/calib/vv6/REAULT/lidar/roof_transform.pb.txt
+
+save_img_path: /home/danwa/datasets/tmp/test.jpg

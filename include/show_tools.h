@@ -1,6 +1,8 @@
 #ifndef SHOW_TOOLS
 #define SHOW_TOOLS
 
+#include "file_io.h"
+
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
@@ -17,6 +19,14 @@ cv::Mat getProjectionImg(const cv::Mat& raw_img,
                          const Eigen::Matrix4d& Tx_C_L,
                          const cv::Mat& camera_matrix,
                          cv::Mat& distortion_coeff);
+void getColorCloud(const std::vector<cv::Mat>& rgb_imgs,
+                   const std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>& lidar_clouds,
+                   const std::vector<double>& cam_stamp_vec,
+                   const StampedPoseVectorPtr& stamp_pose_vec,
+                   const Eigen::Matrix4d& Tx_C_L,
+                   const cv::Mat& camera_matrix,
+                   const cv::Mat& distortion_coeff,
+                   std::vector<pcl::PointCloud<pcl::PointXYZRGB>::Ptr>& color_cloud);                         
 }  // namespace show_tools
 
 #endif

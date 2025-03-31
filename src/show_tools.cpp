@@ -1,10 +1,13 @@
 #include "show_tools.h"
+#include "linear_interpolater.hpp"
 
 #include <pcl/common/transforms.h>
 #include <pcl/search/kdtree.h>
 
 enum ProjectionType { DEPTH, INTENSITY, BOTH };
 enum Direction { UP, DOWN, LEFT, RIGHT };
+
+using PoseLinearInterpolater = LinearInterpolater<Eigen::Matrix4d>;
 
 namespace show_tools {
 cv::Mat getConnectImg(
@@ -143,7 +146,7 @@ void projection(const pcl::PointCloud<pcl::PointXYZI>::Ptr& raw_point,
   pcl::PointCloud<pcl::PointXYZI>::Ptr filted_pcd =
       pcl::PointCloud<pcl::PointXYZI>::Ptr(new pcl::PointCloud<pcl::PointXYZI>);
   for (auto p : *transformed_pcd) {
-    if (p.z < 0) continue;
+    if (p.z <= 0) continue;
     filted_pcd->push_back(p);
   }
 
@@ -275,6 +278,94 @@ cv::Mat getProjectionImg(const cv::Mat& raw_img,
   }
 
   return merge_img;
+}
+
+void getColorCloud(const std::vector<cv::Mat>& rgb_img_vec,
+                   const std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr>& pcd_vec,
+                   const std::vector<double>& cam_stamp_vec,
+                   const StampedPoseVectorPtr& stamp_pose_vec,
+                   const Eigen::Matrix4d& Tx_C_L,
+                   const cv::Mat& camera_matrix,
+                   const cv::Mat& distortion_coeff,
+                   pcl::PointCloud<pcl::PointXYZRGB>::Ptr& color_cloud) {
+  const int density = 1;
+  const float min_depth = 1;
+  const float max_depth = 50;
+
+  // todo: check pose interpolater
+  std::string save_path = " ";
+  StampedPoseVectorPtr save_pose_vec = std::make_shared<StampedPoseVector>();
+
+  color_cloud =  pcl::PointCloud<pcl::PointXYZRGB>::Ptr(
+    new pcl::PointCloud<pcl::PointXYZRGB>);
+
+  std::unique_ptr<PoseLinearInterpolater> pose_interpolater = 
+    std::make_unique<PoseLinearInterpolater>(1000, 0.1);
+  for(size_t i = 0; i < stamp_pose_vec->size(); ++i) {
+    pose_interpolater->insert(stamp_pose_vec->at(i).first, stamp_pose_vec->at(i).second);
+  }
+  std::cout << "pose_interpolater size: " << pose_interpolater->size() << std::endl;
+ 
+  for(size_t a = 0; a < rgb_img_vec.size(); ++a) { // camera poses
+    std::vector<cv::Point3f> pts_3d;
+
+    double curr_cam_stamp = cam_stamp_vec[a];
+    Eigen::Matrix4d curr_pose = Eigen::Matrix4d::Identity();
+    pose_interpolater->evaluate(curr_cam_stamp, &curr_pose);
+    // todo
+    save_pose_vec->emplace_back(StampedPose(curr_cam_stamp, curr_pose));
+
+    for(size_t b = 0; b < stamp_pose_vec->size(); ++b) {
+      for(size_t i = 0; i < pcd_vec[b]->size(); i += density) {
+        pcl::PointXYZI point = pcd_vec[b]->points[i];
+        Eigen::Vector4d pt1(point.x, point.y, point.z, 1.0);
+        pt1 = stamp_pose_vec->at(b).second * pt1;
+        pt1 = curr_pose.inverse() * pt1;
+        pt1 = Tx_C_L * pt1;
+        if(pt1[2] <= 0.0) continue;
+        float depth = sqrt(pow(pt1[0], 2) + pow(pt1[1], 2) + pow(pt1[2], 2));
+        if(depth > min_depth && depth < max_depth)
+          pts_3d.emplace_back(cv::Point3f(pt1[0], pt1[1], pt1[2]));
+      }
+    }
+    
+    std::vector<cv::Point2f> pts_2d;
+    cv::Vec3d rvec(0, 0, 0);
+    cv::Vec3d tvec(0, 0, 0);
+    // cv::projectPoints(pts_3d, rvec, tvec, camera_matrix, distortion_coeff, pts_2d);
+    cv::fisheye::projectPoints(pts_3d, pts_2d, rvec, tvec, camera_matrix,
+                               distortion_coeff);                 
+    
+    int image_rows = rgb_img_vec[a].rows;
+    int image_cols = rgb_img_vec[a].cols;
+                
+    for(size_t i = 0; i < pts_2d.size(); ++i) {
+      cv::Point2f point_2d = pts_2d[i];
+      if (point_2d.x <= 0 || point_2d.x >= image_cols || point_2d.y <= 0 ||
+          point_2d.y >= image_rows)
+        continue;
+      else {
+        cv::Scalar color = rgb_img_vec[a].at<cv::Vec3b>(point_2d);
+        if(color[0] == 0 && color[1] == 0 && color[2] == 0) continue;
+                          
+        Eigen::Vector4d pt(pts_3d[i].x, pts_3d[i].y, pts_3d[i].z, 1.0);
+        pt = curr_pose * Tx_C_L.inverse() * pt;
+        pcl::PointXYZRGB p;
+        p.x = pt(0); 
+        p.y = pt(1); 
+        p.z = pt(2);
+        p.b = color[0]; 
+        p.g = color[1]; 
+        p.r = color[2];
+
+        color_cloud->push_back(p);
+      }
+    }
+  }
+  
+  // todo
+  std::cout << "save_pose_vec size: " << save_pose_vec->size() << std::endl;
+  file_io::writeStampPoseToFile(save_pose_vec, save_path);
 }
 
 }  // namespace show_tools
