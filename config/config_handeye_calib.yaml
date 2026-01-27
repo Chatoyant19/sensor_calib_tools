@@ -1,0 +1,14 @@
+%YAML:1.0
+
+timestamp_pose_file1: /home/danwa/projects/orbslam3_ros2/KeyFrameTrajectory2.txt
+timestamp_pose_file2: /home/danwa/projects/orbslam3_ros2/KeyFrameTrajectory2.txt
+
+# aligned_pose_file1: 
+# aligned_pose_file2:
+
+scale_flag: 0
+motionCount: 200
+
+tz: 0.0
+
+calib_result_file: /home/danwa/datasets/OUR/extrinsics.pb.txt

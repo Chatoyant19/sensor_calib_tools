@@ -136,4 +136,16 @@ add_executable(test_file_io app/test_file_io.cpp
 target_link_libraries(test_file_io
   ${OpenCV_LIBS}
   ${PROTOBUF_LIBRARY}
-)     
+)    
+
+add_executable(test_handeye_calib
+  app/test_handeye_calib.cpp
+  src/handeye.cpp
+  src/file_io.cpp
+  src/sensor_extrinsic.pb.cc
+)
+target_link_libraries(test_handeye_calib
+  ${CERES_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${PROTOBUF_LIBRARY}
+) 
