@@ -161,14 +161,14 @@ void DrLidarCalib::run(
       ext[0] = q.x();
       ext[1] = q.y();
       ext[2] = q.z();
-      ext[3] = q.w();      
+      ext[3] = q.w();
       ext[4] = t_dr_l[0];
       ext[5] = t_dr_l[1];
       ext[6] = t_dr_l[2];
       Eigen::Map<Eigen::Quaterniond> m_q = Eigen::Map<Eigen::Quaterniond>(ext);
       Eigen::Map<Eigen::Vector3d> m_t = Eigen::Map<Eigen::Vector3d>(ext + 4);
-      ceres::Manifold *q_parameterization =
-          new ceres::EigenQuaternionManifold();
+      ceres::LocalParameterization *q_parameterization =
+          new ceres::EigenQuaternionParameterization();
       ceres::Problem problem;
       problem.AddParameterBlock(ext, 4, q_parameterization);
       problem.AddParameterBlock(ext + 4, 3);

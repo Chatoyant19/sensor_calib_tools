@@ -44,28 +44,28 @@ class SurfNormAnalyticCostFunction : public ceres::SizedCostFunction<1, 7> {
 };
 
 // before version-2.1
-// class PoseSE3Parameterization : public ceres::LocalParameterization {
-//  public:
-//   PoseSE3Parameterization() {}
-//   virtual ~PoseSE3Parameterization() {}
-//   virtual bool Plus(const double* x, const double* delta,
-//                     double* x_plus_delta) const;
-//   virtual bool ComputeJacobian(const double* x, double* jacobian) const;
-//   virtual int GlobalSize() const { return 7; }
-//   virtual int LocalSize() const { return 6; }
-// };
+class PoseSE3Parameterization : public ceres::LocalParameterization {
+ public:
+  PoseSE3Parameterization() {}
+  virtual ~PoseSE3Parameterization() {}
+  virtual bool Plus(const double* x, const double* delta,
+                    double* x_plus_delta) const;
+  virtual bool ComputeJacobian(const double* x, double* jacobian) const;
+  virtual int GlobalSize() const { return 7; }
+  virtual int LocalSize() const { return 6; }
+};
 
 // new version ceres
-class PoseSE3Manifold : public ceres::Manifold {
-   public:
-      PoseSE3Manifold() {}
-      virtual ~PoseSE3Manifold() {}
-      virtual bool Plus(const double* x, const double* delta, double* x_plus_delta) const;
-      virtual bool PlusJacobian(const double* x, double* jacobian) const;
-      virtual bool Minus(const double* x1, const double* x2, double* delta) const;
-      virtual bool MinusJacobian(const double* x, double* jacobian) const;
-      virtual int AmbientSize() const { return 7; }
-      virtual int TangentSize() const  { return 6; }
-  };
+// class PoseSE3Manifold : public ceres::Manifold {
+//   public:
+//      PoseSE3Manifold() {}
+//      virtual ~PoseSE3Manifold() {}
+//      virtual bool Plus(const double* x, const double* delta, double* x_plus_delta) const;
+//      virtual bool PlusJacobian(const double* x, double* jacobian) const;
+//      virtual bool Minus(const double* x1, const double* x2, double* delta) const;
+//      virtual bool MinusJacobian(const double* x, double* jacobian) const;
+//      virtual int AmbientSize() const { return 7; }
+//      virtual int TangentSize() const  { return 6; }
+//  };
 
 #endif  // _LIDAR_OPTIMIZATION_ANALYTIC_H_

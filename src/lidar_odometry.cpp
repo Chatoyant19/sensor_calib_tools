@@ -97,7 +97,7 @@ void LidarOdometry::updatePointsToMap(
       ceres::Problem::Options problem_options;
       ceres::Problem problem(problem_options);
 
-      problem.AddParameterBlock(parameters_, 7, new PoseSE3Manifold());
+      problem.AddParameterBlock(parameters_, 7, new PoseSE3Parameterization());
 
       addSurfCostFactor(downsampledSurfCloud, laserCloudSurfMap_, problem,
                         loss_function);
