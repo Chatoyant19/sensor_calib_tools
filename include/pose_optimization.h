@@ -43,7 +43,7 @@ class SurfNormAnalyticCostFunction : public ceres::SizedCostFunction<1, 7> {
   double negative_OA_dot_norm;
 };
 
-// before version-2.1
+// before version-2.1.0
 class PoseSE3Parameterization : public ceres::LocalParameterization {
  public:
   PoseSE3Parameterization() {}

@@ -1,19 +1,64 @@
-test_main.cpp,使用config_calib.yaml,目前不支持激光雷达之间的标定
-test_dr_lidar_calib.cpp,使用config_dr_lidar_calib.yaml
 
+# Sensor_calib_tools
+This module is a robust, high accuracy extrinsic calibration tool between high resolution LiDARs (e.g. Livox), cameras and base_link in targetless environment. Our algorithm can run in both indoor and outdoor scenes, and only requires edge information in the scene. If the scene is suitable, we can achieve pixel-level accuracy similar to or even beyond the target based method.
+
+## Info
+- test_main.cpp,使用config_calib.yaml,目前不支持激光雷达之间的标定
+- test_dr_lidar_calib.cpp,使用config_dr_lidar_calib.yaml
+
+## TODO
 * [x] 去ros
 * [ ] 增加多激光雷达标定功能
 * [ ] 增加标定lidars-cameras标定功能
 * [ ] target: sensor_calib_tools
 
-=================================================================
-ref:
-1. https://github.com/AFEICHINA/extended_lidar_camera_calib
-2. **https://github.com/hku-mars/livox_camera_calib [livox_camera_calib]**
-3. https://github.com/hku-mars/mlcc [mlcc]
+## Ref
+- https://github.com/AFEICHINA/extended_lidar_camera_calib
+- https://github.com/hku-mars/livox_camera_calib [livox_camera_calib]
+- https://github.com/hku-mars/mlcc [mlcc]
 
-====================================================================
-PCL version: 1.14
-Ceres version: 2.0.0
-OpenCV version: 4.6.0
-Protobuf version: 3.21.12
+## 1. Prerequisites
+### 1.1 **Ubuntu** 
+Ubuntu 64-bit 16.04 or 18.04 or 20.04. 
+
+### 1.2 **Eigen**
+Follow [Eigen Installation](http://eigen.tuxfamily.org/index.php?title=Main_Page)
+
+### 1.3 **Ceres Solver**
+Ceres Version: 1.14.0 or 2.0.0
+
+### 1.4 **PCL**
+PCL Version: 1.10.0
+
+### 1.5 **OpenCV**
+OpenCV Version: 4.2.0
+
+### 1.6 **Boost**
+Boost Version: 1.71.0
+
+### 1.6 **Protobuf**
+Protobuf Version: 3.6.1
+
+If use other protobuf version, need to generate pb.h and pb.cc
+```
+  protoc --cpp_out=. sensor_extrinsic.proto
+```
+
+## 2. Build
+Clone the repository and catkin_make:
+
+```
+git clone https://github.com/Chatoyant19/sensor_calib_tools.git
+git checkout universal
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+```
+
+## 3. Run our example
+1. calib base_link and lidar
+```
+    ./test_main ../config/config_calib.yaml
+```
+2. 
+
