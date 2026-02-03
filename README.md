@@ -40,13 +40,17 @@ Boost Version: 1.71.0
 
 ### 1.6 **Protobuf**
 Protobuf Version: 3.6.1
+If use other protobuf version, need to generate pb.h and pb.cc
+```
+  protoc --cpp_out=. sensor_extrinsic.proto
+```
 
 ## 2. Build
 Clone the repository and catkin_make:
 
 ```
 cd ~/catkin_ws/src
-git clone https://github.com/hku-mars/livox_camera_calib.git
+git clone https://github.com/Chatoyant19/sensor_calib_tools.git
 cd ../
 catkin_make
 source ~/catkin_ws/devel/setup.bash
@@ -55,6 +59,6 @@ source ~/catkin_ws/devel/setup.bash
 ## 3. Run our example
 1. calib base_link and lidar
 ```
-    rosrun dr_lidar_calib test_main ../config/config_calib.yaml
+    rosrun sensor_calib_tools test_main ../config/config_calib.yaml
 ```
 2. 

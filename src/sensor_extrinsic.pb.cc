@@ -5,339 +5,404 @@
 
 #include <algorithm>
 
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/descriptor.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/reflection_ops.h>
+#include <google/protobuf/stubs/common.h>
+#include <google/protobuf/stubs/port.h>
 #include <google/protobuf/wire_format.h>
+#include <google/protobuf/wire_format_lite_inl.h>
+// This is a temporary google only hack
+#ifdef GOOGLE_PROTOBUF_ENFORCE_UNIQUENESS
+#include "third_party/protobuf/version.h"
+#endif
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_sensor_5fextrinsic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Rotation_sensor_5fextrinsic_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_sensor_5fextrinsic_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Translation_sensor_5fextrinsic_2eproto;
+
+namespace protobuf_sensor_5fextrinsic_2eproto {
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_sensor_5fextrinsic_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Rotation;
+extern PROTOBUF_INTERNAL_EXPORT_protobuf_sensor_5fextrinsic_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_Translation;
+} // namespace protobuf_sensor_5fextrinsic_2eproto
 namespace tutorial {
 class TranslationDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Translation> _instance;
+  ::google::protobuf::internal::ExplicitlyConstructed<Translation>
+      _instance;
 } _Translation_default_instance_;
 class RotationDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Rotation> _instance;
+  ::google::protobuf::internal::ExplicitlyConstructed<Rotation>
+      _instance;
 } _Rotation_default_instance_;
 class SensorExtrinsicDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<SensorExtrinsic> _instance;
+  ::google::protobuf::internal::ExplicitlyConstructed<SensorExtrinsic>
+      _instance;
 } _SensorExtrinsic_default_instance_;
-}  // namespace tutorial
-static void InitDefaultsscc_info_Rotation_sensor_5fextrinsic_2eproto() {
+} // namespace tutorial
+namespace protobuf_sensor_5fextrinsic_2eproto {
+static void InitDefaultsTranslation() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::tutorial::_Rotation_default_instance_;
-    new (ptr) ::tutorial::Rotation();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::tutorial::Rotation::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Rotation_sensor_5fextrinsic_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Rotation_sensor_5fextrinsic_2eproto}, {}};
-
-static void InitDefaultsscc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::tutorial::_SensorExtrinsic_default_instance_;
-    new (ptr) ::tutorial::SensorExtrinsic();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::tutorial::SensorExtrinsic::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto}, {
-      &scc_info_Translation_sensor_5fextrinsic_2eproto.base,
-      &scc_info_Rotation_sensor_5fextrinsic_2eproto.base,}};
-
-static void InitDefaultsscc_info_Translation_sensor_5fextrinsic_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::tutorial::_Translation_default_instance_;
-    new (ptr) ::tutorial::Translation();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+    void *ptr = &::tutorial::_Translation_default_instance_;
+    new (ptr)::tutorial::Translation();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
   ::tutorial::Translation::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Translation_sensor_5fextrinsic_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Translation_sensor_5fextrinsic_2eproto}, {}};
+::google::protobuf::internal::SCCInfo<0> scc_info_Translation =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsTranslation}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_sensor_5fextrinsic_2eproto[3];
-static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_sensor_5fextrinsic_2eproto = nullptr;
-static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_sensor_5fextrinsic_2eproto = nullptr;
+static void InitDefaultsRotation() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_sensor_5fextrinsic_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  PROTOBUF_FIELD_OFFSET(::tutorial::Translation, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Translation, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::tutorial::Translation, x_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Translation, y_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Translation, z_),
-  0,
-  1,
-  2,
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, _has_bits_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, x_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, y_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, z_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::Rotation, w_),
-  0,
-  1,
-  2,
-  3,
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::tutorial::SensorExtrinsic, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::tutorial::SensorExtrinsic, translation_),
-  PROTOBUF_FIELD_OFFSET(::tutorial::SensorExtrinsic, rotation_),
+  {
+    void *ptr = &::tutorial::_Rotation_default_instance_;
+    new (ptr)::tutorial::Rotation();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tutorial::Rotation::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<0> scc_info_Rotation =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 0, InitDefaultsRotation}, {}};
+
+static void InitDefaultsSensorExtrinsic() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void *ptr = &::tutorial::_SensorExtrinsic_default_instance_;
+    new (ptr)::tutorial::SensorExtrinsic();
+    ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::tutorial::SensorExtrinsic::InitAsDefaultInstance();
+}
+
+::google::protobuf::internal::SCCInfo<2> scc_info_SensorExtrinsic =
+    {{ATOMIC_VAR_INIT(::google::protobuf::internal::SCCInfoBase::kUninitialized), 2, InitDefaultsSensorExtrinsic}, {
+                                                                                                                       &protobuf_sensor_5fextrinsic_2eproto::scc_info_Translation.base,
+                                                                                                                       &protobuf_sensor_5fextrinsic_2eproto::scc_info_Rotation.base,
+                                                                                                                   }};
+
+void InitDefaults() {
+  ::google::protobuf::internal::InitSCC(&scc_info_Translation.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_Rotation.base);
+  ::google::protobuf::internal::InitSCC(&scc_info_SensorExtrinsic.base);
+}
+
+::google::protobuf::Metadata file_level_metadata[3];
+
+const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Translation, _has_bits_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Translation, _internal_metadata_),
+    ~0u, // no _extensions_
+    ~0u, // no _oneof_case_
+    ~0u, // no _weak_field_map_
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Translation, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Translation, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Translation, z_),
+    0,
+    1,
+    2,
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, _has_bits_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, _internal_metadata_),
+    ~0u, // no _extensions_
+    ~0u, // no _oneof_case_
+    ~0u, // no _weak_field_map_
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, x_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, y_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, z_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::Rotation, w_),
+    0,
+    1,
+    2,
+    3,
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::SensorExtrinsic, _has_bits_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::SensorExtrinsic, _internal_metadata_),
+    ~0u, // no _extensions_
+    ~0u, // no _oneof_case_
+    ~0u, // no _weak_field_map_
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::SensorExtrinsic, translation_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::tutorial::SensorExtrinsic, rotation_),
+    ~0u,
+    ~0u,
 };
-static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, 8, sizeof(::tutorial::Translation)},
-  { 11, 20, sizeof(::tutorial::Rotation)},
-  { 24, -1, sizeof(::tutorial::SensorExtrinsic)},
+static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+    {0, 8, sizeof(::tutorial::Translation)},
+    {11, 20, sizeof(::tutorial::Rotation)},
+    {24, 31, sizeof(::tutorial::SensorExtrinsic)},
 };
 
-static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::tutorial::_Translation_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::tutorial::_Rotation_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::tutorial::_SensorExtrinsic_default_instance_),
+static ::google::protobuf::Message const *const file_default_instances[] = {
+    reinterpret_cast<const ::google::protobuf::Message *>(&::tutorial::_Translation_default_instance_),
+    reinterpret_cast<const ::google::protobuf::Message *>(&::tutorial::_Rotation_default_instance_),
+    reinterpret_cast<const ::google::protobuf::Message *>(&::tutorial::_SensorExtrinsic_default_instance_),
 };
 
-const char descriptor_table_protodef_sensor_5fextrinsic_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\026sensor_extrinsic.proto\022\010tutorial\".\n\013Tr"
-  "anslation\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\t\n\001z\030\003 \002"
-  "(\001\"6\n\010Rotation\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\t\n\001"
-  "z\030\003 \002(\001\022\t\n\001w\030\004 \002(\001\"c\n\017SensorExtrinsic\022*\n"
-  "\013translation\030\001 \003(\0132\025.tutorial.Translatio"
-  "n\022$\n\010rotation\030\002 \003(\0132\022.tutorial.Rotation"
-  ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_sensor_5fextrinsic_2eproto_deps[1] = {
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_sensor_5fextrinsic_2eproto_sccs[3] = {
-  &scc_info_Rotation_sensor_5fextrinsic_2eproto.base,
-  &scc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto.base,
-  &scc_info_Translation_sensor_5fextrinsic_2eproto.base,
-};
-static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_sensor_5fextrinsic_2eproto_once;
-const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_sensor_5fextrinsic_2eproto = {
-  false, false, descriptor_table_protodef_sensor_5fextrinsic_2eproto, "sensor_extrinsic.proto", 239,
-  &descriptor_table_sensor_5fextrinsic_2eproto_once, descriptor_table_sensor_5fextrinsic_2eproto_sccs, descriptor_table_sensor_5fextrinsic_2eproto_deps, 3, 0,
-  schemas, file_default_instances, TableStruct_sensor_5fextrinsic_2eproto::offsets,
-  file_level_metadata_sensor_5fextrinsic_2eproto, 3, file_level_enum_descriptors_sensor_5fextrinsic_2eproto, file_level_service_descriptors_sensor_5fextrinsic_2eproto,
-};
+void protobuf_AssignDescriptors() {
+  AddDescriptors();
+  AssignDescriptors(
+      "sensor_extrinsic.proto", schemas, file_default_instances, TableStruct::offsets,
+      file_level_metadata, NULL, NULL);
+}
 
-// Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_sensor_5fextrinsic_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_sensor_5fextrinsic_2eproto)), true);
+void protobuf_AssignDescriptorsOnce() {
+  static ::google::protobuf::internal::once_flag once;
+  ::google::protobuf::internal::call_once(once, protobuf_AssignDescriptors);
+}
+
+void protobuf_RegisterTypes(const ::std::string &) GOOGLE_PROTOBUF_ATTRIBUTE_COLD;
+void protobuf_RegisterTypes(const ::std::string &) {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::internal::RegisterAllTypes(file_level_metadata, 3);
+}
+
+void AddDescriptorsImpl() {
+  InitDefaults();
+  static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
+      "\n\026sensor_extrinsic.proto\022\010tutorial\".\n\013Tr"
+      "anslation\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\t\n\001z\030\003 \002"
+      "(\001\"6\n\010Rotation\022\t\n\001x\030\001 \002(\001\022\t\n\001y\030\002 \002(\001\022\t\n\001"
+      "z\030\003 \002(\001\022\t\n\001w\030\004 \002(\001\"c\n\017SensorExtrinsic\022*\n"
+      "\013translation\030\001 \003(\0132\025.tutorial.Translatio"
+      "n\022$\n\010rotation\030\002 \003(\0132\022.tutorial.Rotation"};
+  ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
+      descriptor, 239);
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
+      "sensor_extrinsic.proto", &protobuf_RegisterTypes);
+}
+
+void AddDescriptors() {
+  static ::google::protobuf::internal::once_flag once;
+  ::google::protobuf::internal::call_once(once, AddDescriptorsImpl);
+}
+// Force AddDescriptors() to be called at dynamic initialization time.
+struct StaticDescriptorInitializer {
+  StaticDescriptorInitializer() {
+    AddDescriptors();
+  }
+} static_descriptor_initializer;
+} // namespace protobuf_sensor_5fextrinsic_2eproto
 namespace tutorial {
 
 // ===================================================================
 
 void Translation::InitAsDefaultInstance() {
 }
-class Translation::_Internal {
- public:
-  using HasBits = decltype(std::declval<Translation>()._has_bits_);
-  static void set_has_x(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-  static void set_has_y(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
-  static void set_has_z(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
-  }
-  static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x00000007) ^ 0x00000007) != 0;
-  }
-};
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Translation::kXFieldNumber;
+const int Translation::kYFieldNumber;
+const int Translation::kZFieldNumber;
+#endif // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Translation::Translation(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Translation::Translation()
+    : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_sensor_5fextrinsic_2eproto::scc_info_Translation.base);
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:tutorial.Translation)
+  // @@protoc_insertion_point(constructor:tutorial.Translation)
 }
-Translation::Translation(const Translation& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
+Translation::Translation(const Translation &from)
+    : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
-    static_cast<size_t>(reinterpret_cast<char*>(&z_) -
-    reinterpret_cast<char*>(&x_)) + sizeof(z_));
+           static_cast<size_t>(reinterpret_cast<char *>(&z_) -
+                               reinterpret_cast<char *>(&x_)) +
+               sizeof(z_));
   // @@protoc_insertion_point(copy_constructor:tutorial.Translation)
 }
 
 void Translation::SharedCtor() {
-  ::memset(&x_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&z_) -
-      reinterpret_cast<char*>(&x_)) + sizeof(z_));
+  ::memset(&x_, 0, static_cast<size_t>(reinterpret_cast<char *>(&z_) - reinterpret_cast<char *>(&x_)) + sizeof(z_));
 }
 
 Translation::~Translation() {
   // @@protoc_insertion_point(destructor:tutorial.Translation)
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Translation::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void Translation::ArenaDtor(void* object) {
-  Translation* _this = reinterpret_cast< Translation* >(object);
-  (void)_this;
-}
-void Translation::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void Translation::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Translation& Translation::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Translation_sensor_5fextrinsic_2eproto.base);
+const ::google::protobuf::Descriptor *Translation::descriptor() {
+  ::protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const Translation &Translation::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_sensor_5fextrinsic_2eproto::scc_info_Translation.base);
   return *internal_default_instance();
 }
 
-
 void Translation::Clear() {
-// @@protoc_insertion_point(message_clear_start:tutorial.Translation)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // @@protoc_insertion_point(message_clear_start:tutorial.Translation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
-    ::memset(&x_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&z_) -
-        reinterpret_cast<char*>(&x_)) + sizeof(z_));
+  if (cached_has_bits & 7u) {
+    ::memset(&x_, 0, static_cast<size_t>(reinterpret_cast<char *>(&z_) - reinterpret_cast<char *>(&x_)) + sizeof(z_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear();
 }
 
-const char* Translation::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
+bool Translation::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream *input) {
+#define DO_(EXPRESSION) \
+  if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tutorial.Translation)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required double x = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
-          _Internal::set_has_x(&has_bits);
-          x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(9u /* 9 & 0xFF */)) {
+          set_has_x();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &x_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // required double y = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
-          _Internal::set_has_y(&has_bits);
-          y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(17u /* 17 & 0xFF */)) {
+          set_has_y();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &y_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // required double z = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 25)) {
-          _Internal::set_has_z(&has_bits);
-          z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 3: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(25u /* 25 & 0xFF */)) {
+          set_has_z();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &z_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
+        if (tag == 0) {
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+            input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
       }
-    }  // switch
-  }  // while
+    }
+  }
 success:
-  _has_bits_.Or(has_bits);
-  return ptr;
+  // @@protoc_insertion_point(parse_success:tutorial.Translation)
+  return true;
 failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
+  // @@protoc_insertion_point(parse_failure:tutorial.Translation)
+  return false;
+#undef DO_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Translation::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:tutorial.Translation)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+void Translation::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream *output) const {
+  // @@protoc_insertion_point(serialize_start:tutorial.Translation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
   // required double x = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_x(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->x(), output);
   }
 
   // required double y = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_y(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->y(), output);
   }
 
   // required double z = 3;
   if (cached_has_bits & 0x00000004u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_z(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->z(), output);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tutorial.Translation)
+}
+
+::google::protobuf::uint8 *Translation::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8 *target) const {
+  (void) deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tutorial.Translation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required double x = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->x(), target);
+  }
+
+  // required double y = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->y(), target);
+  }
+
+  // required double z = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->z(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tutorial.Translation)
   return target;
 }
 
 size_t Translation::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:tutorial.Translation)
+  // @@protoc_insertion_point(required_fields_byte_size_fallback_start:tutorial.Translation)
   size_t total_size = 0;
 
-  if (_internal_has_x()) {
+  if (has_x()) {
     // required double x = 1;
     total_size += 1 + 8;
   }
 
-  if (_internal_has_y()) {
+  if (has_y()) {
     // required double y = 2;
     total_size += 1 + 8;
   }
 
-  if (_internal_has_z()) {
+  if (has_z()) {
     // required double z = 3;
     total_size += 1 + 8;
   }
@@ -345,10 +410,15 @@ size_t Translation::RequiredFieldsByteSizeFallback() const {
   return total_size;
 }
 size_t Translation::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:tutorial.Translation)
+  // @@protoc_insertion_point(message_byte_size_start:tutorial.Translation)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+        ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+            _internal_metadata_.unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) { // All required fields are present.
     // required double x = 1;
     total_size += 1 + 8;
 
@@ -361,43 +431,35 @@ size_t Translation::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Translation::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:tutorial.Translation)
+void Translation::MergeFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_merge_from_start:tutorial.Translation)
   GOOGLE_DCHECK_NE(&from, this);
-  const Translation* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Translation>(
+  const Translation *source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Translation>(
           &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.Translation)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  if (source == NULL) {
+    // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.Translation)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.Translation)
+    // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.Translation)
     MergeFrom(*source);
   }
 }
 
-void Translation::MergeFrom(const Translation& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:tutorial.Translation)
+void Translation::MergeFrom(const Translation &from) {
+  // @@protoc_insertion_point(class_specific_merge_from_start:tutorial.Translation)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000007u) {
+  if (cached_has_bits & 7u) {
     if (cached_has_bits & 0x00000001u) {
       x_ = from.x_;
     }
@@ -411,252 +473,289 @@ void Translation::MergeFrom(const Translation& from) {
   }
 }
 
-void Translation::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:tutorial.Translation)
+void Translation::CopyFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_copy_from_start:tutorial.Translation)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Translation::CopyFrom(const Translation& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:tutorial.Translation)
+void Translation::CopyFrom(const Translation &from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:tutorial.Translation)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 bool Translation::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   return true;
 }
 
-void Translation::InternalSwap(Translation* other) {
+void Translation::Swap(Translation *other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Translation::InternalSwap(Translation *other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(x_, other->x_);
+  swap(y_, other->y_);
+  swap(z_, other->z_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Translation, z_)
-      + sizeof(Translation::z_)
-      - PROTOBUF_FIELD_OFFSET(Translation, x_)>(
-          reinterpret_cast<char*>(&x_),
-          reinterpret_cast<char*>(&other->x_));
+  _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Translation::GetMetadata() const {
-  return GetMetadataStatic();
+::google::protobuf::Metadata Translation::GetMetadata() const {
+  protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages];
 }
-
 
 // ===================================================================
 
 void Rotation::InitAsDefaultInstance() {
 }
-class Rotation::_Internal {
- public:
-  using HasBits = decltype(std::declval<Rotation>()._has_bits_);
-  static void set_has_x(HasBits* has_bits) {
-    (*has_bits)[0] |= 1u;
-  }
-  static void set_has_y(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
-  }
-  static void set_has_z(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
-  }
-  static void set_has_w(HasBits* has_bits) {
-    (*has_bits)[0] |= 8u;
-  }
-  static bool MissingRequiredFields(const HasBits& has_bits) {
-    return ((has_bits[0] & 0x0000000f) ^ 0x0000000f) != 0;
-  }
-};
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int Rotation::kXFieldNumber;
+const int Rotation::kYFieldNumber;
+const int Rotation::kZFieldNumber;
+const int Rotation::kWFieldNumber;
+#endif // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-Rotation::Rotation(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+Rotation::Rotation()
+    : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_sensor_5fextrinsic_2eproto::scc_info_Rotation.base);
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:tutorial.Rotation)
+  // @@protoc_insertion_point(constructor:tutorial.Rotation)
 }
-Rotation::Rotation(const Rotation& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
+Rotation::Rotation(const Rotation &from)
+    : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
       _has_bits_(from._has_bits_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&x_, &from.x_,
-    static_cast<size_t>(reinterpret_cast<char*>(&w_) -
-    reinterpret_cast<char*>(&x_)) + sizeof(w_));
+           static_cast<size_t>(reinterpret_cast<char *>(&w_) -
+                               reinterpret_cast<char *>(&x_)) +
+               sizeof(w_));
   // @@protoc_insertion_point(copy_constructor:tutorial.Rotation)
 }
 
 void Rotation::SharedCtor() {
-  ::memset(&x_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&w_) -
-      reinterpret_cast<char*>(&x_)) + sizeof(w_));
+  ::memset(&x_, 0, static_cast<size_t>(reinterpret_cast<char *>(&w_) - reinterpret_cast<char *>(&x_)) + sizeof(w_));
 }
 
 Rotation::~Rotation() {
   // @@protoc_insertion_point(destructor:tutorial.Rotation)
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void Rotation::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void Rotation::ArenaDtor(void* object) {
-  Rotation* _this = reinterpret_cast< Rotation* >(object);
-  (void)_this;
-}
-void Rotation::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void Rotation::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Rotation& Rotation::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Rotation_sensor_5fextrinsic_2eproto.base);
+const ::google::protobuf::Descriptor *Rotation::descriptor() {
+  ::protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const Rotation &Rotation::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_sensor_5fextrinsic_2eproto::scc_info_Rotation.base);
   return *internal_default_instance();
 }
 
-
 void Rotation::Clear() {
-// @@protoc_insertion_point(message_clear_start:tutorial.Rotation)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // @@protoc_insertion_point(message_clear_start:tutorial.Rotation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
-    ::memset(&x_, 0, static_cast<size_t>(
-        reinterpret_cast<char*>(&w_) -
-        reinterpret_cast<char*>(&x_)) + sizeof(w_));
+  if (cached_has_bits & 15u) {
+    ::memset(&x_, 0, static_cast<size_t>(reinterpret_cast<char *>(&w_) - reinterpret_cast<char *>(&x_)) + sizeof(w_));
   }
   _has_bits_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _internal_metadata_.Clear();
 }
 
-const char* Rotation::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  _Internal::HasBits has_bits{};
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
+bool Rotation::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream *input) {
+#define DO_(EXPRESSION) \
+  if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tutorial.Rotation)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // required double x = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 9)) {
-          _Internal::set_has_x(&has_bits);
-          x_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(9u /* 9 & 0xFF */)) {
+          set_has_x();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &x_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // required double y = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 17)) {
-          _Internal::set_has_y(&has_bits);
-          y_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(17u /* 17 & 0xFF */)) {
+          set_has_y();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &y_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // required double z = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 25)) {
-          _Internal::set_has_z(&has_bits);
-          z_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 3: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(25u /* 25 & 0xFF */)) {
+          set_has_z();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &z_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // required double w = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 33)) {
-          _Internal::set_has_w(&has_bits);
-          w_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<double>(ptr);
-          ptr += sizeof(double);
-        } else goto handle_unusual;
-        continue;
+      case 4: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(33u /* 33 & 0xFF */)) {
+          set_has_w();
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+               double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+              input, &w_)));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
+        if (tag == 0) {
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+            input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
       }
-    }  // switch
-  }  // while
+    }
+  }
 success:
-  _has_bits_.Or(has_bits);
-  return ptr;
+  // @@protoc_insertion_point(parse_success:tutorial.Rotation)
+  return true;
 failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
+  // @@protoc_insertion_point(parse_failure:tutorial.Rotation)
+  return false;
+#undef DO_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Rotation::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:tutorial.Rotation)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+void Rotation::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream *output) const {
+  // @@protoc_insertion_point(serialize_start:tutorial.Rotation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
   // required double x = 1;
   if (cached_has_bits & 0x00000001u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(1, this->_internal_x(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->x(), output);
   }
 
   // required double y = 2;
   if (cached_has_bits & 0x00000002u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(2, this->_internal_y(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->y(), output);
   }
 
   // required double z = 3;
   if (cached_has_bits & 0x00000004u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(3, this->_internal_z(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->z(), output);
   }
 
   // required double w = 4;
   if (cached_has_bits & 0x00000008u) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteDoubleToArray(4, this->_internal_w(), target);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->w(), output);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tutorial.Rotation)
+}
+
+::google::protobuf::uint8 *Rotation::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8 *target) const {
+  (void) deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tutorial.Rotation)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required double x = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->x(), target);
+  }
+
+  // required double y = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->y(), target);
+  }
+
+  // required double z = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->z(), target);
+  }
+
+  // required double w = 4;
+  if (cached_has_bits & 0x00000008u) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->w(), target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tutorial.Rotation)
   return target;
 }
 
 size_t Rotation::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:tutorial.Rotation)
+  // @@protoc_insertion_point(required_fields_byte_size_fallback_start:tutorial.Rotation)
   size_t total_size = 0;
 
-  if (_internal_has_x()) {
+  if (has_x()) {
     // required double x = 1;
     total_size += 1 + 8;
   }
 
-  if (_internal_has_y()) {
+  if (has_y()) {
     // required double y = 2;
     total_size += 1 + 8;
   }
 
-  if (_internal_has_z()) {
+  if (has_z()) {
     // required double z = 3;
     total_size += 1 + 8;
   }
 
-  if (_internal_has_w()) {
+  if (has_w()) {
     // required double w = 4;
     total_size += 1 + 8;
   }
@@ -664,10 +763,15 @@ size_t Rotation::RequiredFieldsByteSizeFallback() const {
   return total_size;
 }
 size_t Rotation::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:tutorial.Rotation)
+  // @@protoc_insertion_point(message_byte_size_start:tutorial.Rotation)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) {  // All required fields are present.
+  if (_internal_metadata_.have_unknown_fields()) {
+    total_size +=
+        ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+            _internal_metadata_.unknown_fields());
+  }
+  if (((_has_bits_[0] & 0x0000000f) ^ 0x0000000f) == 0) { // All required fields are present.
     // required double x = 1;
     total_size += 1 + 8;
 
@@ -683,43 +787,35 @@ size_t Rotation::ByteSizeLong() const {
   } else {
     total_size += RequiredFieldsByteSizeFallback();
   }
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void Rotation::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:tutorial.Rotation)
+void Rotation::MergeFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_merge_from_start:tutorial.Rotation)
   GOOGLE_DCHECK_NE(&from, this);
-  const Rotation* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Rotation>(
+  const Rotation *source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const Rotation>(
           &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.Rotation)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  if (source == NULL) {
+    // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.Rotation)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.Rotation)
+    // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.Rotation)
     MergeFrom(*source);
   }
 }
 
-void Rotation::MergeFrom(const Rotation& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:tutorial.Rotation)
+void Rotation::MergeFrom(const Rotation &from) {
+  // @@protoc_insertion_point(class_specific_merge_from_start:tutorial.Rotation)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x0000000fu) {
+  if (cached_has_bits & 15u) {
     if (cached_has_bits & 0x00000001u) {
       x_ = from.x_;
     }
@@ -736,292 +832,343 @@ void Rotation::MergeFrom(const Rotation& from) {
   }
 }
 
-void Rotation::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:tutorial.Rotation)
+void Rotation::CopyFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_copy_from_start:tutorial.Rotation)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Rotation::CopyFrom(const Rotation& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:tutorial.Rotation)
+void Rotation::CopyFrom(const Rotation &from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:tutorial.Rotation)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 bool Rotation::IsInitialized() const {
-  if (_Internal::MissingRequiredFields(_has_bits_)) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   return true;
 }
 
-void Rotation::InternalSwap(Rotation* other) {
+void Rotation::Swap(Rotation *other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void Rotation::InternalSwap(Rotation *other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(x_, other->x_);
+  swap(y_, other->y_);
+  swap(z_, other->z_);
+  swap(w_, other->w_);
   swap(_has_bits_[0], other->_has_bits_[0]);
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Rotation, w_)
-      + sizeof(Rotation::w_)
-      - PROTOBUF_FIELD_OFFSET(Rotation, x_)>(
-          reinterpret_cast<char*>(&x_),
-          reinterpret_cast<char*>(&other->x_));
+  _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Rotation::GetMetadata() const {
-  return GetMetadataStatic();
+::google::protobuf::Metadata Rotation::GetMetadata() const {
+  protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages];
 }
-
 
 // ===================================================================
 
 void SensorExtrinsic::InitAsDefaultInstance() {
 }
-class SensorExtrinsic::_Internal {
- public:
-};
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int SensorExtrinsic::kTranslationFieldNumber;
+const int SensorExtrinsic::kRotationFieldNumber;
+#endif // !defined(_MSC_VER) || _MSC_VER >= 1900
 
-SensorExtrinsic::SensorExtrinsic(::PROTOBUF_NAMESPACE_ID::Arena* arena)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena),
-  translation_(arena),
-  rotation_(arena) {
+SensorExtrinsic::SensorExtrinsic()
+    : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  ::google::protobuf::internal::InitSCC(
+      &protobuf_sensor_5fextrinsic_2eproto::scc_info_SensorExtrinsic.base);
   SharedCtor();
-  RegisterArenaDtor(arena);
-  // @@protoc_insertion_point(arena_constructor:tutorial.SensorExtrinsic)
+  // @@protoc_insertion_point(constructor:tutorial.SensorExtrinsic)
 }
-SensorExtrinsic::SensorExtrinsic(const SensorExtrinsic& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
+SensorExtrinsic::SensorExtrinsic(const SensorExtrinsic &from)
+    : ::google::protobuf::Message(),
+      _internal_metadata_(NULL),
+      _has_bits_(from._has_bits_),
       translation_(from.translation_),
       rotation_(from.rotation_) {
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
   // @@protoc_insertion_point(copy_constructor:tutorial.SensorExtrinsic)
 }
 
 void SensorExtrinsic::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto.base);
 }
 
 SensorExtrinsic::~SensorExtrinsic() {
   // @@protoc_insertion_point(destructor:tutorial.SensorExtrinsic)
   SharedDtor();
-  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
 void SensorExtrinsic::SharedDtor() {
-  GOOGLE_DCHECK(GetArena() == nullptr);
 }
 
-void SensorExtrinsic::ArenaDtor(void* object) {
-  SensorExtrinsic* _this = reinterpret_cast< SensorExtrinsic* >(object);
-  (void)_this;
-}
-void SensorExtrinsic::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
-}
 void SensorExtrinsic::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const SensorExtrinsic& SensorExtrinsic::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_SensorExtrinsic_sensor_5fextrinsic_2eproto.base);
+const ::google::protobuf::Descriptor *SensorExtrinsic::descriptor() {
+  ::protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages].descriptor;
+}
+
+const SensorExtrinsic &SensorExtrinsic::default_instance() {
+  ::google::protobuf::internal::InitSCC(&protobuf_sensor_5fextrinsic_2eproto::scc_info_SensorExtrinsic.base);
   return *internal_default_instance();
 }
 
-
 void SensorExtrinsic::Clear() {
-// @@protoc_insertion_point(message_clear_start:tutorial.SensorExtrinsic)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // @@protoc_insertion_point(message_clear_start:tutorial.SensorExtrinsic)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   translation_.Clear();
   rotation_.Clear();
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
 }
 
-const char* SensorExtrinsic::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
+bool SensorExtrinsic::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream *input) {
+#define DO_(EXPRESSION) \
+  if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:tutorial.SensorExtrinsic)
+  for (;;) {
+    ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
       // repeated .tutorial.Translation translation = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_translation(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
-        continue;
+      case 1: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(10u /* 10 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+              input, add_translation()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       // repeated .tutorial.Rotation rotation = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            ptr = ctx->ParseMessage(_internal_add_rotation(), ptr);
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<18>(ptr));
-        } else goto handle_unusual;
-        continue;
+      case 2: {
+        if (static_cast<::google::protobuf::uint8>(tag) ==
+            static_cast<::google::protobuf::uint8>(18u /* 18 & 0xFF */)) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessage(
+              input, add_rotation()));
+        } else {
+          goto handle_unusual;
+        }
+        break;
+      }
+
       default: {
       handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
+        if (tag == 0) {
           goto success;
         }
-        ptr = UnknownFieldParse(tag,
-            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-            ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+            input, tag, _internal_metadata_.mutable_unknown_fields()));
+        break;
       }
-    }  // switch
-  }  // while
+    }
+  }
 success:
-  return ptr;
+  // @@protoc_insertion_point(parse_success:tutorial.SensorExtrinsic)
+  return true;
 failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
+  // @@protoc_insertion_point(parse_failure:tutorial.SensorExtrinsic)
+  return false;
+#undef DO_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* SensorExtrinsic::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:tutorial.SensorExtrinsic)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+void SensorExtrinsic::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream *output) const {
+  // @@protoc_insertion_point(serialize_start:tutorial.SensorExtrinsic)
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   // repeated .tutorial.Translation translation = 1;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_translation_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(1, this->_internal_translation(i), target, stream);
+                    n = static_cast<unsigned int>(this->translation_size());
+       i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+        1,
+        this->translation(static_cast<int>(i)),
+        output);
   }
 
   // repeated .tutorial.Rotation rotation = 2;
   for (unsigned int i = 0,
-      n = static_cast<unsigned int>(this->_internal_rotation_size()); i < n; i++) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
-      InternalWriteMessage(2, this->_internal_rotation(i), target, stream);
+                    n = static_cast<unsigned int>(this->rotation_size());
+       i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+        2,
+        this->rotation(static_cast<int>(i)),
+        output);
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  if (_internal_metadata_.have_unknown_fields()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        _internal_metadata_.unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:tutorial.SensorExtrinsic)
+}
+
+::google::protobuf::uint8 *SensorExtrinsic::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8 *target) const {
+  (void) deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:tutorial.SensorExtrinsic)
+  ::google::protobuf::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // repeated .tutorial.Translation translation = 1;
+  for (unsigned int i = 0,
+                    n = static_cast<unsigned int>(this->translation_size());
+       i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessageToArray(
+            1, this->translation(static_cast<int>(i)), deterministic, target);
+  }
+
+  // repeated .tutorial.Rotation rotation = 2;
+  for (unsigned int i = 0,
+                    n = static_cast<unsigned int>(this->rotation_size());
+       i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessageToArray(
+            2, this->rotation(static_cast<int>(i)), deterministic, target);
+  }
+
+  if (_internal_metadata_.have_unknown_fields()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target);
   }
   // @@protoc_insertion_point(serialize_to_array_end:tutorial.SensorExtrinsic)
   return target;
 }
 
 size_t SensorExtrinsic::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:tutorial.SensorExtrinsic)
+  // @@protoc_insertion_point(message_byte_size_start:tutorial.SensorExtrinsic)
   size_t total_size = 0;
 
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated .tutorial.Translation translation = 1;
-  total_size += 1UL * this->_internal_translation_size();
-  for (const auto& msg : this->translation_) {
+  if (_internal_metadata_.have_unknown_fields()) {
     total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+        ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+            _internal_metadata_.unknown_fields());
+  }
+  // repeated .tutorial.Translation translation = 1;
+  {
+    unsigned int count = static_cast<unsigned int>(this->translation_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+          ::google::protobuf::internal::WireFormatLite::MessageSize(
+              this->translation(static_cast<int>(i)));
+    }
   }
 
   // repeated .tutorial.Rotation rotation = 2;
-  total_size += 1UL * this->_internal_rotation_size();
-  for (const auto& msg : this->rotation_) {
-    total_size +=
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
+  {
+    unsigned int count = static_cast<unsigned int>(this->rotation_size());
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+          ::google::protobuf::internal::WireFormatLite::MessageSize(
+              this->rotation(static_cast<int>(i)));
+    }
   }
 
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
   SetCachedSize(cached_size);
   return total_size;
 }
 
-void SensorExtrinsic::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:tutorial.SensorExtrinsic)
+void SensorExtrinsic::MergeFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_merge_from_start:tutorial.SensorExtrinsic)
   GOOGLE_DCHECK_NE(&from, this);
-  const SensorExtrinsic* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<SensorExtrinsic>(
+  const SensorExtrinsic *source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const SensorExtrinsic>(
           &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.SensorExtrinsic)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  if (source == NULL) {
+    // @@protoc_insertion_point(generalized_merge_from_cast_fail:tutorial.SensorExtrinsic)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.SensorExtrinsic)
+    // @@protoc_insertion_point(generalized_merge_from_cast_success:tutorial.SensorExtrinsic)
     MergeFrom(*source);
   }
 }
 
-void SensorExtrinsic::MergeFrom(const SensorExtrinsic& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:tutorial.SensorExtrinsic)
+void SensorExtrinsic::MergeFrom(const SensorExtrinsic &from) {
+  // @@protoc_insertion_point(class_specific_merge_from_start:tutorial.SensorExtrinsic)
   GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
   translation_.MergeFrom(from.translation_);
   rotation_.MergeFrom(from.rotation_);
 }
 
-void SensorExtrinsic::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:tutorial.SensorExtrinsic)
+void SensorExtrinsic::CopyFrom(const ::google::protobuf::Message &from) {
+  // @@protoc_insertion_point(generalized_copy_from_start:tutorial.SensorExtrinsic)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SensorExtrinsic::CopyFrom(const SensorExtrinsic& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:tutorial.SensorExtrinsic)
+void SensorExtrinsic::CopyFrom(const SensorExtrinsic &from) {
+  // @@protoc_insertion_point(class_specific_copy_from_start:tutorial.SensorExtrinsic)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 bool SensorExtrinsic::IsInitialized() const {
-  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(translation_)) return false;
-  if (!::PROTOBUF_NAMESPACE_ID::internal::AllAreInitialized(rotation_)) return false;
+  if (!::google::protobuf::internal::AllAreInitialized(this->translation())) return false;
+  if (!::google::protobuf::internal::AllAreInitialized(this->rotation())) return false;
   return true;
 }
 
-void SensorExtrinsic::InternalSwap(SensorExtrinsic* other) {
+void SensorExtrinsic::Swap(SensorExtrinsic *other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void SensorExtrinsic::InternalSwap(SensorExtrinsic *other) {
   using std::swap;
-  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  translation_.InternalSwap(&other->translation_);
-  rotation_.InternalSwap(&other->rotation_);
+  CastToBase(&translation_)->InternalSwap(CastToBase(&other->translation_));
+  CastToBase(&rotation_)->InternalSwap(CastToBase(&other->rotation_));
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata SensorExtrinsic::GetMetadata() const {
-  return GetMetadataStatic();
+::google::protobuf::Metadata SensorExtrinsic::GetMetadata() const {
+  protobuf_sensor_5fextrinsic_2eproto::protobuf_AssignDescriptorsOnce();
+  return ::protobuf_sensor_5fextrinsic_2eproto::file_level_metadata[kIndexInFileMessages];
 }
-
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace tutorial
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::tutorial::Translation* Arena::CreateMaybeMessage< ::tutorial::Translation >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tutorial::Translation >(arena);
+} // namespace tutorial
+namespace google {
+namespace protobuf {
+template<>
+GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::tutorial::Translation *Arena::CreateMaybeMessage<::tutorial::Translation>(Arena *arena) {
+  return Arena::CreateInternal<::tutorial::Translation>(arena);
 }
-template<> PROTOBUF_NOINLINE ::tutorial::Rotation* Arena::CreateMaybeMessage< ::tutorial::Rotation >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tutorial::Rotation >(arena);
+template<>
+GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::tutorial::Rotation *Arena::CreateMaybeMessage<::tutorial::Rotation>(Arena *arena) {
+  return Arena::CreateInternal<::tutorial::Rotation>(arena);
 }
-template<> PROTOBUF_NOINLINE ::tutorial::SensorExtrinsic* Arena::CreateMaybeMessage< ::tutorial::SensorExtrinsic >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::tutorial::SensorExtrinsic >(arena);
+template<>
+GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::tutorial::SensorExtrinsic *Arena::CreateMaybeMessage<::tutorial::SensorExtrinsic>(Arena *arena) {
+  return Arena::CreateInternal<::tutorial::SensorExtrinsic>(arena);
 }
-PROTOBUF_NAMESPACE_CLOSE
+} // namespace protobuf
+} // namespace google
 
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(dr_lidar_calib)
+project(sensor_calib_tools)
 
 ## Compile as C++14, supported in ROS Kinetic and newer
 add_compile_options(-std=c++14)
@@ -50,12 +50,12 @@ include_directories(
 
 # message("!!!!!!!!!CMAKE_CURRENT_SOURCE_DIR:", ${CMAKE_CURRENT_SOURCE_DIR})
 
-install(DIRECTORY launch/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/dr_lidar_calib/launch
-)
+# install(DIRECTORY launch/
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/sensor_calib_tools/launch
+# )
 
 install(DIRECTORY config/
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/dr_lidar_calib/config
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/sensor_calib_tools/config
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/rapidxml-1.13)
